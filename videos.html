@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vidéos — Alexandre Ligneul</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1a1a; --bg: #ffffff; --soft: #f5f4f2;
+      --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e;
+      --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a.active { color: var(--accent); font-weight: 500; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+    .page-header { padding: 4rem 0 2.5rem; }
+    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 1.25rem; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 0.5rem; }
+    .page-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; margin-bottom: 0.5rem; }
+    .page-subtitle { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 1.1rem; }
+    .featured-video { margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 4rem; }
+    .featured-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); display: inline-block; padding: 0.25rem 0.75rem; margin-bottom: 1.25rem; }
+    .featured-video-grid { display: grid; grid-template-columns: 1fr 380px; gap: 3rem; align-items: start; }
+    .video-embed-wrap { position: relative; aspect-ratio: 16/9; background: #111; overflow: hidden; }
+    .video-embed-wrap iframe { width: 100%; height: 100%; border: none; }
+    .video-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; background: linear-gradient(135deg, #1a2030, #2a3050); cursor: pointer; }
+    .play-circle { width: 4rem; height: 4rem; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
+    .video-placeholder:hover .play-circle { transform: scale(1.1); background: #1d4a7e; }
+    .play-circle svg { width: 1.4rem; fill: white; margin-left: 3px; }
+    .placeholder-hint { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; }
+    .featured-category { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); display: block; margin-bottom: 0.75rem; }
+    .featured-title { font-family: var(--serif); font-size: 1.6rem; line-height: 1.25; margin-bottom: 1rem; }
+    .featured-desc { font-size: 0.92rem; color: #555; line-height: 1.7; margin-bottom: 1.5rem; }
+    .featured-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.5rem; }
+    .featured-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .videos-section-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .videos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 4rem; }
+    .video-card { border: 1px solid var(--border); cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+    .video-card:hover { border-color: var(--accent); box-shadow: 0 4px 20px rgba(45,90,142,0.08); }
+    .video-card-thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+    .video-card-thumb-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .video-card-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); transition: background 0.2s; }
+    .video-card:hover .video-card-play { background: rgba(45,90,142,0.45); }
+    .video-card-play svg { width: 2.5rem; height: 2.5rem; fill: white; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
+    .video-card-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .video-card-cat { font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); display: block; margin-bottom: 0.5rem; }
+    .video-card-title { font-family: var(--serif); font-size: 1rem; line-height: 1.35; margin-bottom: 0.5rem; }
+    .video-card-meta { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (max-width: 860px) {
+      nav { padding: 1rem 1.25rem; }
+      .container { padding: 0 1.25rem; }
+      .featured-video-grid { grid-template-columns: 1fr; }
+      .videos-grid { grid-template-columns: 1fr; }
+      footer { padding: 1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <ul class="nav-links">
+      <li><a href="photos.html">Photos</a></li>
+      <li><a href="videos.html" class="active">Vidéos</a></li>
+      <li><a href="index.html#articles">Écrits</a></li>
+      <li><a href="podcasts.html">Podcasts</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header class="page-header reveal">
+      <p class="breadcrumb"><a href="index.html">Accueil</a><span>/</span>Reportages vidéo</p>
+      <h1 class="page-title">Reportages vidéo</h1>
+      <p class="page-subtitle">Portraits, interviews et documentaires de terrain</p>
+    </header>
+
+    <div class="featured-video reveal">
+      <span class="featured-label">À la une</span>
+      <div class="featured-video-grid">
+        <div class="video-embed-wrap">
+          <!-- Remplacez par : <iframe src="https://www.youtube.com/embed/VOTRE_ID" allowfullscreen></iframe> -->
+          <div class="video-placeholder">
+            <div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span class="placeholder-hint">Intégrez votre vidéo ici</span>
+          </div>
+        </div>
+        <div>
+          <span class="featured-category">Portrait · Interview</span>
+          <h2 class="featured-title">Interview de Dimitri Caillat : mannequin</h2>
+          <p class="featured-desc">Rencontre avec un mannequin parisien sur son parcours, les coulisses du secteur et les questions d'identité dans l'industrie de la mode. Un portrait humain au cœur d'un monde peu connu.</p>
+          <p class="featured-meta">2025 · EFJ Paris</p>
+          <div class="featured-tags">
+            <span class="tag">Mode</span>
+            <span class="tag">Portrait</span>
+            <span class="tag">Paris</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="videos-section-title reveal">Autres reportages</h2>
+    <div class="videos-grid reveal">
+      <div class="video-card">
+        <div class="video-card-thumb">
+          <div class="video-card-thumb-inner" style="background:linear-gradient(135deg,#1a2818,#2a4028);"></div>
+          <div class="video-card-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+        <div class="video-card-body">
+          <span class="video-card-cat">Reportage</span>
+          <h3 class="video-card-title">Titre de votre prochain reportage</h3>
+          <p class="video-card-meta">2026 · À venir</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-card-thumb">
+          <div class="video-card-thumb-inner" style="background:linear-gradient(135deg,#2e1a1a,#441a1a);"></div>
+          <div class="video-card-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+        <div class="video-card-body">
+          <span class="video-card-cat">Documentaire</span>
+          <h3 class="video-card-title">Titre de votre prochain documentaire</h3>
+          <p class="video-card-meta">2026 · À venir</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 Alexandre Ligneul</span>
+    <span>EFJ Paris</span>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => { if (e.isIntersecting) { e.target.style.transitionDelay=(i*0.1)+'s'; e.target.classList.add('visible'); }});
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

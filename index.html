@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alexandre Ligneul — Journaliste</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a1a;
+      --bg: #ffffff;
+      --soft: #f5f4f2;
+      --border: #e8e6e2;
+      --muted: #888582;
+      --accent: #2d5a8e;
+      --accent-light: #e8f0f9;
+      --serif: 'Lora', Georgia, serif;
+      --sans: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--serif); font-size: 1rem;
+      text-decoration: none; color: var(--ink);
+      letter-spacing: 0.01em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.1em; text-decoration: none;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 0;
+      min-height: 88vh;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 4rem;
+      align-items: center;
+    }
+    .hero-content {}
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.3rem 0.85rem; border-radius: 2px;
+      margin-bottom: 1.75rem;
+      opacity: 0; animation: slideIn 0.6s 0.1s forwards;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 600; line-height: 1.08;
+      margin-bottom: 0.5rem;
+      opacity: 0; animation: slideIn 0.6s 0.25s forwards;
+    }
+    .hero-role {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--muted); margin-bottom: 2rem;
+      opacity: 0; animation: slideIn 0.6s 0.4s forwards;
+    }
+    .hero-bio {
+      font-size: 0.97rem; line-height: 1.75;
+      color: #444; max-width: 520px;
+      margin-bottom: 2.5rem;
+      opacity: 0; animation: slideIn 0.6s 0.55s forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: slideIn 0.6s 0.7s forwards;
+    }
+    .btn-primary {
+      display: inline-block; padding: 0.7rem 1.6rem;
+      background: var(--accent); color: white;
+      text-decoration: none; font-size: 0.82rem;
+      font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: #1d4a7e; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-block; padding: 0.7rem 1.6rem;
+      border: 1px solid var(--border); color: var(--ink);
+      text-decoration: none; font-size: 0.82rem;
+      font-weight: 400; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-photo-wrap {
+      display: flex; justify-content: flex-end;
+      opacity: 0; animation: fadeIn 0.8s 0.5s forwards;
+    }
+    .hero-photo {
+      width: 280px; height: 350px;
+      object-fit: cover; object-position: top;
+      filter: grayscale(8%);
+    }
+    .hero-photo-frame {
+      position: relative;
+    }
+    .hero-photo-frame::before {
+      content: '';
+      position: absolute; top: -8px; left: -8px; right: 8px; bottom: 8px;
+      border: 1px solid var(--border); z-index: -1;
+    }
+
+    /* ── SECTION LAYOUT ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+    .section-wrap { padding: 5rem 0; border-top: 1px solid var(--border); }
+    .section-wrap.alt { background: var(--soft); }
+
+    .section-label {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .section-label-num {
+      font-family: var(--serif); font-style: italic;
+      font-size: 0.8rem; color: var(--accent);
+    }
+    .section-label-title {
+      font-family: var(--serif);
+      font-size: 1.65rem; font-weight: 400;
+    }
+    .section-label-line {
+      flex: 1; height: 1px; background: var(--border);
+    }
+    .section-label-link {
+      font-size: 0.72rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .section-label-link:hover { color: var(--accent); }
+
+    /* ── PHOTOS ── */
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .photo-card {
+      position: relative; overflow: hidden;
+      cursor: pointer; background: var(--soft);
+    }
+    .photo-card img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; display: block;
+      transition: transform 0.5s, filter 0.4s;
+      filter: grayscale(10%);
+    }
+    .photo-card:hover img { transform: scale(1.04); filter: grayscale(0%); }
+    .photo-card-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1rem 0.75rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.65));
+      color: white; font-size: 0.75rem;
+      transform: translateY(4px); opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      letter-spacing: 0.04em;
+    }
+    .photo-card:hover .photo-card-caption { opacity: 1; transform: none; }
+    /* featured first photo */
+    .photo-card.featured {
+      grid-column: span 2; grid-row: span 2;
+    }
+    .photo-card.featured img { aspect-ratio: auto; height: 100%; }
+
+    /* ── VIDEOS ── */
+    .videos-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .video-item {
+      display: grid; grid-template-columns: 200px 1fr;
+      gap: 1.5rem; align-items: start;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .video-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(45,90,142,0.08);
+    }
+    .video-thumb-wrap {
+      position: relative; overflow: hidden;
+      aspect-ratio: 16/9; background: #111;
+    }
+    .video-thumb-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .video-item:hover .video-thumb-wrap img { transform: scale(1.05); }
+    .video-play-icon {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.25);
+      transition: background 0.2s;
+    }
+    .video-item:hover .video-play-icon { background: rgba(45,90,142,0.5); }
+    .video-play-icon svg { width: 2rem; height: 2rem; fill: white; }
+    .video-info {}
+    .video-category {
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--accent);
+      margin-bottom: 0.5rem; display: block;
+    }
+    .video-title {
+      font-family: var(--serif); font-size: 1.05rem;
+      line-height: 1.35; margin-bottom: 0.6rem;
+    }
+    .video-desc { font-size: 0.85rem; color: #555; line-height: 1.6; margin-bottom: 0.75rem; }
+    .video-meta { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── ARTICLES ── */
+    .articles-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    }
+    .article-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .article-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(45,90,142,0.07);
+    }
+    .article-card.featured-article {
+      grid-column: span 2;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+      align-items: start;
+    }
+    .article-tag {
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--accent);
+      margin-bottom: 0.75rem; display: block;
+    }
+    .article-title {
+      font-family: var(--serif); font-size: 1.2rem;
+      line-height: 1.35; margin-bottom: 0.75rem;
+    }
+    .featured-article .article-title { font-size: 1.6rem; }
+    .article-excerpt { font-size: 0.875rem; color: #555; line-height: 1.65; margin-bottom: 1rem; }
+    .article-meta { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .article-read {
+      display: inline-block; margin-top: 1rem;
+      font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent);
+      text-decoration: none; font-weight: 500;
+      transition: gap 0.2s;
+    }
+    .article-read::after { content: ' →'; }
+
+    /* ── PODCASTS ── */
+    .podcasts-grid { display: flex; flex-direction: column; gap: 0; }
+    .podcast-row {
+      display: grid; grid-template-columns: 3rem 1fr auto;
+      align-items: center; gap: 1.5rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .podcast-row:first-child { border-top: 1px solid var(--border); }
+    .podcast-index {
+      font-family: var(--serif); font-style: italic;
+      font-size: 1.1rem; color: var(--border);
+      text-align: center; transition: color 0.2s;
+    }
+    .podcast-row:hover .podcast-index { color: var(--accent); }
+    .podcast-name { font-size: 0.95rem; font-weight: 400; margin-bottom: 0.2rem; }
+    .podcast-series { font-size: 0.78rem; color: var(--muted); }
+    .podcast-right { display: flex; align-items: center; gap: 1.25rem; text-align: right; }
+    .podcast-dur { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .podcast-btn {
+      width: 2rem; height: 2rem; border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+      flex-shrink: 0;
+    }
+    .podcast-row:hover .podcast-btn { border-color: var(--accent); background: var(--accent); }
+    .podcast-btn svg { width: 0.65rem; fill: var(--ink); margin-left: 1px; }
+    .podcast-row:hover .podcast-btn svg { fill: white; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--ink); color: white; }
+    #contact .section-label-title { color: white; }
+    #contact .section-label-line { background: #333; }
+    #contact .section-label-link { color: #555; }
+    #contact .section-label-link:hover { color: var(--accent); }
+    #contact .section-wrap { border-color: #333; }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+    .contact-intro {
+      font-family: var(--serif); font-size: 1.5rem;
+      line-height: 1.45; font-weight: 400; color: #ddd;
+    }
+    .contact-intro em { font-style: italic; color: #6a9fd8; }
+    .contact-sub { font-size: 0.88rem; color: #666; margin-top: 1.25rem; line-height: 1.7; }
+    .contact-items { display: flex; flex-direction: column; gap: 0; }
+    .contact-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 0; border-bottom: 1px solid #2a2a2a;
+      text-decoration: none; color: white;
+      transition: color 0.2s;
+    }
+    .contact-item:first-child { border-top: 1px solid #2a2a2a; }
+    .contact-item:hover { color: #6a9fd8; }
+    .contact-item-left {}
+    .contact-item-type { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: #555; display: block; margin-bottom: 0.2rem; }
+    .contact-item-value { font-size: 0.97rem; }
+    .contact-arrow { font-size: 1.1rem; opacity: 0.4; transition: opacity 0.2s, transform 0.2s; }
+    .contact-item:hover .contact-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d0d0d; padding: 1.2rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.7rem; color: #3a3a3a;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      #hero { grid-template-columns: 1fr; padding: 3rem 1.25rem; min-height: auto; }
+      .hero-photo-wrap { display: none; }
+      .container { padding: 0 1.25rem; }
+      .section-wrap { padding: 3.5rem 0; }
+      .photos-grid { grid-template-columns: 1fr 1fr; }
+      .photo-card.featured { grid-column: span 2; grid-row: auto; }
+      .photo-card.featured img { aspect-ratio: 16/9; height: auto; }
+      .video-item { grid-template-columns: 140px 1fr; gap: 1rem; padding: 1rem; }
+      .articles-grid { grid-template-columns: 1fr; }
+      .article-card.featured-article { grid-column: span 1; grid-template-columns: 1fr; }
+      .featured-article .article-title { font-size: 1.25rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { padding: 1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <ul class="nav-links">
+      <li><a href="#photos">Photos</a></li>
+      <li><a href="#videos">Vidéos</a></li>
+      <li><a href="#articles">Écrits</a></li>
+      <li><a href="#podcasts">Podcasts</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-content">
+      <span class="hero-tag">EFJ Paris · Journaliste en formation</span>
+      <h1 class="hero-name">Alexandre<br>Ligneul</h1>
+      <p class="hero-role">Journaliste reporter d'images</p>
+      <p class="hero-bio">
+        Étudiant en première année à l'École Française de Journalisme à Paris. Ce qui m'anime, c'est raconter le monde à travers l'image — sur le terrain, au plus près du réel. Enjeux politiques, environnementaux, culturels et de société.
+      </p>
+      <div class="hero-actions">
+        <a href="#photos" class="btn-primary">Voir mes travaux</a>
+        <a href="#contact" class="btn-secondary">Me contacter</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-frame">
+        <img
+          src="https://res.cloudinary.com/dpggjkaj4/image/upload/w_400,q_auto,f_auto/v1764109506/rachida-1_pruddc.jpg"
+          alt="Alexandre Ligneul"
+          class="hero-photo"
+          onerror="this.parentElement.parentElement.style.display='none'"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- PHOTOS -->
+  <div class="section-wrap alt" id="photos">
+    <div class="container">
+      <div class="section-label reveal">
+        <span class="section-label-num">01</span>
+        <h2 class="section-label-title">Photographies</h2>
+        <span class="section-label-line"></span>
+        <a href="photos.html" class="section-label-link">Toute la galerie →</a>
+      </div>
+      <div class="photos-grid reveal">
+        <div class="photo-card featured">
+          <img
+            src="https://res.cloudinary.com/dpggjkaj4/image/upload/w_800,q_auto,f_auto/v1764109506/rachida-1_pruddc.jpg"
+            alt="Rachida Dati, Municipale 2026"
+          />
+          <div class="photo-card-caption">Rachida Dati — Municipale 2026, Paris</div>
+        </div>
+        <div class="photo-card">
+          <img
+            src="https://res.cloudinary.com/dpggjkaj4/image/upload/w_500,q_auto,f_auto/v1764110112/lille1_agur3s.jpg"
+            alt="Halloween à Lille"
+          />
+          <div class="photo-card-caption">Halloween à Lille — 31 oct. 2025</div>
+        </div>
+        <div class="photo-card" style="background:#e8e4dc;">
+          <img
+            src="https://res.cloudinary.com/dpggjkaj4/image/upload/w_500,q_auto,f_auto/v1764110112/lille1_agur3s.jpg"
+            alt="Terrain"
+            style="opacity:0.5;"
+          />
+          <div class="photo-card-caption">À venir — votre prochaine photo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDÉOS -->
+  <div class="section-wrap" id="videos">
+    <div class="container">
+      <div class="section-label reveal">
+        <span class="section-label-num">02</span>
+        <h2 class="section-label-title">Reportages vidéo</h2>
+        <span class="section-label-line"></span>
+        <a href="#" class="section-label-link">Toutes les vidéos →</a>
+      </div>
+      <div class="videos-list reveal">
+        <div class="video-item">
+          <div class="video-thumb-wrap">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a2030,#2a3050);display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;">Vidéo</span>
+            </div>
+            <div class="video-play-icon">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div class="video-info">
+            <span class="video-category">Portrait</span>
+            <h3 class="video-title">Interview de Dimitri Caillat : mannequin</h3>
+            <p class="video-desc">Rencontre avec un mannequin parisien sur son parcours, les coulisses du secteur et les questions d'identité dans l'industrie de la mode.</p>
+            <span class="video-meta">2025 · Interview</span>
+          </div>
+        </div>
+        <div class="video-item">
+          <div class="video-thumb-wrap">
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a2818,#2a4028);display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;">Vidéo</span>
+            </div>
+            <div class="video-play-icon">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div class="video-info">
+            <span class="video-category">Reportage</span>
+            <h3 class="video-title">À compléter avec votre prochain reportage</h3>
+            <p class="video-desc">Description de votre reportage vidéo à venir.</p>
+            <span class="video-meta">2026 · Reportage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÉCRITS -->
+  <div class="section-wrap alt" id="articles">
+    <div class="container">
+      <div class="section-label reveal">
+        <span class="section-label-num">03</span>
+        <h2 class="section-label-title">Reportages écrits</h2>
+        <span class="section-label-line"></span>
+        <a href="#" class="section-label-link">Tous les articles →</a>
+      </div>
+      <div class="articles-grid reveal">
+        <div class="article-card featured-article">
+          <div>
+            <span class="article-tag">À la une</span>
+            <h3 class="article-title">Titre du Reportage A</h3>
+            <p class="article-excerpt">Remplacez ce texte par l'accroche de votre reportage phare. Une ou deux phrases qui donnent envie de lire, qui plantent le décor ou posent la question centrale de votre enquête.</p>
+            <span class="article-meta">2026</span>
+            <a href="articles/1.html" class="article-read">Lire l'article</a>
+          </div>
+          <div>
+            <span class="article-tag">Reportage</span>
+            <h3 class="article-title">Titre du Reportage B</h3>
+            <p class="article-excerpt">L'accroche de votre second article. Décrivez brièvement le sujet traité et ce qui le rend essentiel ou original.</p>
+            <span class="article-meta">2025</span>
+            <a href="articles/2.html" class="article-read">Lire l'article</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PODCASTS -->
+  <div class="section-wrap" id="podcasts">
+    <div class="container">
+      <div class="section-label reveal">
+        <span class="section-label-num">04</span>
+        <h2 class="section-label-title">Podcasts</h2>
+        <span class="section-label-line"></span>
+        <a href="#" class="section-label-link">Tous les épisodes →</a>
+      </div>
+      <div class="podcasts-grid reveal">
+        <div class="podcast-row">
+          <span class="podcast-index">01</span>
+          <div>
+            <p class="podcast-name">Titre de votre podcast</p>
+            <p class="podcast-series">Série ou thématique</p>
+          </div>
+          <div class="podcast-right">
+            <span class="podcast-dur">— min</span>
+            <div class="podcast-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
+          </div>
+        </div>
+        <div class="podcast-row">
+          <span class="podcast-index">02</span>
+          <div>
+            <p class="podcast-name">Deuxième épisode</p>
+            <p class="podcast-series">Série ou thématique</p>
+          </div>
+          <div class="podcast-right">
+            <span class="podcast-dur">— min</span>
+            <div class="podcast-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="contact">
+    <div class="section-wrap" style="border-top:1px solid #222;">
+      <div class="container">
+        <div class="section-label reveal">
+          <span class="section-label-num" style="color:#6a9fd8;">05</span>
+          <h2 class="section-label-title">Contact</h2>
+          <span class="section-label-line" style="background:#222;"></span>
+        </div>
+        <div class="contact-grid reveal">
+          <div>
+            <p class="contact-intro">
+              Disponible pour des <em>piges, stages</em> et collaborations journalistiques.
+            </p>
+            <p class="contact-sub">
+              Étudiant à l'EFJ Paris, je suis toujours à la recherche d'opportunités de terrain et de rencontres professionnelles. N'hésitez pas à me contacter.
+            </p>
+          </div>
+          <div class="contact-items">
+            <a href="mailto:a.ligneul@icloud.com" class="contact-item">
+              <div class="contact-item-left">
+                <span class="contact-item-type">E-mail</span>
+                <span class="contact-item-value">a.ligneul@icloud.com</span>
+              </div>
+              <span class="contact-arrow">↗</span>
+            </a>
+            <a href="https://www.linkedin.com/in/alexandre-ligneul/" target="_blank" class="contact-item">
+              <div class="contact-item-left">
+                <span class="contact-item-type">LinkedIn</span>
+                <span class="contact-item-value">alexandre-ligneul</span>
+              </div>
+              <span class="contact-arrow">↗</span>
+            </a>
+            <a href="https://www.instagram.com/alexandrelgn/" target="_blank" class="contact-item">
+              <div class="contact-item-left">
+                <span class="contact-item-type">Instagram</span>
+                <span class="contact-item-value">@alexandrelgn</span>
+              </div>
+              <span class="contact-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 Alexandre Ligneul</span>
+    <span>EFJ Paris</span>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((el, i) => {
+        if (el.isIntersecting) {
+          el.target.style.transitionDelay = (i * 0.1) + 's';
+          el.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportage B — Alexandre Ligneul</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
+    .article-header { padding: 4rem 0 3rem; }
+    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2rem; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 0.5rem; }
+    .art-cat { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); display: inline-block; padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; }
+    .art-title { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
+    .art-intro { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: #555; line-height: 1.65; margin-bottom: 2rem; border-left: 3px solid var(--accent); padding-left: 1.5rem; }
+    .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; }
+    .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+    .byline-name { font-size: 0.88rem; font-weight: 500; }
+    .byline-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .cover-ph { width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#dce8d4,#b8d0b0);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:center; }
+    .cover-cap { font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; font-style: italic; }
+    .body { font-size: 1.02rem; line-height: 1.85; color: #2a2a2a; }
+    .body p { margin-bottom: 1.5rem; }
+    .body h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 2.5rem 0 1rem; line-height: 1.3; }
+    .body h3 { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 400; margin: 2rem 0 0.75rem; color: #444; }
+    .body blockquote { font-family: var(--serif); font-style: italic; font-size: 1.2rem; border-left: 3px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; line-height: 1.6; }
+    .body blockquote cite { display: block; font-size: 0.78rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.75rem; }
+    .body .hl { background: var(--accent-light); padding: 1.5rem 1.75rem; margin: 2rem 0; border-left: 3px solid var(--accent); }
+    .body .hl p { margin-bottom: 0; font-size: 0.95rem; }
+    .art-footer { margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <ul class="nav-links">
+      <li><a href="../photos.html">Photos</a></li>
+      <li><a href="../videos.html">Vidéos</a></li>
+      <li><a href="../index.html#articles">Écrits</a></li>
+      <li><a href="../podcasts.html">Podcasts</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <article class="wrap">
+    <header class="article-header">
+      <p class="breadcrumb"><a href="../index.html">Accueil</a><span>/</span><a href="../index.html#articles">Écrits</a><span>/</span>Reportage B</p>
+      <span class="art-cat">Environnement</span>
+      <h1 class="art-title">Titre du Reportage B : [Accroche]</h1>
+      <p class="art-intro">L'accroche de votre second article. Décrivez brièvement le sujet traité et ce qui le rend essentiel ou original.</p>
+      <div class="byline">
+        <div class="byline-av">AL</div>
+        <div>
+          <p class="byline-name">Alexandre Ligneul</p>
+          <p class="byline-meta">EFJ Paris · 2025 · 6 min de lecture</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="cover-ph"><span style="font-size:0.8rem;color:rgba(45,90,142,0.4);text-transform:uppercase;letter-spacing:0.1em;">Photo principale de votre reportage</span></div>
+    <p class="cover-cap">Légende — Lieu, date. © Alexandre Ligneul</p>
+
+    <div class="body">
+      <p><strong>Paragraphe d'introduction.</strong> Posez ici le contexte de votre deuxième reportage. Qui, quoi, où, quand, pourquoi ? Donnez au lecteur les clés pour comprendre l'enjeu.</p>
+      <p>Appuyez votre propos sur des faits concrets, des chiffres vérifiables et des observations de terrain.</p>
+
+      <h2>Premier axe</h2>
+      <p>Développez le premier grand angle de votre article. Faites parler vos sources, montrez des scènes concrètes.</p>
+
+      <blockquote>
+        « Insérez ici la citation la plus forte de votre reportage. »
+        <cite>— Prénom Nom, qualité, date</cite>
+      </blockquote>
+
+      <p>Contextualisez et approfondissez après la citation.</p>
+
+      <h2>Deuxième axe</h2>
+      <p>Deuxième grand angle de votre article. Alternez faits, témoignages et analyse.</p>
+
+      <div class="hl"><p><strong>Chiffre clé :</strong> Insérez ici une donnée ou information essentielle à mettre en valeur.</p></div>
+
+      <h3>Focus</h3>
+      <p>Sous-partie ou portrait pour illustrer concrètement votre propos général.</p>
+      <p>Concluez de façon ouverte, avec une question ou une perspective qui prolonge la réflexion du lecteur.</p>
+    </div>
+
+    <footer class="art-footer">
+      <div class="tags"><span class="tag">Environnement</span><span class="tag">Reportage</span><span class="tag">EFJ</span></div>
+      <a href="../index.html#articles" class="back">← Retour aux écrits</a>
+    </footer>
+  </article>
+
+  <footer><span>© 2026 Alexandre Ligneul</span><span>EFJ Paris</span></footer>
+</body>
+</html>

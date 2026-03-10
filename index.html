@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alexandre Ligneul — Journaliste</title>
+  <link rel="icon" href="favicon.ico"/>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -194,6 +195,7 @@
     .photo-card.featured img { aspect-ratio: auto; height: 100%; }
 
     /* ── VIDEOS ── */
+    a.video-item { text-decoration: none; color: inherit; display: grid; }
     .videos-list { display: flex; flex-direction: column; gap: 1.5rem; }
     .video-item {
       display: grid; grid-template-columns: 200px 1fr;
@@ -308,6 +310,8 @@
     .podcast-row:hover .podcast-btn { border-color: var(--accent); background: var(--accent); }
     .podcast-btn svg { width: 0.65rem; fill: var(--ink); margin-left: 1px; }
     .podcast-row:hover .podcast-btn svg { fill: white; }
+    a.podcast-row { text-decoration: none; color: inherit; }
+
 
     /* ── CONTACT ── */
     #contact { background: var(--ink); color: white; }
@@ -466,11 +470,17 @@
         <a href="#" class="section-label-link">Toutes les vidéos →</a>
       </div>
       <div class="videos-list reveal">
-        <div class="video-item">
-          <div class="video-thumb-wrap">
-            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a2030,#2a3050);display:flex;align-items:center;justify-content:center;">
-              <span style="font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;">Vidéo</span>
-            </div>
+
+        <!-- Vidéos 1 -->
+
+        <a href="https://youtu.be/uyvNkkosqoM" target="_blank" rel="noopener" class="video-item">
+           <div class="video-thumb-wrap">
+            <img 
+              src="https://img.youtube.com/vi/uyvNkkosqoM/maxresdefault.jpg"
+              alt="Dans la fabrique d'He4tDem | Le rap amateur de l'intérieur"
+              style="width:100%;height:100%;object-fit:cover;display:block;"
+              onerror="this.src='https://img.youtube.com/vi/uyvNkkosqoM/hqdefault.jpg'"
+            />
             <div class="video-play-icon">
               <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
@@ -481,23 +491,34 @@
             <p class="video-desc">A la rencontre du rappeur He4tDem qui pond un morceau sous nos yeux, il revient sur sa façon de travailler et son parcours tout ca dans la joie et la bonne humeur.</p>
             <span class="video-meta">17 février 2026 · Reportage</span>
           </div>
-        </div>
-        <div class="video-item">
-          <div class="video-thumb-wrap">
-            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a2818,#2a4028);display:flex;align-items:center;justify-content:center;">
-              <span style="font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;">Vidéo</span>
-            </div>
+        </a>
+
+        <!-- Fin de Vidéo 1 -->
+
+
+        <a href="https://youtu.be/bUumyKAdm0w" target="_blank" rel="noopener" class="video-item">
+           <div class="video-thumb-wrap">
+            <img 
+              src="https://img.youtube.com/vi/Wb7d0ZrzU6o/maxresdefault.jpg"
+              alt="Mannequinat jeune, vue de l'intérieur | Dimitri Caillat"
+              style="width:100%;height:100%;object-fit:cover;display:block;"
+              onerror="this.src='https://img.youtube.com/vi/bUumyKAdm0w/hqdefault.jpg'"
+            />
             <div class="video-play-icon">
               <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
           </div>
           <div class="video-info">
-            <span class="video-category">Reportage</span>
-            <h3 class="video-title">Interview de Dimitri Caillat : mannequin</h3>
-            <p class="video-desc">Rencontre avec un mannequin parisien sur son parcours, les coulisses du secteur et les questions d'identité dans l'industrie de la mode.</p>
+            <span class="video-category">Société</span>
+            <h3 class="video-title">Mannequinat jeune, vue de l'intérieur | Dimitri Caillat</h3>
+            <p class="video-desc">A quoi ressemble le mannequinat chez les jeunes. Si pour la plupart il fascine, il faut savoir que ce n'est pas toujours une situations simple aussi. L'âge, les agences, l'argent ou encore la pression des réseaux quelles sont les clefs de voutes du métier ?</p>
             <span class="video-meta">24 novembre 2025 · Interview</span>
           </div>
-        </div>
+        </a>
+
+        <!-- Fin de Vidéo 2 -->
+
+
       </div>
     </div>
   </div>
@@ -506,25 +527,31 @@
   <div class="section-wrap alt" id="articles">
     <div class="container">
       <div class="section-label reveal">
-        <span class="section-label-num">03</span>
+        <span class="section-label-num">-</span>
         <h2 class="section-label-title">Reportages écrits</h2>
         <span class="section-label-line"></span>
         <a href="#" class="section-label-link">Tous les articles →</a>
       </div>
       <div class="articles-grid reveal">
+
+        <!-- Article 1 -->
+
         <div class="article-card featured-article">
           <div>
-            <span class="article-tag">À la une</span>
-            <h3 class="article-title">Titre du Reportage A</h3>
-            <p class="article-excerpt">Remplacez ce texte par l'accroche de votre reportage phare. Une ou deux phrases qui donnent envie de lire, qui plantent le décor ou posent la question centrale de votre enquête.</p>
-            <span class="article-meta">2026</span>
+            <span class="article-tag">Enquête</span>
+            <h3 class="article-title">La Cocarde étudiante</h3>
+            <p class="article-excerpt">Enquête de groupe menée sur le collectif <em>La Cocarde étudiante</em> à Paris entre témoignages poignants, découverte du passé de certains representants ou bien des fréquentations de cet association étudiante qui est loin d'être un bisounours pour les universités.</p>
+            <span class="article-meta">22 février 2026</span>
             <a href="articles/1.html" class="article-read">Lire l'article</a>
           </div>
+
+          <!-- Fin de Article 1 -->
+
           <div>
-            <span class="article-tag">Reportage</span>
-            <h3 class="article-title">Titre du Reportage B</h3>
-            <p class="article-excerpt">L'accroche de votre second article. Décrivez brièvement le sujet traité et ce qui le rend essentiel ou original.</p>
-            <span class="article-meta">2025</span>
+            <span class="article-tag">Politique</span>
+            <h3 class="article-title">Affaire Epstein</h3>
+            <p class="article-excerpt">De Londres à Paris, l'affaire Epstein provoque un tsunami politique. L'onde de choc des nouveaux <em>Epstein Files</em> rendus publics par le département de la justice font tomber des têtes jusqu'en Europe et en France.</p>
+            <span class="article-meta">10 février 2026</span>
             <a href="articles/2.html" class="article-read">Lire l'article</a>
           </div>
         </div>
@@ -536,34 +563,40 @@
   <div class="section-wrap" id="podcasts">
     <div class="container">
       <div class="section-label reveal">
-        <span class="section-label-num">04</span>
+        <span class="section-label-num">-</span>
         <h2 class="section-label-title">Podcasts</h2>
         <span class="section-label-line"></span>
         <a href="#" class="section-label-link">Tous les épisodes →</a>
       </div>
       <div class="podcasts-grid reveal">
-        <div class="podcast-row">
+
+        <!--Podcast 1-->
+
+        <a href="https://open.spotify.com/episode/VOTRE_ID" target="_blank" rel="noopener" class="podcast-row">
           <span class="podcast-index">01</span>
           <div>
             <p class="podcast-name">Titre de votre podcast</p>
             <p class="podcast-series">Série ou thématique</p>
           </div>
           <div class="podcast-right">
-            <span class="podcast-dur">— min</span>
+            <span class="podcast-dur">12 min</span>
             <div class="podcast-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
           </div>
-        </div>
-        <div class="podcast-row">
+        </a>
+
+        <!--Podcast 2-->
+
+        <a href="https://open.spotify.com/episode/VOTRE_ID" target="_blank" rel="noopener" class="podcast-row">
           <span class="podcast-index">02</span>
           <div>
-            <p class="podcast-name">Deuxième épisode</p>
+            <p class="podcast-name">Titre de votre podcast</p>
             <p class="podcast-series">Série ou thématique</p>
           </div>
           <div class="podcast-right">
-            <span class="podcast-dur">— min</span>
+            <span class="podcast-dur">12 min</span>
             <div class="podcast-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -573,7 +606,7 @@
     <div class="section-wrap" style="border-top:1px solid #222;">
       <div class="container">
         <div class="section-label reveal">
-          <span class="section-label-num" style="color:#6a9fd8;">05</span>
+          <span class="section-label-num" style="color:#6a9fd8;">-</span>
           <h2 class="section-label-title">Contact</h2>
           <span class="section-label-line" style="background:#222;"></span>
         </div>
@@ -616,7 +649,7 @@
 
   <footer>
     <span>© 2026 Alexandre Ligneul</span>
-    <span>EFJ Paris</span>
+    <span>Portfolio</span>
   </footer>
 
   <script>

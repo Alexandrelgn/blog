@@ -54,6 +54,33 @@
     .article-card-meta { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
     .article-card-read { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 500; }
 
+    .article-card-thumb {
+  aspect-ratio: 3/2;
+  overflow: hidden;
+  background: #e8e4dc;
+}
+    .article-featured-thumb {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+
+    .article-featured-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .article-card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.5s;
+    }
+
     @media (max-width: 860px) {
       .article-featured { grid-template-columns: 1fr; gap: 1.5rem; }
       .articles-list { grid-template-columns: repeat(2, 1fr); }
@@ -86,40 +113,29 @@
 
     <!-- À LA UNE -->
     <a href="articles/1.html" class="article-featured reveal">
-      <div class="article-featured-thumb">
-        <!-- Remplacez par : <img src="assets/images/article1.jpg" alt="..." /> -->
-        <div class="thumb-ph"><span>Photo de couverture</span></div>
-      </div>
+      <img src="https://www.humanite.fr/wp-content/uploads/2024/02/722x460_la-cocarde-etudiante-syn.jpg" alt="La cocarde étudiante cover" class="article-featured-thumb" /> 
       <div>
         <span class="article-featured-badge">À la une</span>
-        <h2 class="article-featured-title">Titre du Reportage A : [Accroche]</h2>
-        <p class="article-featured-excerpt">Remplacez ce texte par l'accroche de votre reportage phare. Une ou deux phrases qui donnent envie de lire et posent la question centrale de votre enquête.</p>
-        <p class="article-featured-meta">Société · 2026 · 8 min de lecture</p>
+        <h2 class="article-featured-title">La Cocarde étudiante, militants masqués et stratégie assumée</h2>
+        <p class="article-featured-excerpt">Enquête de groupe menée sur le collectif La Cocarde étudiante à Paris entre témoignages poignants, découverte du passé de certains representants ou bien des fréquentations de cet association étudiante qui est loin d'être un bisounours pour les universités.</p>
+        <p class="article-featured-meta">Enquête · 22 février 2026</p>
       </div>
     </a>
 
-    <!-- FILTRES -->
-    <div class="filters reveal">
-      <button class="filter-btn active" data-filter="all">Tous</button>
-      <button class="filter-btn" data-filter="societe">Société</button>
-      <button class="filter-btn" data-filter="politique">Politique</button>
-      <button class="filter-btn" data-filter="culture">Culture</button>
-      <button class="filter-btn" data-filter="environnement">Environnement</button>
-      <button class="filter-btn" data-filter="international">International</button>
-    </div>
+  
 
     <!-- GRILLE -->
     <div class="articles-list reveal" id="articles-grid">
 
-      <a href="articles/1.html" class="article-card-full" data-category="societe">
+      <a href="articles/2.html" class="article-card-full" data-category="politique">
         <div class="article-card-thumb">
-          <div class="thumb-ph" style="background:linear-gradient(135deg,#d4e0ec,#b8cce0);"><span>Photo à ajouter</span></div>
+          <img src="https://img.lemde.fr/2026/02/23/0/0/1980/1320/1440/960/60/0/645aace_upload-1-zx4ozjovzoh1-epstein-8.jpg" alt="Epstiein Cover">
         </div>
         <div class="article-card-body">
-          <span class="article-card-cat">Société</span>
-          <h3 class="article-card-title">Titre du Reportage A : [Accroche]</h3>
-          <p class="article-card-excerpt">Remplacez par l'accroche de votre article. Une ou deux phrases qui donnent envie de lire la suite.</p>
-          <div class="article-card-meta"><span>2026 · 8 min</span><span class="article-card-read">Lire →</span></div>
+          <span class="article-card-cat">Politique</span>
+          <h3 class="article-card-title">De Londres à Paris, l'affaire Epstein provoque un tsunami politique</h3>
+          <p class="article-card-excerpt">3,5 millions de documents ont été déclassifiés le 30 janvier. Après quelques jours d'enquête, de nouvelles personnalités sont incriminées en Europe. En particulier en Grande Bretagne l’ancien ambassadeur Peter Mandelson et en France Jack Lang et sa fille.</p>
+          <div class="article-card-meta"><span>Politique · 10 février 2026</span><span class="article-card-read">Lire →</span></div>
         </div>
       </a>
 

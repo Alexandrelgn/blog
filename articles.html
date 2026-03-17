@@ -59,18 +59,6 @@
   overflow: hidden;
   background: #e8e4dc;
 }
-    .article-featured-thumb {
-      aspect-ratio: 16/9;
-      overflow: hidden;
-    }
-
-    .article-featured-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
 
     .article-card-thumb img {
       width: 100%;
@@ -113,7 +101,9 @@
 
     <!-- À LA UNE -->
     <a href="articles/1.html" class="article-featured reveal">
-      <img src="https://www.humanite.fr/wp-content/uploads/2024/02/722x460_la-cocarde-etudiante-syn.jpg" alt="La cocarde étudiante cover" class="article-featured-thumb" /> 
+      <div class="article-featured-thumb">
+        <img src="https://www.humanite.fr/wp-content/uploads/2024/02/722x460_la-cocarde-etudiante-syn.jpg" alt="La cocarde étudiante cover" />
+      </div>
       <div>
         <span class="article-featured-badge">À la une</span>
         <h2 class="article-featured-title">La Cocarde étudiante, militants masqués et stratégie assumée</h2>
@@ -121,7 +111,6 @@
         <p class="article-featured-meta">Enquête · 22 février 2026</p>
       </div>
     </a>
-
   
 
     <!-- GRILLE -->

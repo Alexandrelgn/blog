@@ -193,15 +193,6 @@
       grid-column: span 2; grid-row: span 2;
     }
     .photo-card.featured img { aspect-ratio: auto; height: 100%; }
-    /* ── PAGE HEADER ── */
-    .page-header { padding: 4rem 0 2.5rem; }
-    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 1.25rem; }
-    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .breadcrumb a:hover { color: var(--accent); }
-    .breadcrumb span { margin: 0 0.5rem; }
-    .page-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; margin-bottom: 0.5rem; }
-    .page-subtitle { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 1.1rem; margin-bottom: 0; }
-
     /* ── FILTERS ── */
     .filters {
       display: flex; gap: 0.5rem; flex-wrap: wrap;
@@ -358,12 +349,11 @@
     </ul>
   </nav>
 
-  <div class="container">
-    <header class="page-header reveal">
-      <p class="breadcrumb"><a href="index.html">Accueil</a><span>/</span>Photographies</p>
-      <h1 class="page-title">Photographies</h1>
-      <p class="page-subtitle">Reportages, portraits et instants saisis sur le terrain</p>
-    </header>
+  <div class="page-header">
+    <a href="index.html" class="page-header-back">← Retour au portfolio</a>
+    <span class="page-header-num">01</span>
+    <h1>Photographies</h1>
+    <p>Reportages, portraits et instants saisis sur le terrain.</p>
   </div>
 
   <div class="container page-body">

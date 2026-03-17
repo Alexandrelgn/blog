@@ -69,6 +69,7 @@
       .videos-grid { grid-template-columns: 1fr; }
       footer { padding: 1rem 1.25rem; }
     }
+    a.video-card { text-decoration: none; text-transform: none; color: inherit; }
   </style>
 </head>
 <body>
@@ -93,18 +94,27 @@
     <div class="featured-video reveal">
       <span class="featured-label">À la une</span>
       <div class="featured-video-grid">
-        <div class="video-embed-wrap">
-          <!-- Remplacez par : <iframe src="https://www.youtube.com/embed/VOTRE_ID" allowfullscreen></iframe> -->
-          <div class="video-placeholder">
-            <div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
-            <span class="placeholder-hint">Intégrez votre vidéo ici</span>
+      <div class="video-embed-wrap">
+        <a href="https://youtu.be/Wb7d0ZrzU6o" target="_blank" rel="noopener" style="display:block;width:100%;height:100%;position:relative;">
+          <img 
+            src="https://img.youtube.com/vi/Wb7d0ZrzU6o/maxresdefault.jpg"
+            alt="Interview de Dimitri Caillat"
+            style="width:100%;height:100%;object-fit:cover;display:block;"
+            onerror="this.src='https://img.youtube.com/vi/Wb7d0ZrzU6o/hqdefault.jpg'"
+          />
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background 0.2s;">
+            <div class="play-circle">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
           </div>
-        </div>
+        </a>
+      </div>
+
         <div>
           <span class="featured-category">Portrait · Interview</span>
           <h2 class="featured-title">Interview de Dimitri Caillat : mannequin</h2>
           <p class="featured-desc">Rencontre avec un mannequin parisien sur son parcours, les coulisses du secteur et les questions d'identité dans l'industrie de la mode. Un portrait humain au cœur d'un monde peu connu.</p>
-          <p class="featured-meta">2025 · EFJ Paris</p>
+          <p class="featured-meta">24 Novembre 2025</p>
           <div class="featured-tags">
             <span class="tag">Mode</span>
             <span class="tag">Portrait</span>
@@ -116,28 +126,51 @@
 
     <h2 class="videos-section-title reveal">Autres reportages</h2>
     <div class="videos-grid reveal">
-      <div class="video-card">
+
+      <!-- Reportage  -->
+
+      <a href="https://youtu.be/uyvNkkosqoM" target="_blank" rel="noopener" class="video-card">
         <div class="video-card-thumb">
-          <div class="video-card-thumb-inner" style="background:linear-gradient(135deg,#1a2818,#2a4028);"></div>
-          <div class="video-card-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <img 
+            src="https://img.youtube.com/vi/uyvNkkosqoM/maxresdefault.jpg"
+            alt="Dans la fabrique d'He4tDem"
+            style="width:100%;height:100%;object-fit:cover;display:block;"
+            onerror="this.src='https://img.youtube.com/vi/uyvNkkosqoM/hqdefault.jpg'"
+          />
+          <div class="video-card-play">
+            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
         </div>
         <div class="video-card-body">
           <span class="video-card-cat">Reportage</span>
-          <h3 class="video-card-title">Titre de votre prochain reportage</h3>
-          <p class="video-card-meta">2026 · À venir</p>
+          <h3 class="video-card-title">Dans la fabrique d'He4tDem | Le rap amateur de l'intérieur</h3>
+          <p class="featured-desc">A la rencontre du rappeur He4tDem qui pond un morceau sous nos yeux, il revient sur sa façon de travailler et son parcours tout ca dans la joie et la bonne humeur.</p>
+          <p class="video-card-meta">17 février 2026</p>
         </div>
-      </div>
-      <div class="video-card">
+      </a>
+
+      <!-- Fin du Reportage -->
+
+      <a href="https://youtu.be/PqDhAMX6BFE" target="_blank" rel="noopener" class="video-card">
         <div class="video-card-thumb">
-          <div class="video-card-thumb-inner" style="background:linear-gradient(135deg,#2e1a1a,#441a1a);"></div>
-          <div class="video-card-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <img 
+            src="https://img.youtube.com/vi/PqDhAMX6BFE/maxresdefault.jpg"
+            alt="Dans la fabrique d'He4tDem"
+            style="width:100%;height:100%;object-fit:cover;display:block;"
+            onerror="this.src='https://img.youtube.com/vi/PqDhAMX6BFE/hqdefault.jpg'"
+          />
+          <div class="video-card-play">
+            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
         </div>
         <div class="video-card-body">
-          <span class="video-card-cat">Documentaire</span>
-          <h3 class="video-card-title">Titre de votre prochain documentaire</h3>
-          <p class="video-card-meta">2026 · À venir</p>
+          <span class="video-card-cat">Reportage</span>
+          <h3 class="video-card-title">La Petite Ceinture et ses nouveaux usages</h3>
+          <p class="featured-desc">Ancien réseau de transport de marchandises, la Petite Ceinture illustre aujourd'hui pleinement les enjeux de la gestion urbaine. À la veille des élections municipales, quel avenir pour cette friche ?...</p>
+          <p class="video-card-meta">5 mars 2026</p>
         </div>
-      </div>
+      </a>
+
     </div>
   </div>
 

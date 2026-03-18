@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alexandre Ligneul - La Cocarde étudiante</title>
+  <link rel="icon" href="../site/favicon.ico"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
+    .article-header { padding: 4rem 0 3rem; }
+    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2rem; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 0.5rem; }
+    .art-cat { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); display: inline-block; padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; }
+    .art-title { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
+    .art-intro { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: #555; line-height: 1.65; margin-bottom: 2rem; border-left: 3px solid var(--accent); padding-left: 1.5rem; }
+    .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; }
+    .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+    .byline-name { font-size: 0.88rem; font-weight: 500; }
+    .byline-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .cover-ph { width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#d4e0ec,#b8cce0);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:center; }
+    .cover-cap { font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; font-style: italic; }
+    .body { font-size: 1.02rem; line-height: 1.85; color: #2a2a2a; }
+    .body p { margin-bottom: 1.5rem; }
+    .body h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 2.5rem 0 1rem; line-height: 1.3; }
+    .body h3 { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 400; margin: 2rem 0 0.75rem; color: #444; }
+    .body blockquote { font-family: var(--serif); font-style: italic; font-size: 1.2rem; border-left: 3px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; line-height: 1.6; }
+    .body blockquote cite { display: block; font-size: 0.78rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.75rem; }
+    .body .hl { background: var(--accent-light); padding: 1.5rem 1.75rem; margin: 2rem 0; border-left: 3px solid var(--accent); }
+    .body .hl p { margin-bottom: 0; font-size: 0.95rem; }
+    .art-footer { margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <ul class="nav-links">
+      <li><a href="../../photos.html">Photos</a></li>
+      <li><a href="../../videos.html">Vidéos</a></li>
+      <li><a href="../../articles.html">Écrits</a></li>
+      <li><a href="../../podcasts.html">Podcasts</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <article class="wrap">
+    <header class="article-header">
+      <p class="breadcrumb"><a href="../../index.html">Accueil</a><span>/</span><a href="../../articles.html">Écrits</a><span>/</span>La Cocarde étudiante</p>
+      <span class="art-cat">Société</span>
+      <h1 class="art-title">La Cocarde étudiante, militants masqués et stratégie assumée</h1>
+      <p class="art-intro">Entre stratégie de normalisation électorale et dérives violentes, La Cocarde étudiante infiltre les universités sous l'œil de soutiens politiques nationaux. Cette enquête dévoile les méthodes radicales et le profil identitaire d'un syndicat d'extrême droite en pleine ascension.</p>
+
+      <!-- Auteurs -->
+
+      <div class="byline">
+        <div class="byline-av">AL</div>
+        <div>
+          <p class="byline-name">Alexandre Ligneul</p>
+          
+        </div>
+
+        <div class="byline-av">MD</div>
+        <div>
+          <p class="byline-name">Maya Delahaye</p>
+        </div>
+
+        <div class="byline-av">LF</div>
+        <div>
+          <p class="byline-name">Lou Frostin</p>
+        </div>
+      </div>
+
+      <p class="byline-meta">EFJ Paris · 22 février 2026 · 8 min de lecture</p>
+
+
+    </header>
+
+      <img 
+        src="https://www.humanite.fr/wp-content/uploads/2024/02/722x460_la-cocarde-etudiante-syn.jpg" 
+        alt="Sticker la cocarde étudiante"
+        class="cover-ph"
+        style="object-fit:cover;"
+      />
+      <p class="cover-cap">Instagram / Cocarde étudiante</p>
+
+    <div class="body">
+
+      <!-- A utiliser pour souligner des chiffres ou infos essentielles: 
+      <div class="hl"><p><strong>À retenir :</strong> Utilisez ce bloc pour souligner un chiffre clé ou une information essentielle de votre article.</p></div>
+      -->
+
+      <blockquote>
+        « <em>Il y a environ trois semaines, des étudiants de La Cocarde, qui portaient des pulls à leur effigie, m’ont craché dessus. Je suis une femme arabe voilée, étudiante étrangère. Ils m’ont traitée de “beurette”</em>»
+        <cite>— Aya, étudiante à Assas, février 2026</cite>
+      </blockquote>
+
+      <p>Témoigne Aya, membre du syndicat Solidaires. Le mercredi 4 février 2026 à 10h30, en pleine campagne pour les élections du CROUS, un débat s’est tenu dans le patio de l’Université d’Assas, à Paris.</p>
+
+      <p>A l’issue du débat Aya raconte qu’elle s’est faite suivre jusque dans le métro quelques semaines auparavant : <em>“Je suis descendue de la rame plus tôt pour qu’ils arrêtent. Quelques jours plus tard, j’ai revu le même garçon : il m’a fait des gestes sexuels en riant. J’ai couru me cacher dans une pièce. C’était misogyne et raciste.”</em> Selon elle, durant le débat : <em>« Ils se revendiquent patriotes. La priorité nationale est le premier point de leur programme, mais ils n’en ont pas parlé. Ils ont surtout évoqué le tri des déchets ou l’écoute des étudiants. »</em></p>
+
+      <p>Cette association étudiante d'extrême droite, créée le 6 mai 2015 par Maxime Duvauchelle et Pierre Gentillet, anciens membres des Jeunes de la Droite populaire, revendiquent des idées identitaires et souverainistes. Soutenus notamment par des partis politiques comme les Républicains ou le FN, les 500 militants qui la composent mènent de nombreuses actions violentes. </p>
+
+      <h2>Des accusations récurrentes de violences</h2>
+      <p>Plusieurs incidents impliquant des militants de La Cocarde ont été rapportés ces dernières années. Le 30 janvier 2026, des membres du syndicat ont fait irruption sur le campus de l’université de Nanterre. Sonia, étudiante membre de l’Etudiant Musulman en France (EMF) et Marin, étudiant membre de la Fédération Syndicale Etudiante (FSE) ont affirmé, au journal <em>L’Humanité</em>, avoir été agressés. <em>L’Humanité</em> a notamment partagé des vidéos filmées par des étudiants, avec des militants cagoulés, rendant leur identification difficile.</p>
+
+      <p>Du 3 au 5 février, les étudiants parisiens étaient appelés à voter pour élire leurs représentants au CROUS de Paris. Puis, le scrutin en ligne pour élire les représentants des étudiants dans les instances de l’université s’est ouvert le lundi 9 février à 9h et s’est clôturé le mardi 10 février à 15h. Ces élections ont notamment été marquées par la participation, pour la première fois à Assas, du syndicat étudiant d’extrême droite La Cocarde étudiante. L’association, n’a pas réussi à obtenir de siège au conseil mais compte tout de même 989 voix, soit 4,3% des suffrages exprimés.</p>
+
+      <p>La campagne électorale s’est déroulée sous haute tension. <em>« Je connais la personne qui s’est fait tabasser l’année dernière par La Cocarde »</em>, affirme Aya. Selon <em>Libération</em>, un étudiant membre de Solidaires à Assas aurait été « tabassé » le 27 septembre, souffrant notamment de deux dents cassées et de points de suture.</p>
+
+      <p><em>« Un professeur d’Assas nous a parlé d’agressions visant des personnes racisées ou engagées à gauche. Assas est une fac historiquement très à droite »</em>, témoigne un étudiant membre de Solidaires. Plusieurs étudiants évoquent également des gestes nazis observés lors d’un blocus en octobre lié à la situation à Gaza.</p>
+
+      <h2>Proximités et soutiens extérieurs</h2>
+
+      <p>La Cocarde reste discrète sur les lieux et horaires de ses réunions. Mais elle a organisé plusieurs événements publics, notamment, comme annoncé sur instagram, la venue d’un parlementaire, le 9 décembre à Assas, Alexandre Allegret-Pilot (UDR-RN).</p>
+
+      <img 
+        src="https://static.blast-info.fr/stories/2025/story_hero_992w-extreme-droite-alexandre-allegret-pilot-le-depute-de-la-vulgarite-et-du-clash-permanent-nu_rpYs7T-G6aLh9rT50Qw.webp" 
+        alt="Alexandre allegret-Pilot"
+        class="cover-ph"
+        style="object-fit:cover;"
+      />
+      <p class="cover-cap">Visuel de <em>Blast</em> - 2025</p>
+
+      <p>Ce député proche d'Éric Ciotti a été élu en 2024 dans le Gard sous l’étiquette Union des droites pour la République (UDR) et Rassemblement national (RN). En seulement un semestre, il a fait l'objet d’une dizaine de plaintes et de mains courantes, selon <em>Mediapart</em>. Alexandre Allegret-Pilot s’était notamment illustré en décrochant un drapeau palestinien du fronton de la mairie de Cendras le 22 septembre 2025. Toujours selon <em>Mediapart</em>, il s’accommode des connexions de son équipe avec le groupuscule de la Ligue du Midi, dont les militants ont plusieurs fois été condamnés pour des faits de violence. La Ligue des droits de l’Homme (LDH) a saisi la justice pour demander l’ouverture d’une enquête, dénonçant une stratégie de stigmatisation contre des opposants locaux (militants, élue, simple citoyenne), certains ayant reçu des courriers anonymes ou subi des campagnes de dénigrement en ligne. Le député est aussi visé par d’autres procédures (dont une plainte du journal Le Monde) et a été signalé au déontologue de l’Assemblée nationale. 
+      </p>
+
+      <p>Le mouvement bénéficie aussi de soutiens politiques et médiatiques. Marion Maréchal a appelé à voter pour leurs listes étudiantes sur le compte instagram de la cocarde étudiante. Fabrice Leggeri, ancien directeur de Frontex (2015-2022) et aujourd’hui eurodéputé RN, est régulièrement associé à leurs prises de position et appelle à voter La Cocarde sur leur compte instagram. Il est accusé par des associations d’avoir contribué à des refoulements illégaux de migrants.</p>
+
+      <p>Sur les réseaux sociaux, l’influenceur David Le Bracq  qui se présente comme « meilleur noir de France »  a également appelé à voter pour La Cocarde, malgré des propos racistes ou transphobes : « <em>Un syndicat dans lequel l’une des têtes de liste est voilé, dans lequel y’a des trans, ce n’est pas ce que j’appelle une liste de droite. Ils ont totalement droit d’être représentés chez les gauchistes </em>».</p>
+
+      <h2>«Les étudiants et Français d’abord »</h2>
+
+      <p>Si lors du débat, les représentants de La Cocarde ont insisté sur des thèmes concrets, sur leurs réseaux sociaux, leurs positions apparaissent plus idéologiques : «<em> Les étudiants français d’abord </em>», promotion de la « <em>préférence nationale</em> », notamment pour l’attribution des bourses et logements CROUS, opposition affichée au « wokisme ». Ces prises de position alimentent les critiques d’autres syndicats étudiants, qui dénoncent une stratégie de normalisation du discours en contexte électoral.</p>
+
+      <p>Afin de mieux comprendre leur fonctionnement, nous avons essayé d’infiltrer la Cocarde étudiante. Le recrutement se passe directement sur les réseaux sociaux, sur le compte @cocarde.recrutement, où est redirigé le flux de fans attirés par les contenus des autres comptes de la Cocarde étudiante. Pour avoir le plus d’impact possible à l’échelle locale, des comptes de l’association sont dédiés aux facs, villes ou régions.</p>
+
+      <p>Après avoir essayé en vain de les rencontrer, nous avons procédé à des recherches inversées à partir de documents publics, notamment les listes électorales des représentants du Crous pour 2026. Ainsi, l’association est représentée dans chaque établissement tel que Assas ou encore La Sorbonne, deux facultés importantes pour la Cocarde étudiante et sa représentation.</p>
+
+      <p>Nous avons ainsi passé au peigne fin chacun de ses représentants. Celui de Constance Ducret, représentante de la Cocarde étudiante pour l’université Paris-Panthéon-Assas, UFR 2e et 3e cycles de Droit et science politique, apparaît pour le moins problématique.</p>
+
+      <h2>Casier judiciaire pour la tête de liste</h2>
+
+      <p>Selon <em>Mediapart</em>, dans un papier du 5 juin 2025, Constance Ducret, membre du groupe identitaire Les Natifs, fait partie des 13 personnes impliquées dans l’affaire d’injure contre la chanteuse de Aya Nakamura. En colère à la suite de rumeurs quant à la possible participation d'Aya Nakamura à la cérémonie des JO de Paris 2024, le groupe de jeunes s’est rassemblé le 8 mars 2024, arborant fièrement une affiche raciste : «<em> Y'a pas moyen Aya. Ici c’est Paris, pas le marché de Bamako</em> ».</p>
+
+      <img 
+        src="https://res.cloudinary.com/dpggjkaj4/image/upload/v1773096661/extreme-droite-avec-1-400-fiches-s-la-menace-de-la-violence-identitaire-inquiete-les-autorites-6840a32b9ef8a410959946_coueop.jpg" 
+        alt="Description de votre photo"
+        class="cover-ph"
+        style="object-fit:cover;"
+      />
+      <p class="cover-cap">FranceInfo - JT de 20h 09/03/2026</p>
+
+      <p>La vidéo avait fait le tour d’internet et des JTs, cumulant 4,4 millions de vues sur X. Une action fermement condamnée par le parquet et le ministère public qui a requis 8 mois de prison avec sursis et 3000 euros d’amende avec comme motif : « <em>Injure publique en raison de la prétendue origine, ethnie, race ou religion et provocation publique à la discrimination en raison de la prétendue origine, ethnie, race ou religion </em>».</p>
+
+      <p>Membre active des Natifs, anciennement Génération Identitaire dissous en 2021 pour faits de racisme, incitation à la haine et discrimination, Constance Ducret est notamment l’une des organisatrices de la manifestation qui rend hommage à Thomas Perotto, tué le 19 novembre 2023 lors d’une bagarre entre des jeunes de la cité de La Monnaie et des rugbymens. L’affaire a fortement été instrumentalisée par l’extrême droite insinuant que Thomas avait été tué par «<em> racisme anti-blanc </em>». À noter que ce rassemblement était initialement interdit par le préfet de police Laurent Nuñez sur demande du ministre de l’Intérieur, Gérald Darmanin : « <em>Dans ce type de rassemblement, on a des propos tenus qui sont des propos d'incitation à la haine et à la violence</em> », avait-il justifié. Finalement, le rassemblement a été autorisé par le tribunal administratif, souligne <em>Le Figaro</em>.</p>
+
+      <p>La Cocarde étudiante a aussi rendu hommage à Quentin Deranque, militant identitaire tué à Lyon le 12 février 2026. L’agression s’est produite en marge d’un affrontement entre deux groupes de jeunes. L’enquête judiciaire ouverte pour homicide volontaire devait déterminer les circonstances exactes, notamment s’il s’agissait d’un acte ciblé à caractère politique ou d’une altercation ayant dégénéré. Quentin se tenait au côté de Nemesis, groupe d'extrême droite identitaire se réclamant féministes. La Cocarde était présente au rassemblement à Tours, place Jean-Jaurès, le 20 février, où des militants d’extrême droite et identitaires se sont réunis pour honorer sa mémoire. Mais aussi à Lyon, le 21 février, et à Strasbourg le 22 février où un rassemblement s’est déroulé devant les locaux de Sciences Po. Lors de ces manifestations de nombreux dérapages avec des vidéos de saluts nazis ont fuitées.</p>
+
+      <p>Ce groupe violent, affilié à des partis politiques d’extrême droite, semble ne connaître aucune limite. Les autorités et les administrations ferment les yeux, leurs membres continuent d’agir en toute impunité. Quelle sera la prochaine étape ? </p>
+
+
+    </div>
+
+    <footer class="art-footer">
+      <div class="tags"><span class="tag">Société</span><span class="tag">Enquête</span><span class="tag">Extrême droite</span></div>
+      <a href="../index.html#articles" class="back">← Retour aux écrits</a>
+    </footer>
+  </article>
+
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio</span></footer>
+</body>
+</html>

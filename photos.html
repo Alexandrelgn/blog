@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Photographies — Alexandre Ligneul</title>
-  <link rel="icon" href="favicon.ico"/>
+  <link rel="icon" href="assets/site/favicon.ico"/>
   <link rel="stylesheet" href="style.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -255,14 +255,15 @@
       display: none; position: fixed; inset: 0; z-index: 999;
       background: rgba(0,0,0,0.93);
       align-items: center; justify-content: center;
+      flex-direction: column;
     }
     .lightbox.open { display: flex; }
     .lightbox-inner {
-      position: relative; max-width: 90vw; max-height: 90vh;
+      position: relative; max-width: 90vw;
       display: flex; align-items: center; gap: 1.5rem;
     }
     .lightbox-img {
-      max-width: 80vw; max-height: 85vh;
+      max-width: 80vw; max-height: 65vh;
       object-fit: contain;
     }
     .lightbox-close {
@@ -281,12 +282,44 @@
     }
     .lightbox-nav:hover { border-color: white; color: white; }
     .lightbox-info {
-      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      margin-top: 1.25rem;
       text-align: center;
+      padding: 0 1rem;
     }
-    .lightbox-info-title { color: white; font-family: var(--serif); font-size: 0.95rem; }
-    .lightbox-info-meta { color: rgba(255,255,255,0.5); font-size: 0.72rem;
-      text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem; }
+
+    /*  */
+
+
+    .lightbox-info-title {
+      color: white;
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+    .lightbox-info-meta {
+      color: rgba(255,255,255,0.8);
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-top: 0.4rem;
+    }
+    .lightbox-info-alt {
+      color: rgba(255,255,255,0.65);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+      max-width: 600px;
+      margin-left: auto; margin-right: auto;
+      line-height: 1.6;
+    }
+
+
+
+
     .lightbox-counter {
       position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%);
       color: rgba(255,255,255,0.4); font-size: 0.72rem;
@@ -371,71 +404,14 @@
     <div class="filters reveal">
       <button class="filter-btn active" data-filter="all">Tout</button>
       <button class="filter-btn" data-filter="politique">Politique</button>
-      <button class="filter-btn" data-filter="portrait">Portrait</button>
-      <button class="filter-btn" data-filter="culture">Culture</button>
       <button class="filter-btn" data-filter="societe">Société</button>
+      <button class="filter-btn" data-filter="culture">Culture</button>
+      <button class="filter-btn" data-filter="efj">EFJ</button>
     </div>
 
-    <div class="masonry reveal" id="gallery">
+    <div class="masonry reveal" id="gallery"></div>
 
-      <div class="masonry-item" data-category="politique" data-title="Rachida Dati — Municipale 2026" data-meta="Paris · Janvier 2026">
-        <img src="https://res.cloudinary.com/dpggjkaj4/image/upload/w_700,q_auto,f_auto/v1764109506/rachida-1_pruddc.jpg" alt="Rachida Dati, Municipale 2026" />
-        <div class="masonry-caption">
-          <span class="masonry-caption-title">Rachida Dati — Municipale 2026</span>
-          <span class="masonry-caption-meta">Paris · Janvier 2026</span>
-        </div>
-      </div>
 
-      <div class="masonry-item" data-category="culture" data-title="Halloween à Lille" data-meta="Lille · 31 octobre 2025">
-        <img src="https://res.cloudinary.com/dpggjkaj4/image/upload/w_700,q_auto,f_auto/v1764110112/lille1_agur3s.jpg" alt="Halloween à Lille" />
-        <div class="masonry-caption">
-          <span class="masonry-caption-title">Halloween à Lille</span>
-          <span class="masonry-caption-meta">Lille · 31 octobre 2025</span>
-        </div>
-      </div>
-
-      <!-- Placeholders – remplacer par vos vraies photos -->
-      <div class="masonry-item" data-category="portrait" data-title="Portrait à compléter" data-meta="2026">
-        <div style="aspect-ratio:3/4;background:linear-gradient(135deg,#c8c0b0,#a8a098);display:flex;align-items:center;justify-content:center;">
-          <span style="font-family:'Lora',serif;font-size:0.8rem;color:rgba(255,255,255,0.5);text-align:center;padding:1rem;">+ Ajoutez<br>votre photo</span>
-        </div>
-        <div class="masonry-caption">
-          <span class="masonry-caption-title">Portrait à compléter</span>
-          <span class="masonry-caption-meta">2026</span>
-        </div>
-      </div>
-
-      <div class="masonry-item" data-category="societe" data-title="Reportage à venir" data-meta="2026">
-        <div style="aspect-ratio:16/10;background:linear-gradient(135deg,#a0b0c0,#809098);display:flex;align-items:center;justify-content:center;">
-          <span style="font-family:'Lora',serif;font-size:0.8rem;color:rgba(255,255,255,0.5);text-align:center;padding:1rem;">+ Ajoutez<br>votre photo</span>
-        </div>
-        <div class="masonry-caption">
-          <span class="masonry-caption-title">Reportage à venir</span>
-          <span class="masonry-caption-meta">2026</span>
-        </div>
-      </div>
-
-      <div class="masonry-item" data-category="politique" data-title="Événement à venir" data-meta="2026">
-        <div style="aspect-ratio:1;background:linear-gradient(135deg,#b0a8c0,#908098);display:flex;align-items:center;justify-content:center;">
-          <span style="font-family:'Lora',serif;font-size:0.8rem;color:rgba(255,255,255,0.5);text-align:center;padding:1rem;">+ Ajoutez<br>votre photo</span>
-        </div>
-        <div class="masonry-caption">
-          <span class="masonry-caption-title">Événement à venir</span>
-          <span class="masonry-caption-meta">2026</span>
-        </div>
-      </div>
-
-      <div class="masonry-item" data-category="culture" data-title="Photo à venir" data-meta="2026">
-        <div style="aspect-ratio:4/5;background:linear-gradient(135deg,#b8c0a8,#909880);display:flex;align-items:center;justify-content:center;">
-          <span style="font-family:'Lora',serif;font-size:0.8rem;color:rgba(255,255,255,0.5);text-align:center;padding:1rem;">+ Ajoutez<br>votre photo</span>
-        </div>
-        <div class="masonry-caption">
-          <span class="masonry-caption-title">Photo à venir</span>
-          <span class="masonry-caption-meta">2026</span>
-        </div>
-      </div>
-
-    </div>
   </div>
 
   <!-- LIGHTBOX -->
@@ -450,6 +426,7 @@
     <div class="lightbox-info">
       <div class="lightbox-info-title" id="lb-title"></div>
       <div class="lightbox-info-meta" id="lb-meta"></div>
+      <div class="lightbox-info-alt" id="lb-alt"></div>
     </div>
   </div>
 
@@ -459,43 +436,85 @@
   </footer>
 
   <script>
-    // Reveal
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    // ── DONNÉES PHOTOS ──
+    const photos = [
+      { file: "IMG_0028.JPEG",  title: "Concert du GP Explorer Last Race",           meta: "Circuit des 24h du Mans · 4 octobre 2025",   category: "culture",   alt: "Ecran de la scène du GP Explorer Last Race organisé par Squeezie." },
+      { file: "IMG_0043.JPEG",  title: "SDM au GP Explorer Last Race",               meta: "Circuit des 24h du Mans · 5 octobre 2025",   category: "culture",   alt: "Pendant la course, le rappeur SDM suit l'événement depuis sa loge." },
+      { file: "IMG_0157.JPG",   title: "Discours d'ouverture du QG de Rachida Dati", meta: "Paris 12ème · 16 octobre 2025",              category: "politique", alt: "Rachida Dati prononce le discours d'ouverture du QG de campagne municipale de Paris 2026." },
+      { file: "IMG_0159.JPG",   title: "Discours d'ouverture du QG de Rachida Dati", meta: "Paris 12ème · 16 octobre 2025",              category: "politique", alt: "Rachida Dati prononce le discours d'ouverture du QG de campagne municipale de Paris 2026." },
+      { file: "IMG_0170.JPG",   title: "Ouverture du QG de campagne de Rachida Dati",meta: "Paris 12ème · 16 octobre 2025",              category: "politique", alt: "Ouverture du QG de campagne municipale de Paris 2026, de nombreux partisans y sont conviés." },
+      { file: "IMG_0178.JPEG",  title: "Dernière de Lamomali Tour de M à Bercy",     meta: "Bercy, Paris · 17 décembre 2025",            category: "culture",   alt: "Le chanteur M clôture sa tournée à l'Accor Arena Bercy à Paris." },
+      { file: "IMG_0436.JPEG",  title: "Porte Ouverte EFJ",                          meta: "Paris 15ème · 8 novembre 2025",             category: "efj",       alt: "Le stand EFJ au salon des écoles de journalisme et des métiers de l'information." },
+      { file: "IMG_0546.JPG",   title: "Campagne de Dati : Tractage",                meta: "Paris 1er · 19 octobre 2025",               category: "politique", alt: "Les partisans de Rachida Dati tractent dans les arrondissements de Paris." },
+      { file: "IMG_0610.JPEG",  title: "200 ans du Figaro : Concert de Patrick Bruel",meta: "Grand Palais, Paris · 15 janvier 2026",    category: "culture",   alt: "Patrick Bruel anime la scène du Grand Palais pour l'exposition des 200 ans du Figaro." },
+      { file: "IMG_0631.JPEG",  title: "200 ans du Figaro",                          meta: "Grand Palais, Paris · 15 janvier 2026",     category: "culture",   alt: "Le Figaro a organisé une exposition au Grand Palais réservée à leurs abonnés." },
+      { file: "IMG_0829.JPG",   title: "Campagne de Dati : Visite des bars LGBT+",   meta: "Paris · 28 octobre 2025",                   category: "politique", alt: "Rachida Dati et Aurélien Veron visitent les restaurateurs LGBTQIA+." },
+      { file: "IMG_0865.JPG",   title: "Campagne de Dati : Visite des bars LGBT+",   meta: "Paris · 28 octobre 2025",                   category: "politique", alt: "Rachida Dati et Aurélien Veron visitent les restaurateurs LGBTQIA+." },
+      { file: "IMG_0869.JPEG",  title: "Campagne de Dati : Commerçants du 12ème",    meta: "Paris 12ème · 29 novembre 2025",            category: "politique", alt: "Rachida Dati et Valérie Montandon visitent les commerçants du 12ème." },
+      { file: "IMG_0901.JPG",   title: "Campagne de Dati : Camp de sans-abris",      meta: "Paris Centre · 28 octobre 2025",            category: "politique", alt: "Rachida Dati et Aurélien Veron visitent des sans-abris à Paris Centre." },
+      { file: "IMG_0910.JPG",   title: "Campagne de Dati : Camp de sans-abris",      meta: "Paris Centre · 28 octobre 2025",            category: "politique", alt: "Rachida Dati et Aurélien Veron visitent des sans-abris à Paris Centre." },
+      { file: "IMG_1036.JPEG",  title: "Reportage à Rungis : Embarquement de viande",meta: "Rungis · 9 décembre 2025",                  category: "societe",   alt: "Des bouchers chargent leur camion de viande lors d'un reportage sur la vie nocturne de Rungis." },
+      { file: "IMG_1097.JPG",   title: "Halloween à Lille",                          meta: "Lille · 1 novembre 2025",                   category: "societe",   alt: "Les jeunes tournent en dérision le cambriolage des bijoux du Louvre lors d'Halloween à Lille." },
+      { file: "IMG_1238.JPEG",  title: "Musée juif de Berlin",                       meta: "Berlin · 27 décembre 2025",                 category: "culture",   alt: "Installation Shalechet de Menashe Kadishman au musée juif de Berlin." },
+      { file: "IMG_1266.JPEG",  title: "Plafond du Reichstag à Berlin",              meta: "Berlin · 27 décembre 2025",                 category: "culture",   alt: "Visite du Reichstag à Berlin, lieu du parlement berlinois." },
+      { file: "IMG_1411.JPEG",  title: "Fort épisode neigeux à Paris",               meta: "Paris · 7 janvier 2026",                    category: "societe",   alt: "Grosse vague de neige à Paris, la capitale est au ralenti, presque aucune voiture dans les rues." },
+      { file: "IMG_1427.JPEG",  title: "Fort épisode neigeux à Paris",               meta: "Paris · 7 janvier 2026",                    category: "societe",   alt: "Paris sous la neige, embouteillages historiques en périphérie." },
+      { file: "IMG_1584.JPEG",  title: "Conférence Média En Seine",                  meta: "Paris · 15 janvier 2026",                   category: "efj",       alt: "Conférence sur les évolutions du métier de journaliste au Studio 104 de FranceInfo." },
+      { file: "IMG_1691.JPEG",  title: "Procès en Appel de Marine Le Pen",           meta: "Paris · 20 janvier 2026",                   category: "politique", alt: "Le carré presse devant la salle d'audience du Palais de Justice." },
+      { file: "IMG_5390.JPEG",  title: "Corrida : Taureau dans une arène",           meta: "Ondara · 9 août 2025",                      category: "culture",   alt: "Taureau blessé par les picadors lors d'une corrida en Espagne." },
+      { file: "P1031928.JPG",   title: "Reportage à Rungis : Dock de chargement",    meta: "Rungis · 9 décembre 2025",                  category: "societe",   alt: "Les camions sur les docks pour acheter leurs fruits et légumes à Rungis." },
+      { file: "P1031986.JPG",   title: "Studio EFJ",                                 meta: "Paris · 4 février 2026",                    category: "efj",       alt: "Console de réalisateur d'émission dans le studio EFJ à Raspail 1." },
+      { file: "P1031987.JPG",   title: "Studio EFJ",                                 meta: "Paris · 4 février 2026",                    category: "efj",       alt: "Console de régisseur d'émission dans le studio EFJ à Raspail 1." },
+      { file: "P1032031.JPG",   title: "Emmaüs Défi : collecte de mobilier",         meta: "Paris · 5 février 2026",                    category: "societe",   alt: "Des personnes en insertion professionnelle d'Emmaüs Défi collectent des meubles chez un donateur." }
+    ];
 
-    // Filters
-    const items = [...document.querySelectorAll('.masonry-item')];
+    // ── GÉNÉRATION DE LA GALERIE ──
+    const gallery = document.getElementById('gallery');
+    photos.forEach(photo => {
+      gallery.innerHTML += `
+        <div class="masonry-item" data-category="${photo.category}" data-title="${photo.title}" data-meta="${photo.meta}" data-alt="${photo.alt}">
+          <img src="assets/images/${photo.file}" alt="${photo.title}" />
+          <div class="masonry-caption">
+            <span class="masonry-caption-title">${photo.title}</span>
+            <span class="masonry-caption-meta">${photo.meta}</span>
+          </div>
+        </div>`;
+    });
+
+    // ── FILTRES ──
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const f = btn.dataset.filter;
-        items.forEach(item => {
+        document.querySelectorAll('.masonry-item').forEach(item => {
           item.style.display = (f === 'all' || item.dataset.category === f) ? '' : 'none';
         });
       });
     });
 
-    // Lightbox
+    // ── LIGHTBOX ──
     let current = 0;
-    const visible = () => items.filter(i => i.style.display !== 'none');
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lb-img');
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lb-img');
     const lbTitle = document.getElementById('lb-title');
-    const lbMeta = document.getElementById('lb-meta');
+    const lbMeta  = document.getElementById('lb-meta');
+    const lbAlt   = document.getElementById('lb-alt');
     const lbCounter = document.getElementById('lb-counter');
 
+    function getVisible() {
+      return [...document.querySelectorAll('.masonry-item')].filter(i => i.style.display !== 'none');
+    }
     function openLightbox(idx) {
-      const vis = visible();
+      const vis = getVisible();
       current = idx;
       const item = vis[idx];
       const imgEl = item.querySelector('img');
       if (!imgEl) return;
-      lbImg.src = imgEl.src.replace(/w_\d+/, 'w_1400');
-      lbTitle.textContent = item.dataset.title || '';
-      lbMeta.textContent = item.dataset.meta || '';
+      lbImg.src = imgEl.src;
+      lbTitle.textContent   = item.dataset.title || '';
+      lbMeta.textContent    = item.dataset.meta  || '';
+      lbAlt.textContent     = item.dataset.alt   || '';
       lbCounter.textContent = `${idx + 1} / ${vis.length}`;
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -505,27 +524,34 @@
       document.body.style.overflow = '';
     }
     function navigate(dir) {
-      const vis = visible();
+      const vis = getVisible();
       current = (current + dir + vis.length) % vis.length;
       openLightbox(current);
     }
 
-    items.forEach((item, i) => {
+    document.querySelectorAll('.masonry-item').forEach(item => {
       item.addEventListener('click', () => {
-        const vis = visible();
+        const vis = getVisible();
         openLightbox(vis.indexOf(item));
       });
     });
+
     document.getElementById('lb-close').addEventListener('click', closeLightbox);
     document.getElementById('lb-prev').addEventListener('click', () => navigate(-1));
     document.getElementById('lb-next').addEventListener('click', () => navigate(1));
     lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
     document.addEventListener('keydown', e => {
       if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') navigate(-1);
-      if (e.key === 'ArrowRight') navigate(1);
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft')   navigate(-1);
+      if (e.key === 'ArrowRight')  navigate(1);
     });
+
+    // ── SCROLL REVEAL ──
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   </script>
 </body>
 </html>

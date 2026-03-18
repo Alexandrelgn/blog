@@ -25,17 +25,6 @@
     .breadcrumb span { margin: 0 0.5rem; }
     .page-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; margin-bottom: 0.5rem; }
     .page-subtitle { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 1.1rem; }
-    .mini-player { background: var(--ink); color: white; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2.5rem; border-left: 3px solid var(--accent); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
-    .mini-player.active { opacity: 1; pointer-events: all; }
-    .play-btn { width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
-    .play-btn:hover { background: #1d4a7e; }
-    .play-btn svg { width: 0.8rem; fill: white; margin-left: 2px; }
-    .player-info { flex: 1; min-width: 0; }
-    .player-title { font-family: var(--serif); font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .player-series { font-size: 0.68rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; }
-    .progress-bar { flex: 1; height: 2px; background: rgba(255,255,255,0.15); cursor: pointer; }
-    .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
-    .player-time { font-size: 0.72rem; color: rgba(255,255,255,0.5); flex-shrink: 0; }
     .episodes-list { margin-bottom: 5rem; }
     .ep { display: grid; grid-template-columns: 2.5rem 1fr auto; gap: 1.25rem; align-items: start; padding: 1.5rem 1rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; border-radius: 2px; }
     .ep:first-child { border-top: 1px solid var(--border); }
@@ -56,6 +45,18 @@
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.65s, transform 0.65s; }
     .reveal.visible { opacity: 1; transform: none; }
     @media (max-width: 680px) { nav { padding: 1rem 1.25rem; } .container { padding: 0 1.25rem; } .ep { grid-template-columns: 2rem 1fr; } .ep-right { display: none; } }
+    a.ep { text-decoration: none; color: inherit; display: grid; }
+    .ep { display: grid; grid-template-columns: 80px 1fr auto; gap: 1.25rem; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; border-radius: 2px; }
+    .ep-thumb {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      flex-shrink: 0;
+      border-radius: 4px;
+    }
+
   </style>
 </head>
 <body>
@@ -77,73 +78,65 @@
       <p class="page-subtitle">Épisodes audio, séries et reportages sonores</p>
     </header>
 
-    <div class="mini-player" id="player">
-      <button class="play-btn" id="pbtn"><svg id="picon" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></button>
-      <div class="player-info">
-        <p class="player-title" id="ptitle">—</p>
-        <p class="player-series" id="pseries">—</p>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
-      <span class="player-time" id="ptime">0:00</span>
-    </div>
-
     <div class="episodes-list reveal">
-      <div class="ep" data-title="Titre de votre podcast" data-series="Série · Épisode 1">
-        <span class="ep-num">01</span>
+      <a href="https://www.youtube.com/watch?v=8rCrq1sVjwo" target="_blank" rel="noopener" class="ep">
+        <img class="ep-thumb"
+          src="https://img.youtube.com/vi/8rCrq1sVjwo/mqdefault.jpg"
+          alt="Couper Décaler Ep3" />
         <div>
-          <p class="ep-title">Titre de votre podcast</p>
-          <p class="ep-desc">Description de l'épisode : sujet traité, invités, angle journalistique. Remplacez ce texte par le résumé de votre épisode.</p>
-          <p class="ep-meta">Série ou thématique · Épisode 1 · 2026</p>
+          <p class="ep-title">Couper Décaler — Épisode 3</p>
+          <p class="ep-desc">Troisième épisode du podcast Couper Décaler.</p>
+          <p class="ep-meta">Couper Décaler · Épisode 3 · 17 février 2026</p>
         </div>
         <div class="ep-right">
-          <span class="ep-dur">— min</span>
+          <span class="ep-dur">28 min</span>
           <div class="ep-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
         </div>
-      </div>
-      <div class="ep" data-title="Deuxième épisode" data-series="Série · Épisode 2">
-        <span class="ep-num">02</span>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=UT0QundaYUE" target="_blank" rel="noopener" class="ep">
+        <img class="ep-thumb"
+          src="https://img.youtube.com/vi/UT0QundaYUE/mqdefault.jpg"
+          alt="Couper Décaler Ep2" />
         <div>
-          <p class="ep-title">Deuxième épisode</p>
-          <p class="ep-desc">Description de votre deuxième épisode. Expliquez le sujet, le contexte, et ce que l'auditeur va découvrir.</p>
-          <p class="ep-meta">Série ou thématique · Épisode 2 · 2026</p>
+          <p class="ep-title">Couper Décaler — Épisode 2</p>
+          <p class="ep-desc">Deuxième épisode du podcast Couper Décaler.</p>
+          <p class="ep-meta">Couper Décaler · Épisode 2 · 10 février 2026</p>
         </div>
         <div class="ep-right">
-          <span class="ep-dur">— min</span>
+          <span class="ep-dur">29 min</span>
           <div class="ep-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
         </div>
-      </div>
-      <div class="ep" data-title="Troisième épisode" data-series="Série · Épisode 3">
-        <span class="ep-num">03</span>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=Z0bNbQMPD7U" target="_blank" rel="noopener" class="ep">
+        <img class="ep-thumb"
+          src="https://img.youtube.com/vi/Z0bNbQMPD7U/mqdefault.jpg"
+          alt="Couper Décaler Ep1" />
         <div>
-          <p class="ep-title">Troisième épisode</p>
-          <p class="ep-desc">Description de votre troisième épisode.</p>
-          <p class="ep-meta">Série ou thématique · Épisode 3 · 2025</p>
+          <p class="ep-title">Couper Décaler — Épisode 1</p>
+          <p class="ep-desc">Premier épisode du podcast Couper Décaler.</p>
+          <p class="ep-meta">Couper Décaler · Épisode 1 · 2 février 2026</p>
         </div>
         <div class="ep-right">
-          <span class="ep-dur">— min</span>
+          <span class="ep-dur">18 min</span>
           <div class="ep-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
         </div>
+      </a>
+
+
+
       </div>
     </div>
   </div>
 
-  <footer><span>© 2026 Alexandre Ligneul</span><span>EFJ Paris</span></footer>
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio</span></footer>
 
   <script>
-    const obs = new IntersectionObserver(es => { es.forEach((e,i) => { if(e.isIntersecting){e.target.style.transitionDelay=(i*0.08)+'s';e.target.classList.add('visible');}}); }, {threshold:0.1});
+    const obs = new IntersectionObserver(es => {
+      es.forEach((e, i) => { if (e.isIntersecting) { e.target.style.transitionDelay=(i*0.08)+'s'; e.target.classList.add('visible'); }});
+    }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    let playing=false, timer=null, secs=0;
-    const player=document.getElementById('player'), ptitle=document.getElementById('ptitle'), pseries=document.getElementById('pseries'), ptime=document.getElementById('ptime'), pfill=document.getElementById('pfill');
-    document.querySelectorAll('.ep').forEach(ep => {
-      ep.addEventListener('click', () => {
-        document.querySelectorAll('.ep').forEach(e=>e.classList.remove('playing'));
-        ep.classList.add('playing');
-        ptitle.textContent=ep.dataset.title; pseries.textContent=ep.dataset.series;
-        player.classList.add('active'); secs=0; pfill.style.width='0%'; playing=true; tick();
-      });
-    });
-    document.getElementById('pbtn').addEventListener('click', ()=>{ playing=!playing; if(playing)tick(); else clearInterval(timer); });
-    function tick(){ clearInterval(timer); timer=setInterval(()=>{ secs++; const m=Math.floor(secs/60),s=secs%60; ptime.textContent=m+':'+(s<10?'0':'')+s; pfill.style.width=Math.min((secs/300)*100,100)+'%'; },1000); }
   </script>
 </body>
 </html>

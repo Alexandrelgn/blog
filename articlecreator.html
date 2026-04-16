@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Alexandre Ligneul - Éditeur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="icon" href="assets/site/admin-favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <style>
+        /* --- VARIABLES INTERFACE ÉDITEUR --- */
+        :root {
+            --ink: #1a1a1a; --soft: #f5f4f2; --border: #e8e6e2;
+            --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9;
+            --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif;
+            --danger: #dc3545;
+        }
+
+        body { font-family: var(--sans); display: grid; grid-template-columns: 450px 1fr; height: 100vh; margin: 0; background: #fff; overflow: hidden; }
+
+        /* --- PANNEAU DE CONTRÔLE (GAUCHE) --- */
+        .editor-panel { padding: 20px; background: var(--soft); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; gap: 15px; position: relative; }
+        .section-card { background: white; padding: 15px; border: 1px solid var(--border); border-radius: 4px; position: relative; }
+        .draggable-block { cursor: grab; border-left: 4px solid var(--accent); margin-bottom: 10px; }
+        
+        h2 { font-family: var(--serif); font-size: 1.1rem; margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 10px; }
+        label { display: block; margin: 10px 0 5px; font-size: 0.7rem; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+        input, textarea, select { width: 100%; padding: 8px; border: 1px solid var(--border); font-family: var(--sans); box-sizing: border-box; font-weight: 400; resize: vertical; }
+        textarea { min-height: 60px; }
+
+        .btn { padding: 10px; cursor: pointer; border: none; font-weight: 500; transition: 0.2s; border-radius: 3px; font-family: var(--sans); }
+        .btn-add { background: var(--accent); color: white; margin-top: 10px; width: 100%; }
+        .btn-copy { background: #1a1a1a; color: white; padding: 18px; font-size: 0.9rem; width: 100%; margin-top: 20px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-copy:hover { background: #000; transform: translateY(-1px); }
+        .btn-remove { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 0.7rem; float: right; }
+        
+        .file-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .export-dropdown { position: relative; }
+        .main-export-btn { width: 100%; background: #fff; border: 1px solid var(--border); font-size: 0.8rem; }
+        .export-options { position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 1px solid var(--border); z-index: 100; display: flex; flex-direction: column; }
+        .export-options button { padding: 10px; border: none; background: none; text-align: left; font-size: 0.75rem; cursor: pointer; border-bottom: 1px solid var(--soft); }
+        .btn-danger-outline { grid-column: span 2; background: #fff; border: 1px solid var(--danger); color: var(--danger); font-size: 0.8rem; margin-top: 5px; }
+
+        /* --- MODAL CRÉDITS --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+        .modal-content { background: white; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modal-content h3 { margin-bottom: 0.35rem; }
+        .modal-intro { display: block; margin: 0 0 1rem; font-size: 0.95rem; color: var(--ink); line-height: 1.45; }
+        .modal-content > p { margin: 0.65rem 0; font-size: 0.85rem; line-height: 1.5; color: #444; }
+        .modal-social { margin: 1rem 0 0.5rem !important; font-size: 0.9rem; }
+        .modal-social a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        .modal-social a:hover { text-decoration: underline; }
+        
+        .credits { margin-top: auto; padding: 20px 0; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--muted); text-align: center; }
+        .credits strong { color: var(--accent); cursor: pointer; text-decoration: underline; }
+
+        /* --- ZONE DE PREVIEW (Basée sur style.css) --- */
+        .preview-panel { padding: 40px; overflow-y: auto; background: #fdfdfd; }
+        .preview-content { max-width: 850px; margin: 0 auto; }
+        .post-content { background: white; border: 1px solid var(--ink); border-radius: 4px; padding: 60px; margin: 20px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        
+        /* Styles simulés pour la preview interne */
+        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--muted); margin-bottom: 2.5rem; }
+        .art-cat { font-size: 0.68rem; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; display: inline-block; letter-spacing: 0.1em; font-weight: 500; }
+        .art-title { font-family: var(--serif); font-size: 2.2rem; font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
+        .art-intro { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: #555; border-left: 3px solid var(--accent); padding-left: 1.5rem; margin-bottom: 2rem; }
+        .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+        .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); color: var(--accent); font-weight: 600; }
+        .body { font-size: 1.05rem; line-height: 1.85; color: #222; }
+        .cover-ph { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-top: 1rem; }
+        .art-footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.65rem; text-transform: uppercase; color: var(--muted); margin-right: 5px; }
+        .back { font-size: 0.75rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: 600; }
+        .byline-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2rem; }
+        .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1rem 0 0.5rem; }
+        .rel-link { background: var(--soft); border: 1px solid var(--border); padding: 1.25rem; margin: 2rem 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-size: 0.9rem; }
+        .rel-link span { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
+
+        .hidden { display: none !important; }
+
+        @media print { .editor-panel, .btn-copy, .modal-overlay { display: none !important; } .preview-panel { padding: 0; } .post-content { border: none !important; box-shadow: none !important; } }
+    </style>
+</head>
+<body>
+
+<div id="devModal" class="modal-overlay hidden" onclick="toggleDevModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h3>Hello ! 👋</h3>
+        <p class="modal-intro">Éditeur d’article conçu par Alexandre Ligneul.</p>
+        <p>Utilise la touche <strong>Échap</strong> pour fermer cette fenêtre.</p>
+        <p class="modal-social">
+            <a href="https://www.linkedin.com/in/alexandre-ligneul/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <span aria-hidden="true"> · </span>
+            <a href="https://www.instagram.com/alexandrelgn/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </p>
+        <button class="btn btn-sec" style="width: 100%; margin-top: 0.75rem;" onclick="toggleDevModal()">Fermer</button>
+    </div>
+</div>
+
+<div class="editor-panel">
+    <div class="section-card">
+        <h2>Fichiers & Projets</h2>
+        <div class="file-ops">
+            <div class="export-dropdown">
+                <button class="btn btn-sec main-export-btn" onclick="toggleExportMenu()">💾 Projet...</button>
+                <div id="export-options" class="export-options hidden">
+                    <button onclick="exportJSON()">📄 Sauver JSON</button>
+                    <button onclick="exportPDF()">📋 Imprimer PDF</button>
+                </div>
+            </div>
+            <button class="btn btn-sec" onclick="document.getElementById('importFile').click()">📂 Charger</button>
+            <button class="btn btn-danger-outline" onclick="resetProject()">Vider tout 🗑️</button>
+        </div>
+        <input type="file" id="importFile" style="display:none" accept=".json" onchange="importJSON(event)">
+    </div>
+
+    <div class="section-card">
+        <h2>En-tête & Tags</h2>
+        <label>Nom court (Ariane)</label>
+        <input type="text" id="nav-short" value="Article" oninput="render()">
+        <label>Catégorie</label>
+        <input type="text" id="meta-cat" value="Société" oninput="render()">
+        <label>Tags (séparés par virgules)</label>
+        <input type="text" id="meta-tags" value="Enquête, Politique" oninput="render()">
+        <label>Titre</label>
+        <textarea id="meta-title" oninput="render()">Titre de l'article...</textarea>
+        <label>Chapeau</label>
+        <textarea id="meta-intro" oninput="render()">Introduction...</textarea>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div><label>Lieu</label><input type="text" id="pub-loc" value="Paris" oninput="render()"></div>
+            <div><label>Date</label><input type="text" id="pub-date" value="2026" oninput="render()"></div>
+        </div>
+        <label>Lecture (affichée sous les auteurs)</label>
+        <input type="text" id="readTime" value="8 min de lecture" oninput="render()">
+        <label>Image de couverture — URL (optionnel)</label>
+        <input type="text" id="hero-url" placeholder="https://..." oninput="render()">
+        <label>Image de couverture — texte alternatif</label>
+        <input type="text" id="hero-alt" placeholder="Description courte pour l’accessibilité" oninput="render()">
+        <label>Image de couverture — légende</label>
+        <input type="text" id="hero-cap" placeholder="Crédit ou source" oninput="render()">
+    </div>
+
+    <div class="section-card">
+        <h2>Auteurs</h2>
+        <div id="authors-list"></div>
+        <button class="btn btn-add" style="background: var(--muted); font-size: 0.8rem;" onclick="addAuthor()">+ Auteur</button>
+    </div>
+
+    <div class="section-card">
+        <h2>Nouveau bloc</h2>
+        <select id="block-type">
+            <option value="p">Paragraphe</option>
+            <option value="h2">Sous-titre (H2)</option>
+            <option value="quote">Citation</option>
+            <option value="img">Image Simple</option>
+            <option value="slider">Duo d'images</option>
+            <option value="link">Lien de rappel</option>
+        </select>
+        <button class="btn btn-add" onclick="addBlock()">+ Insérer</button>
+    </div>
+
+    <div id="active-blocks"></div>
+    
+    <div class="file-ops" style="margin-top: 8px;">
+        <button class="btn btn-copy" style="margin-top: 0; grid-column: span 2;" onclick="copyFullHTML()">COPIER HTML (comme assets/articles/1.html)</button>
+        <button class="btn btn-sec main-export-btn" style="grid-column: span 2;" onclick="downloadArticleHTML()">Télécharger .html</button>
+    </div>
+
+    <div class="credits">
+        Outil développé par <strong onclick="toggleDevModal()">Alexandre Ligneul</strong><br>
+        Portfolio © 2026
+    </div>
+</div>
+
+<div class="preview-panel">
+    <div class="preview-content" id="final-preview"></div>
+</div>
+
+<script>
+    /** Styles alignés sur assets/articles/1.html + blocs CMS (grille, lien) */
+    const ARTICLE_INLINE_CSS = `
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
+    .article-header { padding: 4rem 0 3rem; }
+    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2rem; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 0.5rem; }
+    .art-cat { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); display: inline-block; padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; }
+    .art-title { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
+    .art-intro { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: #555; line-height: 1.65; margin-bottom: 2rem; border-left: 3px solid var(--accent); padding-left: 1.5rem; }
+    .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; flex-wrap: wrap; }
+    .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+    .byline-name { font-size: 0.88rem; font-weight: 500; }
+    .byline-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .cover-ph { width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#d4e0ec,#b8cce0);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:center; }
+    img.cover-ph { display: block; object-fit: cover; }
+    .cover-cap { font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; font-style: italic; }
+    .body { font-size: 1.02rem; line-height: 1.85; color: #2a2a2a; }
+    .body p { margin-bottom: 1.5rem; }
+    .body h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 2.5rem 0 1rem; line-height: 1.3; }
+    .body h3 { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 400; margin: 2rem 0 0.75rem; color: #444; }
+    .body blockquote { font-family: var(--serif); font-style: italic; font-size: 1.2rem; border-left: 3px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; line-height: 1.6; }
+    .body blockquote cite { display: block; font-size: 0.78rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.75rem; }
+    .body .hl { background: var(--accent-light); padding: 1.5rem 1.75rem; margin: 2rem 0; border-left: 3px solid var(--accent); }
+    .body .hl p { margin-bottom: 0; font-size: 0.95rem; }
+    .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 2rem 0 0.5rem; }
+    .img-grid img.cover-ph { margin-bottom: 0; }
+    .rel-link { background: var(--soft); border: 1px solid var(--border); padding: 1.25rem; margin: 2rem 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-size: 0.9rem; transition: background 0.2s; }
+    .rel-link:hover { background: #efebe8; }
+    .rel-link span { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
+    .art-footer { margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } }
+    `.trim();
+
+    function escapeHtml(s) {
+        if (s == null || s === undefined) return '';
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function authorInitials(name) {
+        if (!name || !String(name).trim()) return '??';
+        return name.split(/\s+/).map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    let authors = [{ name: "Alexandre Ligneul" }];
+    let articleBlocks = [];
+    const blocksContainer = document.getElementById('active-blocks');
+
+    // --- LOGIQUE MODAL ---
+    function toggleDevModal() { document.getElementById('devModal').classList.toggle('hidden'); }
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.getElementById('devModal').classList.add('hidden'); });
+
+    // --- DRAG & DROP ---
+    new Sortable(blocksContainer, {
+        animation: 150,
+        onEnd: () => {
+            const newOrder = [];
+            blocksContainer.querySelectorAll('.draggable-block').forEach(domEl => {
+                newOrder.push(articleBlocks.find(b => b.id === domEl.dataset.id));
+            });
+            articleBlocks = newOrder;
+            render();
+        }
+    });
+
+    // --- FICHIERS ---
+    function toggleExportMenu() { document.getElementById('export-options').classList.toggle('hidden'); }
+    window.addEventListener('click', (e) => { if (!e.target.matches('.main-export-btn')) document.getElementById('export-options').classList.add('hidden'); });
+
+    function exportJSON() {
+        saveToLocal();
+        const data = localStorage.getItem('cms_draft');
+        if(!data) return;
+        const d = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const name = `article-${pad(d.getDate())}-${pad(d.getMonth() + 1)}-${pad(d.getFullYear() % 100)}-${pad(d.getHours())}h${pad(d.getMinutes())}.json`;
+        const blob = new Blob([data], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = name; a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function exportPDF() { window.print(); }
+
+    function importJSON(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => { applyData(JSON.parse(e.target.result)); };
+        reader.readAsText(file);
+    }
+
+    function resetProject() { if(confirm("Vider l'éditeur ?")) { localStorage.removeItem('cms_draft'); location.reload(); } }
+
+    // --- CORE ---
+    function saveToLocal() {
+        const data = {
+            meta: {
+                short: document.getElementById('nav-short').value,
+                cat: document.getElementById('meta-cat').value,
+                tags: document.getElementById('meta-tags').value,
+                title: document.getElementById('meta-title').value,
+                intro: document.getElementById('meta-intro').value,
+                loc: document.getElementById('pub-loc').value,
+                date: document.getElementById('pub-date').value,
+                readTime: document.getElementById('readTime').value,
+                heroUrl: document.getElementById('hero-url').value,
+                heroAlt: document.getElementById('hero-alt').value,
+                heroCap: document.getElementById('hero-cap').value
+            },
+            authors, articleBlocks
+        };
+        localStorage.setItem('cms_draft', JSON.stringify(data));
+    }
+
+    function applyData(data) {
+        const m = data.meta || {};
+        document.getElementById('nav-short').value = m.short || '';
+        document.getElementById('meta-cat').value = m.cat || '';
+        document.getElementById('meta-tags').value = m.tags || "";
+        document.getElementById('meta-title').value = m.title || '';
+        document.getElementById('meta-intro').value = m.intro || '';
+        document.getElementById('pub-loc').value = m.loc || '';
+        document.getElementById('pub-date').value = m.date || '';
+        document.getElementById('readTime').value = m.readTime != null ? m.readTime : (m.time != null ? m.time : '8 min de lecture');
+        document.getElementById('hero-url').value = m.heroUrl || '';
+        document.getElementById('hero-alt').value = m.heroAlt || '';
+        document.getElementById('hero-cap').value = m.heroCap || '';
+        authors = data.authors && data.authors.length ? data.authors : [{ name: '' }];
+        articleBlocks = data.articleBlocks || [];
+        renderAuthorsEditor(); renderEditor(); render();
+    }
+
+    function addAuthor() { authors.push({ name: "" }); renderAuthorsEditor(); render(); }
+    function renderAuthorsEditor() {
+        const list = document.getElementById('authors-list'); list.innerHTML = '';
+        authors.forEach((auth, i) => {
+            const div = document.createElement('div'); div.style.display = 'flex'; div.style.marginBottom = '5px';
+            div.innerHTML = `<input type="text" value="${auth.name}" oninput="authors[${i}].name=this.value; render()"><button class="btn-remove" onclick="authors.splice(${i},1);renderAuthorsEditor();render()">×</button>`;
+            list.appendChild(div);
+        });
+    }
+
+    function addBlock() {
+        const id = "block-" + Date.now();
+        articleBlocks.push({ id, type: document.getElementById('block-type').value, content: '', extra: '', third: '' });
+        renderEditor(); render();
+    }
+
+    function renderEditor() {
+        blocksContainer.innerHTML = '<h2>Corps de l\'article</h2>';
+        articleBlocks.forEach(block => {
+            const div = document.createElement('div'); div.className = 'section-card draggable-block'; div.dataset.id = block.id;
+            let fields = `<button class="btn-remove" onclick="articleBlocks=articleBlocks.filter(b=>b.id!=='${block.id}');renderEditor();render()">×</button><label>${block.type}</label>`;
+            if(block.type === 'slider' || block.type === 'link') {
+                fields += `<input placeholder="Image 1 / Texte" value="${block.content}" oninput="updateBlock('${block.id}','content',this.value)">`;
+                fields += `<input placeholder="Image 2 / URL" value="${block.extra}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
+                if(block.type === 'slider') fields += `<input placeholder="Légende" value="${block.third||''}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+            } else {
+                fields += `<textarea oninput="updateBlock('${block.id}','content',this.value)">${block.content}</textarea>`;
+                if (block.type === 'img') {
+                    fields += `<input placeholder="Légende / crédit" value="${block.extra || ''}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
+                    fields += `<input placeholder="Texte alternatif (alt)" value="${block.third || ''}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+                } else if (block.type === 'quote') {
+                    fields += `<input placeholder="Source / attribution" value="${block.extra || ''}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
+                }
+            }
+            div.innerHTML = fields; blocksContainer.appendChild(div);
+        });
+    }
+
+    function updateBlock(id, field, val) { articleBlocks.find(b => b.id === id)[field] = val; render(); }
+
+    function buildTagsHtml() {
+        let tagsHtml = '';
+        document.getElementById('meta-tags').value.split(',').forEach(tag => {
+            const tr = tag.trim();
+            if (tr) tagsHtml += `<span class="tag">${escapeHtml(tr)}</span>`;
+        });
+        return tagsHtml;
+    }
+
+    function buildAuthorsBylineHtml() {
+        let html = '<div class="byline">';
+        authors.forEach(a => {
+            const name = (a && a.name) ? a.name : '';
+            html += `<div class="byline-av">${escapeHtml(authorInitials(name))}</div><div><p class="byline-name">${escapeHtml(name)}</p></div>`;
+        });
+        html += '</div>';
+        return html;
+    }
+
+    function buildArticleBodyHtml() {
+        let bodyHtml = '';
+        articleBlocks.forEach(b => {
+            const c = b.content || '';
+            const e = b.extra || '';
+            const t = b.third || '';
+            if (b.type === 'p') bodyHtml += `<p>${escapeHtml(c).replace(/\n/g, '<br>')}</p>`;
+            if (b.type === 'h2') bodyHtml += `<h2>${escapeHtml(c)}</h2>`;
+            if (b.type === 'quote') {
+                bodyHtml += `<blockquote>« <em>${escapeHtml(c)}</em> »<cite>— ${escapeHtml(e)}</cite></blockquote>`;
+            }
+            if (b.type === 'img') {
+                bodyHtml += `<img src="${escapeHtml(c)}" alt="${escapeHtml(t)}" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap">${escapeHtml(e)}</p>`;
+            }
+            if (b.type === 'link') {
+                bodyHtml += `<a href="${escapeHtml(e)}" class="rel-link"><span>À lire aussi</span> ${escapeHtml(c)}</a>`;
+            }
+            if (b.type === 'slider') {
+                bodyHtml += `<div class="img-grid"><img src="${escapeHtml(c)}" alt="" class="cover-ph" style="object-fit:cover;" /><img src="${escapeHtml(e)}" alt="" class="cover-ph" style="object-fit:cover;" /></div><p class="cover-cap">${escapeHtml(t)}</p>`;
+            }
+        });
+        return bodyHtml;
+    }
+
+    function buildHeroHtml() {
+        const url = document.getElementById('hero-url').value.trim();
+        const alt = document.getElementById('hero-alt').value;
+        const cap = document.getElementById('hero-cap').value;
+        if (!url) return '';
+        return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" class="cover-ph" style="object-fit:cover;" />\n      <p class="cover-cap">${escapeHtml(cap)}</p>\n\n    `;
+    }
+
+    /** Page complète : chemins comme assets/articles/1.html (../../ vers la racine du site) */
+    function buildFullArticleHTML() {
+        const short = document.getElementById('nav-short').value.trim() || 'Article';
+        const cat = document.getElementById('meta-cat').value;
+        const title = document.getElementById('meta-title').value.trim() || 'Article';
+        const intro = document.getElementById('meta-intro').value;
+        const loc = document.getElementById('pub-loc').value;
+        const date = document.getElementById('pub-date').value;
+        const readTime = document.getElementById('readTime').value;
+        const pageTitle = `Alexandre Ligneul - ${title}`;
+        const bylineMeta = `${escapeHtml(loc)} · ${escapeHtml(date)} · ${escapeHtml(readTime)}`;
+
+        return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${escapeHtml(pageTitle)}</title>
+  <link rel="icon" href="../site/favicon.ico"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+${ARTICLE_INLINE_CSS}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../../index.html" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <ul class="nav-links">
+      <li><a href="../../photos.html">Photos</a></li>
+      <li><a href="../../videos.html">Vidéos</a></li>
+      <li><a href="../../articles.html">Écrits</a></li>
+      <li><a href="../../podcasts.html">Podcasts</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <article class="wrap">
+    <header class="article-header">
+      <p class="breadcrumb"><a href="../../index.html">Accueil</a><span>/</span><a href="../../articles.html">Écrits</a><span>/</span>${escapeHtml(short)}</p>
+      <span class="art-cat">${escapeHtml(cat)}</span>
+      <h1 class="art-title">${escapeHtml(title)}</h1>
+      <p class="art-intro">${escapeHtml(intro)}</p>
+
+      ${buildAuthorsBylineHtml()}
+
+      <p class="byline-meta">${bylineMeta}</p>
+
+    </header>
+
+    ${buildHeroHtml()}<div class="body">
+
+${buildArticleBodyHtml()}
+
+    </div>
+
+    <footer class="art-footer">
+      <div class="tags">${buildTagsHtml()}</div>
+      <a href="../index.html#articles" class="back">← Retour aux écrits</a>
+    </footer>
+  </article>
+
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio</span></footer>
+</body>
+</html>`;
+    }
+
+    function render() {
+        const short = document.getElementById('nav-short').value.trim() || 'Article';
+        const bread = `<p class="breadcrumb"><a href="#">Accueil</a><span>/</span><a href="#">Écrits</a><span>/</span>${escapeHtml(short)}</p>`;
+        const heroUrl = document.getElementById('hero-url').value.trim();
+        const heroAlt = document.getElementById('hero-alt').value;
+        const heroCap = document.getElementById('hero-cap').value;
+        let heroPreview = '';
+        if (heroUrl) {
+            heroPreview = `<img src="${escapeHtml(heroUrl)}" alt="${escapeHtml(heroAlt)}" class="cover-ph" style="object-fit:cover;width:100%;aspect-ratio:16/9;" /><p class="cover-cap">${escapeHtml(heroCap)}</p>`;
+        }
+
+        const bylineMeta = `${escapeHtml(document.getElementById('pub-loc').value)} · ${escapeHtml(document.getElementById('pub-date').value)} · ${escapeHtml(document.getElementById('readTime').value)}`;
+
+        document.getElementById('final-preview').innerHTML = `
+            ${bread}
+            <article class="post-content" style="max-width:720px;margin:0 auto;">
+                <header class="article-header">
+                    <span class="art-cat">${escapeHtml(document.getElementById('meta-cat').value)}</span>
+                    <h1 class="art-title">${escapeHtml(document.getElementById('meta-title').value)}</h1>
+                    <p class="art-intro">${escapeHtml(document.getElementById('meta-intro').value)}</p>
+                    ${buildAuthorsBylineHtml()}
+                    <p class="byline-meta">${bylineMeta}</p>
+                </header>
+                ${heroPreview}
+                <div class="body">${buildArticleBodyHtml()}</div>
+                <footer class="art-footer">
+                    <div class="tags">${buildTagsHtml()}</div>
+                    <a href="#" class="back">← Retour aux écrits</a>
+                </footer>
+            </article>`;
+        saveToLocal();
+    }
+
+    async function copyFullHTML() {
+        const fullPage = buildFullArticleHTML();
+        try {
+            await navigator.clipboard.writeText(fullPage);
+            alert("HTML copié dans le presse-papiers. Collez-le dans assets/articles/N.html (même structure que 1.html).");
+        } catch (err) {
+            alert("Erreur lors de la copie. Utilisez « Télécharger .html ».");
+        }
+    }
+
+    function downloadArticleHTML() {
+        const blob = new Blob([buildFullArticleHTML()], { type: 'text/html;charset=utf-8' });
+        const a = document.createElement('a');
+        const base = (document.getElementById('nav-short').value.trim() || 'article').replace(/[^\w\u00C0-\u024f\-]+/gi, '-').replace(/^-|-$/g, '') || 'article';
+        a.href = URL.createObjectURL(blob);
+        a.download = `${base}.html`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+    
+    window.onload = () => {
+        const saved = localStorage.getItem('cms_draft');
+        if (saved) applyData(JSON.parse(saved)); else { renderAuthorsEditor(); render(); }
+    };
+</script>
+</body>
+</html>

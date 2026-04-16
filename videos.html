@@ -13,8 +13,14 @@
       --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e;
       --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif;
     }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
+    html { scroll-behavior: smooth; height: 100%; }
+    body {
+      background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
     nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
     .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
     .nav-logo span { color: var(--accent); }
@@ -59,7 +65,7 @@
     .video-card-cat { font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); display: block; margin-bottom: 0.5rem; }
     .video-card-title { font-family: var(--serif); font-size: 1rem; line-height: 1.35; margin-bottom: 0.5rem; }
     .video-card-meta { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    footer { margin-top: auto; background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
     .reveal.visible { opacity: 1; transform: none; }
     @media (max-width: 860px) {

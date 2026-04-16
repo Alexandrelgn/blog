@@ -9,7 +9,14 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
-    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
+    html { height: 100%; }
+    body {
+      background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
     nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
     .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
     .nav-logo span { color: var(--accent); }
@@ -41,7 +48,7 @@
     .ep:hover .ep-btn, .ep.playing .ep-btn { border-color: var(--accent); background: var(--accent); }
     .ep-btn svg { width: 0.65rem; fill: var(--ink); margin-left: 1px; }
     .ep:hover .ep-btn svg, .ep.playing .ep-btn svg { fill: white; }
-    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    footer { margin-top: auto; background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.65s, transform 0.65s; }
     .reveal.visible { opacity: 1; transform: none; }
     @media (max-width: 680px) { nav { padding: 1rem 1.25rem; } .container { padding: 0 1.25rem; } .ep { grid-template-columns: 2rem 1fr; } .ep-right { display: none; } }

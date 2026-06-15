@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alexandre Ligneul - Stage en Assistant de production chez EDH Groupe</title>
+  <link rel="icon" href="../site/favicon.ico"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
+    .article-header { padding: 4rem 0 3rem; }
+    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2rem; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { margin: 0 0.5rem; }
+    .art-cat { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); display: inline-block; padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; }
+    .art-title { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
+    .art-intro { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: #555; line-height: 1.65; margin-bottom: 2rem; border-left: 3px solid var(--accent); padding-left: 1.5rem; }
+    .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; flex-wrap: wrap; }
+    .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+    .byline-name { font-size: 0.88rem; font-weight: 500; }
+    .byline-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .cover-ph { width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#d4e0ec,#b8cce0);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:center; }
+    img.cover-ph { display: block; object-fit: cover; }
+    .cover-cap { font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; font-style: italic; }
+    .body { font-size: 1.02rem; line-height: 1.85; color: #2a2a2a; }
+    .body p { margin-bottom: 1.5rem; }
+    .body h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 2.5rem 0 1rem; line-height: 1.3; }
+    .body h3 { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 400; margin: 2rem 0 0.75rem; color: #444; }
+    .body blockquote { font-family: var(--serif); font-style: italic; font-size: 1.2rem; border-left: 3px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; line-height: 1.6; }
+    .body blockquote cite { display: block; font-size: 0.78rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.75rem; }
+    .body .hl { background: var(--accent-light); padding: 1.5rem 1.75rem; margin: 2rem 0; border-left: 3px solid var(--accent); }
+    .body .hl p { margin-bottom: 0; font-size: 0.95rem; }
+    .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 2rem 0 0.5rem; }
+    .img-grid img.cover-ph { margin-bottom: 0; }
+    .rel-link { background: var(--soft); border: 1px solid var(--border); padding: 1.25rem; margin: 2rem 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-size: 0.9rem; transition: background 0.2s; }
+    .rel-link:hover { background: #efebe8; }
+    .rel-link span { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
+    .art-footer { margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../../index.html" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <ul class="nav-links">
+      <li><a href="../../photos.html">Photos</a></li>
+      <li><a href="../../videos.html">Vidéos</a></li>
+      <li><a href="../../articles.html">Écrits</a></li>
+      <li><a href="../../podcasts.html">Podcasts</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <article class="wrap">
+    <header class="article-header">
+      <p class="breadcrumb"><a href="../../index.html">Accueil</a><span>/</span><a href="../../articles.html">Écrits</a><span>/</span>RS mai-juin 2026</p>
+      <span class="art-cat">Société</span>
+      <h1 class="art-title">Stage en Assistant de production chez EDH Groupe</h1>
+      <p class="art-intro">Rapport de stage de mai à juin 2026 au sein du Studio Raspail en tant qu'assistant de production pour les écoles EFAP, EICAR, EFJ ou encore BRASSART du groupe EDH à Paris.</p>
+
+      <div class="byline"><div class="byline-av">AL</div><div><p class="byline-name">Alexandre Ligneul</p></div></div>
+
+      <p class="byline-meta">Paris · 2026 · 8 min de lecture</p>
+
+    </header>
+
+    <div class="body">
+
+<h2>Qu'est ce que ComOne' ?</h2><p>Lors de mon stage, j’ai travaillé pour ComOne’ Média, le média du groupe d’écoles EDH, auquel appartiennent notamment l’EFJ et l’EFAP. Le média est basé dans le studio du campus Raspail. C'est un espace mis à disposition des étudiants dans le cadre de leurs cours de face caméra, d’ateliers radio et de séances de media training.</p><p>Le studio a été créé en 2009 par Étienne Pozzo, ingénieur du son de profession. À l’origine, ce lieu avait pour objectif de former les étudiants aux formats radio. Au fil des années, il s’est développé pour devenir un véritable espace de production audiovisuelle, permettant aujourd’hui la réalisation d’émissions dans des conditions professionnelles.</p><div class="img-grid"><img src="" alt="" class="cover-ph" style="object-fit:cover;" /><img src="" alt="" class="cover-ph" style="object-fit:cover;" /></div><p class="cover-cap">Le studio en 2016 puis aujourd'hui à droite</p><p>Pendant l’année, ComOne’ Média accompagne la production de plus de 70 émissions étudiantes diffusées en direct sur Twitch. Ces émissions peuvent également mobiliser de nombreux partenaires, parmi lesquels Starbucks, Asics ou encore Red Bull, ainsi que des invités issus de différents domaines. Cet environnement m’a permis de découvrir le fonctionnement concret d’une chaîne de production audiovisuelle, depuis la préparation d’un projet jusqu’à sa diffusion en direct.</p><a href="https://www.twitch.tv/comone_media" class="rel-link"><span>À lire aussi</span> ComOne sur Twitch ! </a><p>Mon rôle, en tant qu’assistant de production, était d’accompagner les étudiants dans la création de leur émission de A à Z. Cela pouvait aller de la communication sur les réseaux sociaux à la réalisation du direct, en passant par le mixage audio, la gestion vidéo ou encore l’organisation générale du plateau. J’ai ainsi pu occuper différents postes, notamment celui de mixage son et celui de réalisation vidéo.</p><p>Être assistant de production demande également une grande polyvalence. Il faut savoir être un véritable couteau suisse : organiser des réunions, suivre les rendus, préparer ou installer du matériel, gérer les imprévus et répondre à des demandes très variées. Ce poste exige donc une forte capacité d’adaptation, d’autant plus que le rythme de travail est souvent soutenu et que l’emploi du temps fonctionne à flux tendu.</p><h2>Dans le détail ca veut dire quoi être assistant de production ?</h2><p>Nos missions étaient très variées. Elles commençaient par l’accueil des étudiants et la préparation du matériel nécessaire aux séances : installation des lumières, réglage des caméras, mise en route des ordinateurs et vérification générale du studio. </p><p>Une partie de mon travail concernait aussi la gestion du son. Je devais mixer les différentes entrées audio, équilibrer les niveaux, régler la sensibilité des micros, gérer les fonds musicaux et lancer les jingles au bon moment. Ces missions m’ont permis de développer mes compétences techniques et de mieux comprendre les exigences d’une production audiovisuelle en conditions réelles avant d’apprendre à gérer l’image.</p><img src="" alt="Console son" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap"></p><p>Mais la partie la plus importante de ce stage a été ma formation au rôle d’opérateur vMix. Cette mission consistait à gérer les différentes entrées vidéo, à effectuer les changements d’encarts, à lancer les vidéos et à modifier les décors de plateau depuis un pad tactile et un Stream Deck. Ce travail correspond à ce que l’on appelle « faire la réalisation » d’une émission en direct tandis qu’avant je mixais(le son).</p><div class="img-grid"><img src="Poste de Vmix" alt="" class="cover-ph" style="object-fit:cover;" /><img src="Moi en réalisation ou une réal" alt="" class="cover-ph" style="object-fit:cover;" /></div><p class="cover-cap"></p><p>À côté du pad tactile, je disposais également d’une télécommande de caméra me permettant de contrôler les trois caméras tourelles du studio. Le matériel du studio est le même que sur les plateaux TV ainsi je me suis familiariser avec ces équipements.</p><p>Ce stage m’a particulièrement plu, car il m’a permis d’allier la technique et le contact humain. En tant qu’assistants de production, nous étions souvent les premiers repères des étudiants. Ils venaient nous voir pour poser des questions sur les dépôts de rendus, l’organisation de leurs émissions ou les attentes techniques liées à leurs projets.</p><p>Nous avions également un rôle de soutien dans la coordination des équipes. Les tensions ou les difficultés d’organisation étaient fréquentes au sein des groupes. Dans ces moments-là, nous devions aider à calmer les situations, encourager les étudiants et les motiver afin que leur projet puisse avancer dans de bonnes conditions.</p><p>Enfin, j’ai aussi participé à des missions complémentaires, comme la rédaction de documents pédagogiques destinés aux futurs élèves, ainsi que le montage de best-of d’émissions ou encore participer aux notations et faire l’appel. Ces différentes expériences m’ont permis de mieux comprendre le fonctionnement global d’un studio de production mais aussi à accompagner les étudiants dans leurs formations.</p><h2>Un événement que je garde en tête ?</h2><p>Le premier événement marquant de mon stage est arrivé au bout d’une semaine. Des étudiants sont venus au studio avec une demande nouvelle : réaliser une émission co-présentée avec une intelligence artificielle.</p><p>À ce moment-là, je connaissais encore peu les logiciels et la gestion des entrées et sorties audio et vidéo me paraissait très complexe. Comme j’aime l’informatique et que je voulais me montrer volontaire, Étienne m’a associé à ce projet.</p><img src="" alt="Configuration IA et projet" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap"></p><p>J’ai alors fait des recherches, réalisé des schémas et programmé une interface permettant de visualiser l’IA lorsqu’elle parlait. Cette expérience m’a permis de mettre les mains dans le cambouis, de mieux comprendre la complexité d’une production professionnelle et d’être force de proposition face à un problème concret.</p><p>Comment parler d’événements marquants sans évoquer chacun des lives auxquels j’ai participé à la réalisation ? L’ambiance électrique du studio, les élèves en ébullition, les invités parfois inattendus : des chanteurs de mon enfance du générique de Pokémon à Jean-Luc Reichmann; ont rendu ces journées plus qu’intenses, mais ô combien satisfaisantes.</p><a href="https://youtu.be/UzQGS9J4wNg" class="rel-link"><span>À lire aussi</span> Jean-Luc Reichmann en live sur Tour de Piste</a><p>En bref, ce stage a été une superbe occasion de découvrir le monde professionnel et ses exigences au sein d’un média. Le cadre éducatif de la formation m’a permis d’apprendre à toucher à tout, ce qui n’aurait pas forcément été possible ailleurs, mais aussi d’avoir un quotidien au contact des autres et de me sentir épanoui.</p>
+
+    </div>
+
+    <footer class="art-footer">
+      <div class="tags"><span class="tag">Stage</span><span class="tag">expérience pro</span><span class="tag">production</span></div>
+      <a href="../../index.html#articles" class="back">← Retour aux écrits</a>
+    </footer>
+  </article>
+
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio</span></footer>
+</body>
+</html>

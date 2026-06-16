@@ -51,6 +51,20 @@
     .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
     footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
     @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } }
+    /* ── LIGHTBOX ── */
+    .body img, .cover-ph, .img-grid img { cursor: zoom-in; }
+    .lightbox { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.93); align-items: center; justify-content: center; flex-direction: column; }
+    .lightbox.open { display: flex; }
+    .lightbox-inner { position: relative; max-width: 90vw; display: flex; align-items: center; gap: 1.5rem; }
+    .lightbox-img { max-width: 80vw; max-height: 65vh; object-fit: contain; }
+    .lightbox-close { position: fixed; top: 1.5rem; right: 2rem; color: rgba(255,255,255,0.6); font-size: 1.5rem; cursor: pointer; background: none; border: none; transition: color 0.2s; line-height: 1; }
+    .lightbox-close:hover { color: white; }
+    .lightbox-nav { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; flex-shrink: 0; transition: all 0.2s; }
+    .lightbox-nav:hover { border-color: white; color: white; }
+    .lightbox-info { margin-top: 1.25rem; text-align: center; padding: 0 1rem; }
+    .lightbox-info-title { color: white; font-family: var(--serif); font-size: 1rem; font-weight: 400; letter-spacing: 0.01em; }
+    .lightbox-info-alt { color: rgba(255,255,255,0.35); font-family: var(--serif); font-style: italic; font-size: 0.85rem; margin-top: 0.6rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+    .lightbox-counter { position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; }
   </style>
 </head>
 <body>
@@ -121,5 +135,63 @@
   </article>
 
   <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio</span></footer>
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox">
+    <button id="lb-close" class="lightbox-close">✕</button>
+    <span id="lb-counter" class="lightbox-counter"></span>
+    <div class="lightbox-inner">
+      <button id="lb-prev" class="lightbox-nav">‹</button>
+      <img id="lb-img" class="lightbox-img" src="" alt="" />
+      <button id="lb-next" class="lightbox-nav">›</button>
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-info-title" id="lb-title"></div>
+      <div class="lightbox-info-alt" id="lb-alt"></div>
+    </div>
+  </div>
+
+  <script>
+    // Sélectionne toutes les images de l'article
+    const imgs = [...document.querySelectorAll('.body img, .cover-ph, .img-grid img')];
+    // Dédoublonne (img-grid img sont aussi dans .body img)
+    const unique = [...new Set(imgs)];
+
+    let current = 0;
+    const lb       = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lb-img');
+    const lbTitle  = document.getElementById('lb-title');
+    const lbAlt    = document.getElementById('lb-alt');
+    const lbCounter = document.getElementById('lb-counter');
+
+    function openLightbox(idx) {
+      current = idx;
+      lbImg.src            = unique[idx].src;
+      lbTitle.textContent  = unique[idx].alt || '';
+      lbAlt.textContent    = '';
+      lbCounter.textContent = `${idx + 1} / ${unique.length}`;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function navigate(dir) {
+      current = (current + dir + unique.length) % unique.length;
+      openLightbox(current);
+    }
+
+    unique.forEach((img, i) => img.addEventListener('click', () => openLightbox(i)));
+    document.getElementById('lb-close').addEventListener('click', closeLightbox);
+    document.getElementById('lb-prev').addEventListener('click',  () => navigate(-1));
+    document.getElementById('lb-next').addEventListener('click',  () => navigate(1));
+    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+  </script>
 </body>
 </html>

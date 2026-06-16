@@ -75,8 +75,37 @@
         .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1rem 0 0.5rem; }
         .rel-link { background: var(--soft); border: 1px solid var(--border); padding: 1.25rem; margin: 2rem 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-size: 0.9rem; }
         .rel-link span { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
+        .video-embed { margin: 2rem 0 0.5rem; }
+        .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0d0d0d; overflow: hidden; border: 1px solid var(--border); }
+        .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .video-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
+        .prod-pdf-wrap { display: flex; align-items: center; gap: 1.5rem; background: var(--soft); padding: 1.25rem; margin: 2rem 0 0.5rem; border: 1px solid var(--border); }
+        .prod-pdf-icon { width: 3rem; height: 3.5rem; background: #b02020; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .prod-pdf-icon span { color: white; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; }
+        .prod-pdf-info { flex: 1; min-width: 0; }
+        .prod-pdf-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; overflow-wrap: anywhere; }
+        .prod-pdf-size { font-size: 0.72rem; color: var(--muted); }
+        .prod-pdf-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--accent); color: white; text-decoration: none; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; transition: background 0.2s; flex-shrink: 0; }
+        .prod-pdf-btn:hover { background: #1d4a7e; }
+        .pdf-embed-frame { width: 100%; height: min(75vh, 720px); border: 1px solid var(--border); background: var(--soft); margin: 2rem 0 0.5rem; }
+        .pdf-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
+    .prod-audio-wrap { background: var(--soft); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; margin: 2rem 0 0.5rem; border: 1px solid var(--border); }
+    .prod-audio-icon { width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .prod-audio-icon svg { width: 0.8rem; fill: white; margin-left: 2px; }
+    .prod-audio-wrap audio { flex: 1; height: 2rem; min-width: 0; }
+    .prod-audio-wrap audio::-webkit-media-controls-panel { background: var(--soft); }
+    .audio-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
+        .prod-audio-wrap { background: var(--soft); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; margin: 2rem 0 0.5rem; border: 1px solid var(--border); }
+        .prod-audio-icon { width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .prod-audio-icon svg { width: 0.8rem; fill: white; margin-left: 2px; }
+        .prod-audio-wrap audio { flex: 1; height: 2rem; min-width: 0; }
+        .prod-audio-wrap audio::-webkit-media-controls-panel { background: var(--soft); }
+        .audio-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
 
         .hidden { display: none !important; }
+
+
+        @media (max-width: 680px) { .prod-pdf-wrap { flex-wrap: wrap; } .prod-pdf-btn { width: 100%; justify-content: center; } .prod-audio-wrap { flex-wrap: wrap; } .prod-audio-wrap audio { width: 100%; flex-basis: 100%; } }
 
         @media print { .editor-panel, .btn-copy, .modal-overlay { display: none !important; } .preview-panel { padding: 0; } .post-content { border: none !important; box-shadow: none !important; } }
     </style>
@@ -155,6 +184,9 @@
             <option value="img">Image Simple</option>
             <option value="slider">Duo d'images</option>
             <option value="link">Lien de rappel</option>
+            <option value="video">Vidéo intégrée</option>
+            <option value="pdf">Lecteur PDF</option>
+            <option value="audio">Lecteur audio</option>
         </select>
         <button class="btn btn-add" onclick="addBlock()">+ Insérer</button>
     </div>
@@ -217,12 +249,26 @@
     .rel-link { background: var(--soft); border: 1px solid var(--border); padding: 1.25rem; margin: 2rem 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-size: 0.9rem; transition: background 0.2s; }
     .rel-link:hover { background: #efebe8; }
     .rel-link span { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
+    .video-embed { margin: 2rem 0 0.5rem; }
+    .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0d0d0d; overflow: hidden; border: 1px solid var(--border); }
+    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
+    .prod-pdf-wrap { display: flex; align-items: center; gap: 1.5rem; background: var(--soft); padding: 1.25rem; margin: 2rem 0 0.5rem; border: 1px solid var(--border); }
+    .prod-pdf-icon { width: 3rem; height: 3.5rem; background: #b02020; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .prod-pdf-icon span { color: white; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; }
+    .prod-pdf-info { flex: 1; min-width: 0; }
+    .prod-pdf-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; overflow-wrap: anywhere; }
+    .prod-pdf-size { font-size: 0.72rem; color: var(--muted); }
+    .prod-pdf-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--accent); color: white; text-decoration: none; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; transition: background 0.2s; flex-shrink: 0; }
+    .prod-pdf-btn:hover { background: #1d4a7e; }
+    .pdf-embed-frame { width: 100%; height: min(75vh, 720px); border: 1px solid var(--border); background: var(--soft); margin: 2rem 0 0.5rem; }
+    .pdf-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
     .art-footer { margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
     footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
-    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } }
+    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } .prod-pdf-wrap { flex-wrap: wrap; } .prod-pdf-btn { width: 100%; justify-content: center; } .prod-audio-wrap { flex-wrap: wrap; } .prod-audio-wrap audio { width: 100%; flex-basis: 100%; } }
     `.trim();
 
     function escapeHtml(s) {
@@ -340,26 +386,172 @@
 
     function addBlock() {
         const id = "block-" + Date.now();
-        articleBlocks.push({ id, type: document.getElementById('block-type').value, content: '', extra: '', third: '' });
+        const type = document.getElementById('block-type').value;
+        const block = { id, type, content: '', extra: '', third: '' };
+
+        if (type === 'video') {
+            Object.assign(block, {
+                platform: 'auto',
+                autoplay: false,
+                controls: true,
+                muted: false,
+                loop: false,
+                privacy: true,
+                allowFullscreen: true,
+                start: ''
+            });
+        }
+
+        if (type === 'pdf') {
+            Object.assign(block, {
+                pdfMode: 'card',
+                pdfTitle: '',
+                pdfButton: 'Ouvrir ↗',
+                pdfCaption: ''
+            });
+        }
+
+        if (type === 'audio') {
+            Object.assign(block, {
+                audioSourceType: 'auto',
+                audioMime: 'auto',
+                audioTitle: '',
+                audioCaption: '',
+                audioPreload: 'metadata',
+                autoplay: false,
+                controls: true,
+                muted: false,
+                loop: false
+            });
+        }
+
+        articleBlocks.push(block);
         renderEditor(); render();
     }
 
     function renderEditor() {
         blocksContainer.innerHTML = '<h2>Corps de l\'article</h2>';
         articleBlocks.forEach(block => {
-            const div = document.createElement('div'); div.className = 'section-card draggable-block'; div.dataset.id = block.id;
-            let fields = `<button class="btn-remove" onclick="articleBlocks=articleBlocks.filter(b=>b.id!=='${block.id}');renderEditor();render()">×</button><label>${block.type}</label>`;
-            if(block.type === 'slider' || block.type === 'link') {
-                fields += `<input placeholder="Image 1 / Texte" value="${block.content}" oninput="updateBlock('${block.id}','content',this.value)">`;
-                fields += `<input placeholder="Image 2 / URL" value="${block.extra}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
-                if(block.type === 'slider') fields += `<input placeholder="Légende" value="${block.third||''}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+            const div = document.createElement('div');
+            div.className = 'section-card draggable-block';
+            div.dataset.id = block.id;
+
+            const typeLabel = {
+                p: 'Paragraphe',
+                h2: 'Sous-titre (H2)',
+                quote: 'Citation',
+                img: 'Image simple',
+                slider: 'Duo d\'images',
+                link: 'Lien de rappel',
+                video: 'Vidéo intégrée',
+                pdf: 'Lecteur PDF',
+                audio: 'Lecteur audio'
+            }[block.type] || block.type;
+
+            const v = (value) => escapeHtml(value || '');
+            let fields = `<button class="btn-remove" onclick="articleBlocks=articleBlocks.filter(b=>b.id!=='${block.id}');renderEditor();render()">×</button><label>${typeLabel}</label>`;
+
+            if (block.type === 'audio') {
+                const audioSourceType = block.audioSourceType || 'auto';
+                const audioMime = block.audioMime || 'auto';
+                const audioPreload = block.audioPreload || 'metadata';
+                fields += `
+                    <label>Type de source</label>
+                    <select onchange="updateBlock('${block.id}','audioSourceType',this.value)">
+                        <option value="auto" ${audioSourceType === 'auto' ? 'selected' : ''}>Automatique</option>
+                        <option value="local" ${audioSourceType === 'local' ? 'selected' : ''}>Fichier du site</option>
+                        <option value="external" ${audioSourceType === 'external' ? 'selected' : ''}>Lien externe</option>
+                    </select>
+                    <label>Lien du fichier audio</label>
+                    <input placeholder="../audio/emission.mp3 ou https://..." value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">
+                    <label>Type audio</label>
+                    <select onchange="updateBlock('${block.id}','audioMime',this.value)">
+                        <option value="auto" ${audioMime === 'auto' ? 'selected' : ''}>Détection automatique</option>
+                        <option value="audio/mpeg" ${audioMime === 'audio/mpeg' ? 'selected' : ''}>MP3 — audio/mpeg</option>
+                        <option value="audio/wav" ${audioMime === 'audio/wav' ? 'selected' : ''}>WAV — audio/wav</option>
+                        <option value="audio/ogg" ${audioMime === 'audio/ogg' ? 'selected' : ''}>OGG — audio/ogg</option>
+                        <option value="audio/mp4" ${audioMime === 'audio/mp4' ? 'selected' : ''}>M4A — audio/mp4</option>
+                        <option value="audio/flac" ${audioMime === 'audio/flac' ? 'selected' : ''}>FLAC — audio/flac</option>
+                    </select>
+                    <label>Titre accessible</label>
+                    <input placeholder="Titre du son" value="${v(block.audioTitle)}" oninput="updateBlock('${block.id}','audioTitle',this.value)">
+                    <label>Légende / description optionnelle</label>
+                    <textarea oninput="updateBlock('${block.id}','audioCaption',this.value)">${v(block.audioCaption)}</textarea>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+                        <div>
+                            <label>Préchargement</label>
+                            <select onchange="updateBlock('${block.id}','audioPreload',this.value)">
+                                <option value="metadata" ${audioPreload === 'metadata' ? 'selected' : ''}>Métadonnées</option>
+                                <option value="none" ${audioPreload === 'none' ? 'selected' : ''}>Aucun</option>
+                                <option value="auto" ${audioPreload === 'auto' ? 'selected' : ''}>Auto</option>
+                            </select>
+                        </div>
+                        <div><label>Options</label><div style="font-size:0.75rem;line-height:1.8;color:#444;">
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.controls !== false ? 'checked' : ''} onchange="updateBlock('${block.id}','controls',this.checked)"> Contrôles</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.autoplay ? 'checked' : ''} onchange="updateBlock('${block.id}','autoplay',this.checked)"> Autoplay</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.muted ? 'checked' : ''} onchange="updateBlock('${block.id}','muted',this.checked)"> Muet</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.loop ? 'checked' : ''} onchange="updateBlock('${block.id}','loop',this.checked)"> Boucle</label>
+                        </div></div>
+                    </div>`;
+            } else if (block.type === 'pdf') {
+                const pdfMode = block.pdfMode || 'card';
+                fields += `
+                    <label>Mode d’affichage</label>
+                    <select onchange="updateBlock('${block.id}','pdfMode',this.value)">
+                        <option value="card" ${pdfMode === 'card' ? 'selected' : ''}>Carte PDF avec bouton</option>
+                        <option value="embed" ${pdfMode === 'embed' ? 'selected' : ''}>Lecteur PDF intégré</option>
+                    </select>
+                    <label>Lien du PDF</label>
+                    <input placeholder="../docs/document.pdf ou https://..." value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">
+                    <label>Nom affiché du fichier</label>
+                    <input placeholder="exemple.pdf" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)">
+                    <label>Taille indicative</label>
+                    <input placeholder="2,4 Mo" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)">
+                    <label>Titre accessible</label>
+                    <input placeholder="Titre du document PDF" value="${v(block.pdfTitle)}" oninput="updateBlock('${block.id}','pdfTitle',this.value)">
+                    <label>Texte du bouton</label>
+                    <input placeholder="Ouvrir ↗" value="${v(block.pdfButton || 'Ouvrir ↗')}" oninput="updateBlock('${block.id}','pdfButton',this.value)">
+                    <label>Légende / description optionnelle</label>
+                    <textarea oninput="updateBlock('${block.id}','pdfCaption',this.value)">${v(block.pdfCaption)}</textarea>`;
+            } else if (block.type === 'video') {
+                const platform = block.platform || 'auto';
+                fields += `
+                    <label>Plateforme</label>
+                    <select onchange="updateBlock('${block.id}','platform',this.value)">
+                        <option value="auto" ${platform === 'auto' ? 'selected' : ''}>Détection automatique</option>
+                        <option value="youtube" ${platform === 'youtube' ? 'selected' : ''}>YouTube</option>
+                        <option value="dailymotion" ${platform === 'dailymotion' ? 'selected' : ''}>Dailymotion</option>
+                        <option value="vimeo" ${platform === 'vimeo' ? 'selected' : ''}>Vimeo</option>
+                        <option value="iframe" ${platform === 'iframe' ? 'selected' : ''}>Iframe direct / URL embed</option>
+                    </select>
+                    <label>Lien de la vidéo</label>
+                    <input placeholder="https://www.youtube.com/watch?v=..." value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">
+                    <label>Titre accessible de l’iframe</label>
+                    <input placeholder="Titre de la vidéo" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)">
+                    <label>Légende / crédit</label>
+                    <input placeholder="Source, crédit ou précision" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+                        <div><label>Début à</label><input type="number" min="0" placeholder="0 sec" value="${v(block.start)}" oninput="updateBlock('${block.id}','start',this.value)"></div>
+                        <div><label>Options</label><div style="font-size:0.75rem;line-height:1.8;color:#444;">
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.controls !== false ? 'checked' : ''} onchange="updateBlock('${block.id}','controls',this.checked)"> Contrôles</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.autoplay ? 'checked' : ''} onchange="updateBlock('${block.id}','autoplay',this.checked)"> Autoplay</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.muted ? 'checked' : ''} onchange="updateBlock('${block.id}','muted',this.checked)"> Muet</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.loop ? 'checked' : ''} onchange="updateBlock('${block.id}','loop',this.checked)"> Boucle</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.privacy !== false ? 'checked' : ''} onchange="updateBlock('${block.id}','privacy',this.checked)"> Mode confidentialité YouTube</label>
+                            <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.allowFullscreen !== false ? 'checked' : ''} onchange="updateBlock('${block.id}','allowFullscreen',this.checked)"> Plein écran</label>
+                        </div></div>
+                    </div>`;
+            } else if(block.type === 'slider' || block.type === 'link') {
+                fields += `<input placeholder="Image 1 / Texte" value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">`;
+                fields += `<input placeholder="Image 2 / URL" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
+                if(block.type === 'slider') fields += `<input placeholder="Légende" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
             } else {
-                fields += `<textarea oninput="updateBlock('${block.id}','content',this.value)">${block.content}</textarea>`;
+                fields += `<textarea oninput="updateBlock('${block.id}','content',this.value)">${v(block.content)}</textarea>`;
                 if (block.type === 'img') {
-                    fields += `<input placeholder="Légende / crédit" value="${block.extra || ''}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
-                    fields += `<input placeholder="Texte alternatif (alt)" value="${block.third || ''}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+                    fields += `<input placeholder="Légende / crédit" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
+                    fields += `<input placeholder="Texte alternatif (alt)" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
                 } else if (block.type === 'quote') {
-                    fields += `<input placeholder="Source / attribution" value="${block.extra || ''}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
+                    fields += `<input placeholder="Source / attribution" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
                 }
             }
             div.innerHTML = fields; blocksContainer.appendChild(div);
@@ -387,6 +579,208 @@
         return html;
     }
 
+
+    function normalizeVideoPlatform(url, selectedPlatform) {
+        if (selectedPlatform && selectedPlatform !== 'auto') return selectedPlatform;
+        const value = String(url || '').toLowerCase();
+        if (value.includes('youtube.com') || value.includes('youtu.be')) return 'youtube';
+        if (value.includes('dailymotion.com') || value.includes('dai.ly')) return 'dailymotion';
+        if (value.includes('vimeo.com')) return 'vimeo';
+        return 'iframe';
+    }
+
+    function getVideoId(url, platform) {
+        const raw = String(url || '').trim();
+        if (!raw) return '';
+
+        try {
+            const u = new URL(raw);
+            const host = u.hostname.replace(/^www\./, '');
+            const parts = u.pathname.split('/').filter(Boolean);
+
+            if (platform === 'youtube') {
+                if (host === 'youtu.be') return parts[0] || '';
+                if (u.searchParams.get('v')) return u.searchParams.get('v');
+                const embedIndex = parts.indexOf('embed');
+                if (embedIndex !== -1) return parts[embedIndex + 1] || '';
+                if (parts[0] === 'shorts' || parts[0] === 'live') return parts[1] || '';
+            }
+
+            if (platform === 'dailymotion') {
+                if (host === 'dai.ly') return parts[0] || '';
+                const videoIndex = parts.indexOf('video');
+                if (videoIndex !== -1) return (parts[videoIndex + 1] || '').split('_')[0];
+                if (parts[0] === 'embed' && parts[1] === 'video') return parts[2] || '';
+            }
+
+            if (platform === 'vimeo') {
+                const videoIndex = parts.indexOf('video');
+                if (host === 'player.vimeo.com' && videoIndex !== -1) return parts[videoIndex + 1] || '';
+                return parts.find(part => /^\d+$/.test(part)) || '';
+            }
+        } catch (e) {
+            return '';
+        }
+
+        return '';
+    }
+
+    function buildQuery(params) {
+        const q = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') q.set(key, value);
+        });
+        const s = q.toString();
+        return s ? `?${s}` : '';
+    }
+
+    function buildVideoEmbedData(block) {
+        const sourceUrl = String(block.content || '').trim();
+        const platform = normalizeVideoPlatform(sourceUrl, block.platform || 'auto');
+        const start = Math.max(0, parseInt(block.start, 10) || 0);
+        const controls = block.controls !== false;
+        const autoplay = !!block.autoplay;
+        const muted = !!block.muted || autoplay;
+        const loop = !!block.loop;
+        const id = getVideoId(sourceUrl, platform);
+
+        if (!sourceUrl) return { ok: false, message: 'Ajoute un lien vidéo pour générer l’iframe.' };
+
+        if (platform === 'youtube') {
+            if (!id) return { ok: false, message: 'Lien YouTube non reconnu.' };
+            const host = block.privacy !== false ? 'https://www.youtube-nocookie.com' : 'https://www.youtube.com';
+            const params = {
+                rel: '0',
+                modestbranding: '1',
+                controls: controls ? '1' : '0',
+                autoplay: autoplay ? '1' : '',
+                mute: muted ? '1' : '',
+                start: start || '',
+                loop: loop ? '1' : '',
+                playlist: loop ? id : ''
+            };
+            return { ok: true, platform, src: `${host}/embed/${encodeURIComponent(id)}${buildQuery(params)}` };
+        }
+
+        if (platform === 'dailymotion') {
+            if (!id) return { ok: false, message: 'Lien Dailymotion non reconnu.' };
+            const params = {
+                controls: controls ? '1' : '0',
+                autoplay: autoplay ? '1' : '',
+                mute: muted ? '1' : '',
+                start: start || '',
+                loop: loop ? '1' : ''
+            };
+            return { ok: true, platform, src: `https://www.dailymotion.com/embed/video/${encodeURIComponent(id)}${buildQuery(params)}` };
+        }
+
+        if (platform === 'vimeo') {
+            if (!id) return { ok: false, message: 'Lien Vimeo non reconnu.' };
+            const params = {
+                controls: controls ? '1' : '0',
+                autoplay: autoplay ? '1' : '',
+                muted: muted ? '1' : '',
+                loop: loop ? '1' : ''
+            };
+            const hash = start ? `#t=${start}s` : '';
+            return { ok: true, platform, src: `https://player.vimeo.com/video/${encodeURIComponent(id)}${buildQuery(params)}${hash}` };
+        }
+
+        // Mode avancé : on considère que l’URL fournie est déjà une URL d’embed utilisable en src d’iframe.
+        return { ok: true, platform: 'iframe', src: sourceUrl };
+    }
+
+    function buildVideoBlockHtml(block) {
+        const data = buildVideoEmbedData(block);
+        if (!data.ok) return `<div class="video-error">${escapeHtml(data.message)}</div>`;
+        const title = block.third || 'Vidéo intégrée';
+        const caption = block.extra || '';
+        const allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        const fullscreen = block.allowFullscreen !== false ? ' allowfullscreen' : '';
+        return `<div class="video-embed"><div class="video-frame"><iframe src="${escapeHtml(data.src)}" title="${escapeHtml(title)}" loading="lazy" allow="${allow}"${fullscreen}></iframe></div></div>${caption ? `<p class="cover-cap">${escapeHtml(caption)}</p>` : ''}`;
+    }
+
+
+    function filenameFromUrl(url) {
+        const raw = String(url || '').trim();
+        if (!raw) return '';
+        try {
+            const u = new URL(raw, window.location.href);
+            const last = u.pathname.split('/').filter(Boolean).pop() || '';
+            return decodeURIComponent(last) || raw;
+        } catch (e) {
+            return raw.split('/').filter(Boolean).pop() || raw;
+        }
+    }
+
+    function isSafeDocumentUrl(url) {
+        const raw = String(url || '').trim();
+        if (!raw) return false;
+        if (/^(javascript|data):/i.test(raw)) return false;
+        return true;
+    }
+
+    function buildPdfBlockHtml(block) {
+        const src = String(block.content || '').trim();
+        if (!isSafeDocumentUrl(src)) return `<div class="pdf-error">Ajoute un lien PDF valide pour générer le lecteur.</div>`;
+
+        const mode = block.pdfMode || 'card';
+        const filename = block.extra || filenameFromUrl(src) || 'Document PDF';
+        const size = block.third || '';
+        const title = block.pdfTitle || filename;
+        const button = block.pdfButton || 'Ouvrir ↗';
+        const caption = block.pdfCaption || '';
+
+        if (mode === 'embed') {
+            return `<iframe class="pdf-embed-frame" src="${escapeHtml(src)}" title="${escapeHtml(title)}" loading="lazy"></iframe>${caption ? `<p class="cover-cap">${escapeHtml(caption)}</p>` : ''}`;
+        }
+
+        return `<div class="prod-pdf-wrap">
+        <div class="prod-pdf-icon"><span>PDF</span></div>
+        <div class="prod-pdf-info">
+          <p class="prod-pdf-name">${escapeHtml(filename)}</p>
+          <p class="prod-pdf-size">${escapeHtml(size)}</p>
+        </div>
+        <a href="${escapeHtml(src)}" target="_blank" rel="noopener" class="prod-pdf-btn">${escapeHtml(button)}</a>
+      </div>${caption ? `<p class="cover-cap">${escapeHtml(caption)}</p>` : ''}`;
+    }
+
+
+    function guessAudioMime(src) {
+        const clean = String(src || '').split('?')[0].split('#')[0].toLowerCase();
+        if (clean.endsWith('.mp3')) return 'audio/mpeg';
+        if (clean.endsWith('.wav')) return 'audio/wav';
+        if (clean.endsWith('.ogg') || clean.endsWith('.oga')) return 'audio/ogg';
+        if (clean.endsWith('.m4a') || clean.endsWith('.mp4')) return 'audio/mp4';
+        if (clean.endsWith('.aac')) return 'audio/aac';
+        if (clean.endsWith('.flac')) return 'audio/flac';
+        return 'audio/mpeg';
+    }
+
+    function buildAudioBlockHtml(block) {
+        const src = String(block.content || '').trim();
+        if (!isSafeDocumentUrl(src)) return `<div class="audio-error">Ajoute un lien audio valide pour générer le lecteur.</div>`;
+
+        const mime = (block.audioMime && block.audioMime !== 'auto') ? block.audioMime : guessAudioMime(src);
+        const title = block.audioTitle || filenameFromUrl(src) || 'Audio intégré';
+        const caption = block.audioCaption || '';
+        const preload = block.audioPreload || 'metadata';
+        const controls = block.controls !== false ? ' controls' : '';
+        const autoplay = block.autoplay ? ' autoplay' : '';
+        const muted = block.muted || block.autoplay ? ' muted' : '';
+        const loop = block.loop ? ' loop' : '';
+
+        return `<div class="prod-audio-wrap" aria-label="${escapeHtml(title)}">
+        <div class="prod-audio-icon" aria-hidden="true">
+          <svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>
+        </div>
+        <audio${controls}${autoplay}${muted}${loop} preload="${escapeHtml(preload)}">
+          <source src="${escapeHtml(src)}" type="${escapeHtml(mime)}">
+          Votre navigateur ne supporte pas l'audio HTML5.
+        </audio>
+      </div>${caption ? `<p class="cover-cap">${escapeHtml(caption)}</p>` : ''}`;
+    }
+
     function buildArticleBodyHtml() {
         let bodyHtml = '';
         articleBlocks.forEach(b => {
@@ -406,6 +800,15 @@
             }
             if (b.type === 'slider') {
                 bodyHtml += `<div class="img-grid"><img src="${escapeHtml(c)}" alt="" class="cover-ph" style="object-fit:cover;" /><img src="${escapeHtml(e)}" alt="" class="cover-ph" style="object-fit:cover;" /></div><p class="cover-cap">${escapeHtml(t)}</p>`;
+            }
+            if (b.type === 'video') {
+                bodyHtml += buildVideoBlockHtml(b);
+            }
+            if (b.type === 'pdf') {
+                bodyHtml += buildPdfBlockHtml(b);
+            }
+            if (b.type === 'audio') {
+                bodyHtml += buildAudioBlockHtml(b);
             }
         });
         return bodyHtml;

@@ -1,0 +1,15 @@
+{
+  "name": "blog-alexandre-ligneul",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio journaliste — lecture publique, publication avec compte",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2"
+  }
+}

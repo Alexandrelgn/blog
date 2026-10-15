@@ -1,7 +1,14 @@
 [
   {
+    "url": "https://youtu.be/UzQGS9J4wNg",
+    "featured": false,
+    "category": "Production Studio Expérience Pro",
+    "date": "9 juin 2026",
+    "description": "Tour de Piste - Rediffusion\nRéalisateur :  Étienne Pozzo\nAssistants de production : Alexandre Ligneul & Amandine Charpentier\nMerci à nos invités : Louis Bodin et Jean-Luc Reichmann"
+  },
+  {
     "url": "https://youtu.be/bUumyKAdm0w",
-    "featured": true,
+    "featured": false,
     "category": "Portrait · Interview",
     "date": "24 novembre 2025",
     "description": "Rencontre avec un mannequin parisien sur son parcours, les coulisses du secteur et les questions d'identité dans l'industrie de la mode. Un portrait humain au cœur d'un monde peu connu.",
@@ -13,14 +20,23 @@
   },
   {
     "url": "https://youtu.be/uyvNkkosqoM",
+    "featured": false,
     "category": "Reportage",
     "date": "17 février 2026",
     "description": "A la rencontre du rappeur He4tDem qui pond un morceau sous nos yeux, il revient sur sa façon de travailler et son parcours tout ca dans la joie et la bonne humeur."
   },
   {
     "url": "https://youtu.be/PqDhAMX6BFE",
+    "featured": false,
     "category": "Reportage",
     "date": "5 mars 2026",
     "description": "Ancien réseau de transport de marchandises, la Petite Ceinture illustre aujourd'hui pleinement les enjeux de la gestion urbaine. À la veille des élections municipales, quel avenir pour cette friche ?..."
+  },
+  {
+    "url": "https://youtu.be/ILlTgGJOzXc",
+    "featured": true,
+    "category": "Production, Studio, Expérience Pro",
+    "date": "15 juin 2026",
+    "description": "Récap des émissions ICART 3\nProduit par ComOne et ICART"
   }
 ]

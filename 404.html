@@ -4,62 +4,110 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>404 — Page introuvable | Alexandre Ligneul</title>
-
-<style>
-  
-  #hero {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 0;
-    min-height: 88vh;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 5rem 2.5rem 4rem;
-    align-items: center;
-}
-</style>
+  <meta name="robots" content="noindex" />
+  <!-- GitHub Pages affiche cette page pour toute adresse introuvable, quel que soit le dossier :
+       les liens sont donc absolus, à partir de la racine du site (/blog/). -->
+  <link rel="icon" href="/blog/assets/site/favicon.ico" />
   <link rel="stylesheet" href="/blog/assets/fonts/fonts.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
+    html { height: 100%; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+
+    /* ── NAV (identique aux autres pages) ── */
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── CONTENU ── */
+    main { flex: 1; display: flex; align-items: center; }
+    .error-card { display: grid; grid-template-columns: 1fr 340px; gap: 4rem; align-items: center; width: 100%; max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .eyebrow { display: inline-block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); padding: 0.3rem 0.85rem; border-radius: 2px; margin-bottom: 1.5rem; }
+    h1 { font-family: var(--serif); font-size: clamp(2.4rem, 5vw, 3.75rem); font-weight: 600; line-height: 1.1; margin-bottom: 1.25rem; }
+    h1 span { color: var(--accent); }
+    .error-card p { font-size: 0.97rem; color: #444; max-width: 520px; margin-bottom: 2.25rem; }
+    .actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 0.7rem 1.6rem; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s; }
+    .btn.primary { background: var(--accent); color: #fff; font-weight: 500; }
+    .btn.primary:hover { background: #1d4a7e; transform: translateY(-1px); }
+    .btn.secondary { border: 1px solid var(--border); color: var(--ink); }
+    .btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Viseur d'appareil photo : 4 coins et le code d'erreur au centre */
+    .viewfinder { position: relative; aspect-ratio: 4 / 5; background: var(--soft); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+    .viewfinder::before, .viewfinder::after { content: ''; position: absolute; background: var(--border); }
+    .viewfinder::before { left: 50%; top: 42%; bottom: 42%; width: 1px; }
+    .viewfinder::after { top: 50%; left: 42%; right: 42%; height: 1px; }
+    .corner { position: absolute; width: 2.25rem; height: 2.25rem; border: 0 solid var(--accent); }
+    .corner.tl { top: 1.25rem; left: 1.25rem; border-top-width: 2px; border-left-width: 2px; }
+    .corner.tr { top: 1.25rem; right: 1.25rem; border-top-width: 2px; border-right-width: 2px; }
+    .corner.bl { bottom: 1.25rem; left: 1.25rem; border-bottom-width: 2px; border-left-width: 2px; }
+    .corner.br { bottom: 1.25rem; right: 1.25rem; border-bottom-width: 2px; border-right-width: 2px; }
+    .code { position: relative; z-index: 1; font-family: var(--serif); font-style: italic; font-size: 5.5rem; line-height: 1; color: var(--accent); opacity: 0.85; background: var(--soft); padding: 0 0.75rem; }
+    .rec { position: absolute; top: 1.6rem; left: 50%; transform: translateX(-50%); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
+    .rec::before { content: ''; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #c0392b; animation: blink 1.4s infinite; }
+    @keyframes blink { 50% { opacity: 0.2; } }
+    @media (prefers-reduced-motion: reduce) { .rec::before { animation: none; } }
+
+    /* ── FOOTER ── */
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    footer a { color: #888582; }
+
+    @media (max-width: 860px) {
+      nav, footer { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      .error-card { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.25rem; }
+      .viewfinder { aspect-ratio: 16 / 9; max-width: 420px; }
+    }
+    @media (max-width: 560px) {
+      .nav-links { display: none; }
+      footer { flex-direction: column; gap: 0.25rem; }
+    }
+  </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <a class="brand" href="/blog/">Alexandre Ligneul</a>
-      <nav aria-label="Navigation principale">
-        <a href="/blog/#photos">Photos</a>
-        <a href="/blog/#videos">Vidéos</a>
-        <a href="/blog/#ecrits">Écrits</a>
-        <a href="/blog/#podcasts">Podcasts</a>
-        <a href="/blog/#contact">Contact</a>
-      </nav>
-    </header>
+  <nav aria-label="Navigation principale">
+    <a href="/blog/" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <ul class="nav-links">
+      <li><a href="/blog/photos.html">Photos</a></li>
+      <li><a href="/blog/videos.html">Vidéos</a></li>
+      <li><a href="/blog/articles.html">Écrits</a></li>
+      <li><a href="/blog/podcasts.html">Podcasts</a></li>
+      <li><a href="/blog/#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-    <main>
-      <section class="error-card" aria-labelledby="title-404">
-        <div>
-          <div class="eyebrow">Hors champ</div>
-          <h1 id="title-404">Erreur <span>404</span></h1>
-          <p>
-            La page que vous cherchez semble avoir quitté le cadre. Elle a peut-être été déplacée,
-            supprimée, ou l'adresse contient une erreur. Retournez à l'accueil pour retrouver mes
-            reportages, photos, écrits et podcasts.
-          </p>
-          <div class="actions">
-            <a class="btn primary" href="/blog/">Retour à l'accueil</a>
-            <a class="btn secondary" href="/blog/#contact">Me contacter</a>
-          </div>
+  <main>
+    <section class="error-card" aria-labelledby="title-404">
+      <div>
+        <div class="eyebrow">Hors champ</div>
+        <h1 id="title-404">Erreur <span>404</span></h1>
+        <p>
+          La page que vous cherchez semble avoir quitté le cadre. Elle a peut-être été déplacée,
+          supprimée, ou l'adresse contient une erreur. Retournez à l'accueil pour retrouver mes
+          reportages, photos, écrits et podcasts.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="/blog/">Retour à l'accueil</a>
+          <a class="btn secondary" href="/blog/#contact">Me contacter</a>
         </div>
+      </div>
 
-        <div class="viewfinder" aria-hidden="true">
-          <div class="corner tl"></div>
-          <div class="corner tr"></div>
-          <div class="corner bl"></div>
-          <div class="corner br"></div>
-          <div class="code">404</div>
-        </div>
-      </section>
-    </main>
+      <div class="viewfinder" aria-hidden="true">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+        <div class="rec">Rec</div>
+        <div class="code">404</div>
+      </div>
+    </section>
+  </main>
 
-    <footer>© 2026 Alexandre Ligneul Portfolio · <a href="/blog/mentions-legales.html" style="color:#888582;">Mentions légales</a></footer>
-  </div>
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="/blog/mentions-legales.html">Mentions légales</a></span></footer>
 </body>
 </html>

@@ -1,3 +1,13 @@
 node_modules
 .env
 .data
+
+# Fichiers de travail gardés sur l'ordinateur, mais pas publiés sur le site
+_archives/
+
+# Tutoriel de publication : gardé en local, pas publié sur le site
+TUTORIEL.md
+TUTORIEL.pdf
+
+# Fichiers système de Windows / OneDrive
+desktop.ini

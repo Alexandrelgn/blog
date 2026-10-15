@@ -42,7 +42,8 @@ async function loadArticle(entry) {
   const imgSrc = entry.image || img?.getAttribute('src');
 
   return {
-    href: url.href,
+    // Lien sans « .html » : GitHub Pages sert « article » à partir du fichier « article.html »
+    href: url.href.replace(/\.html$/, ''),
     featured: !!entry.featured,
     title: text('.art-title') || doc.title,
     category: entry.category || text('.art-cat'),

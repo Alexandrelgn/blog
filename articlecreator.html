@@ -256,7 +256,7 @@
     </datalist>
 
     <div class="file-ops" style="margin-top: 8px;">
-        <button class="btn btn-copy" style="margin-top: 0; grid-column: span 2;" onclick="copyFullHTML()">COPIER HTML (comme assets/articles/1.html)</button>
+        <button class="btn btn-copy" style="margin-top: 0; grid-column: span 2;" onclick="copyFullHTML()">COPIER HTML (page article complète)</button>
         <button class="btn btn-sec main-export-btn" style="grid-column: span 2;" onclick="downloadArticleHTML()">Télécharger .html</button>
     </div>
 
@@ -970,7 +970,7 @@
         const who = provider || 'un service externe';
         return `<div class="video-embed"><div class="video-frame"><button type="button" class="video-consent" data-src="${escapeHtml(src)}" data-title="${escapeHtml(title)}" onclick="${escapeHtml(onclick)}">`
             + `<span class="video-consent-play"></span><span class="video-consent-title">${escapeHtml(title)}</span><span class="video-consent-note">Lire la vidéo${provider ? ' · ' + provider : ''}</span></button></div>`
-            + `<p class="video-consent-info">La vidéo est hébergée par ${who} : en la lançant, vous acceptez que ${provider || 'ce service'} dépose des cookies sur votre appareil. <a href="../../mentions-legales.html#cookies">En savoir plus</a></p></div>`
+            + `<p class="video-consent-info">La vidéo est hébergée par ${who} : en la lançant, vous acceptez que ${provider || 'ce service'} dépose des cookies sur votre appareil. <a href="../../mentions-legales#cookies">En savoir plus</a></p></div>`
             + `${caption ? `<p class="cover-cap">${escapeHtml(caption)}</p>` : ''}`;
     }
 
@@ -1099,7 +1099,7 @@
         return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" class="cover-ph" />\n      <p class="cover-cap">${escapeHtml(cap)}</p>\n\n    `;
     }
 
-    /** Page complète : chemins comme assets/articles/1.html (../../ vers la racine du site) */
+    /** Page complète, rangée dans assets/articles/ (../../ vers la racine du site) */
     function buildFullArticleHTML() {
         const short = document.getElementById('nav-short').value.trim() || 'Article';
         const cat = document.getElementById('meta-cat').value;
@@ -1123,19 +1123,19 @@
 </head>
 <body>
   <nav>
-    <a href="../../index.html" class="nav-logo">Alexandre <span>Ligneul</span></a>
+    <a href="../../" class="nav-logo">Alexandre <span>Ligneul</span></a>
     <ul class="nav-links">
-      <li><a href="../../photos.html">Photos</a></li>
-      <li><a href="../../videos.html">Vidéos</a></li>
-      <li><a href="../../articles.html">Écrits</a></li>
-      <li><a href="../../podcasts.html">Podcasts</a></li>
-      <li><a href="../../index.html#contact">Contact</a></li>
+      <li><a href="../../photos">Photos</a></li>
+      <li><a href="../../videos">Vidéos</a></li>
+      <li><a href="../../articles">Écrits</a></li>
+      <li><a href="../../podcasts">Podcasts</a></li>
+      <li><a href="../../#contact">Contact</a></li>
     </ul>
   </nav>
 
   <article class="wrap">
     <header class="article-header">
-      <p class="breadcrumb"><a href="../../index.html">Accueil</a><span>/</span><a href="../../articles.html">Écrits</a><span>/</span>${escapeHtml(short)}</p>
+      <p class="breadcrumb"><a href="../../">Accueil</a><span>/</span><a href="../../articles">Écrits</a><span>/</span>${escapeHtml(short)}</p>
       <span class="art-cat">${escapeHtml(cat)}</span>
       <h1 class="art-title">${escapeHtml(title)}</h1>
       <p class="art-intro">${escapeHtml(intro)}</p>
@@ -1154,11 +1154,11 @@ ${buildArticleBodyHtml()}
 
     <footer class="art-footer">
       <div class="tags">${buildTagsHtml()}</div>
-      <a href="../../index.html#articles" class="back">← Retour aux écrits</a>
+      <a href="../../#articles" class="back">← Retour aux écrits</a>
     </footer>
   </article>
 
-  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="../../mentions-legales.html" style="color:#888582;">Mentions légales</a></span></footer>
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="../../mentions-legales" style="color:#888582;">Mentions légales</a></span></footer>
 </body>
 </html>`;
     }
@@ -1201,7 +1201,7 @@ ${buildArticleBodyHtml()}
         const fullPage = buildFullArticleHTML();
         try {
             await navigator.clipboard.writeText(fullPage);
-            alert("HTML copié dans le presse-papiers. Collez-le dans assets/articles/N.html (même structure que 1.html).");
+            alert("HTML copié dans le presse-papiers. Collez-le dans assets/articles/" + articleFileName() + ".");
         } catch (err) {
             alert("Erreur lors de la copie. Utilisez « Télécharger .html ».");
         }
@@ -1372,7 +1372,7 @@ ${buildArticleBodyHtml()}
                     added ? `Ajout de ${file} \u00e0 la liste des \u00e9crits` : `${file} \u00e0 la une`, listFile && listFile.sha);
             }
 
-            const url = ghPagesUrl(s, path);
+            const url = ghPagesUrl(s, path.replace(/\.html$/, ''));
             setGhStatus(`\u2705 Article ${existing ? 'mis \u00e0 jour' : 'publi\u00e9'}${added ? ' et ajout\u00e9 \u00e0 la liste des \u00e9crits' : ''}. `
                 + `Il sera en ligne dans 1 \u00e0 2 minutes : <a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`, 'ok');
         } catch (err) {

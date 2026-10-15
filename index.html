@@ -291,6 +291,12 @@
       transition: gap 0.2s;
     }
     .article-read::after { content: ' →'; }
+    a.article-card { display: block; text-decoration: none; color: inherit; }
+    a.article-card.featured-article { display: grid; }
+    .article-card-img { aspect-ratio: 16/9; overflow: hidden; background: linear-gradient(135deg, #d4e0ec, #b8cce0); }
+    .article-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s; }
+    .article-card:hover .article-card-img img { transform: scale(1.03); }
+    .article-excerpt { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
     /* ── PODCASTS ── */
     .podcasts-grid { display: flex; flex-direction: column; gap: 0; }
@@ -452,29 +458,8 @@
         <span class="section-label-line"></span>
         <a href="photos.html" class="section-label-link">Toute la galerie →</a>
       </div>
-      <div class="photos-grid reveal">
-        <div class="photo-card featured">
-          <img
-            src="https://res.cloudinary.com/dpggjkaj4/image/upload/v1764110112/rachida-10_cyqd7j.jpg"
-            alt="Rachida Dati, Municipale 2026"
-          />
-          <div class="photo-card-caption">Rachida Dati — Municipale 2026, Paris</div>
-        </div>
-        <div class="photo-card">
-          <img
-            src="https://res.cloudinary.com/dpggjkaj4/image/upload/v1773091269/IMG_0631_ndwllr.jpg"
-            alt="200 ans du Figaro"
-          />
-          <div class="photo-card-caption">200 ans du Figaro, Paris</div>
-        </div>
-        <div class="photo-card" style="background:#e8e4dc;">
-          <img
-            src="https://res.cloudinary.com/dpggjkaj4/image/upload/v1773091297/IMG_2221_zwrgmb.jpg"
-            alt="Terrain"
-            style="opacity:0.5;"
-          />
-          <div class="photo-card-caption">8 Mars 2026, La journée des droits des femmes, Place de la République à Paris</div>
-        </div>
+      <!-- Générée à partir de « photosAccueil » dans assets/photos/liste-photos.js -->
+      <div class="photos-grid reveal" id="home-photos">
         <p>©Alexandre Ligneul - Tous droits réservés</p>
       </div>
       
@@ -490,57 +475,8 @@
         <span class="section-label-line"></span>
         <a href="videos.html" class="section-label-link">Toutes les vidéos →</a>
       </div>
-      <div class="videos-list reveal">
-
-        <!-- Vidéos 1 -->
-
-        <a href="https://youtu.be/uyvNkkosqoM" target="_blank" rel="noopener" class="video-item">
-           <div class="video-thumb-wrap">
-            <img 
-              src="https://img.youtube.com/vi/uyvNkkosqoM/maxresdefault.jpg"
-              alt="Dans la fabrique d'He4tDem | Le rap amateur de l'intérieur"
-              style="width:100%;height:100%;object-fit:cover;display:block;"
-              onerror="this.src='https://img.youtube.com/vi/uyvNkkosqoM/hqdefault.jpg'"
-            />
-            <div class="video-play-icon">
-              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-            </div>
-          </div>
-          <div class="video-info">
-            <span class="video-category">Société</span>
-            <h3 class="video-title">Dans la fabrique d'He4tDem | Le rap amateur de l'intérieur</h3>
-            <p class="video-desc">A la rencontre du rappeur He4tDem qui pond un morceau sous nos yeux, il revient sur sa façon de travailler et son parcours tout ca dans la joie et la bonne humeur.</p>
-            <span class="video-meta">17 février 2026 · Reportage</span>
-          </div>
-        </a>
-
-        <!-- Fin de Vidéo 1 -->
-
-
-        <a href="https://youtu.be/bUumyKAdm0w" target="_blank" rel="noopener" class="video-item">
-           <div class="video-thumb-wrap">
-            <img 
-              src="https://img.youtube.com/vi/bUumyKAdm0w/maxresdefault.jpg"
-              alt="Mannequinat jeune, vue de l'intérieur | Dimitri Caillat"
-              style="width:100%;height:100%;object-fit:cover;display:block;"
-              onerror="this.src='https://img.youtube.com/vi/bUumyKAdm0w/hqdefault.jpg'"
-            />
-            <div class="video-play-icon">
-              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-            </div>
-          </div>
-          <div class="video-info">
-            <span class="video-category">Société</span>
-            <h3 class="video-title">Mannequinat jeune, vue de l'intérieur | Dimitri Caillat</h3>
-            <p class="video-desc">A quoi ressemble le mannequinat chez les jeunes. Si pour la plupart il fascine, il faut savoir que ce n'est pas toujours une situations simple aussi. L'âge, les agences, l'argent ou encore la pression des réseaux quelles sont les clefs de voutes du métier ?</p>
-            <span class="video-meta">24 novembre 2025 · Interview</span>
-          </div>
-        </a>
-
-        <!-- Fin de Vidéo 2 -->
-
-
-      </div>
+      <!-- Générée à partir de assets/videos/liste-videos.js : les premières vidéos de la liste -->
+      <div class="videos-list reveal" id="home-videos"></div>
     </div>
   </div>
 
@@ -553,29 +489,9 @@
         <span class="section-label-line"></span>
         <a href="articles.html" class="section-label-link">Tous les articles →</a>
       </div>
-      <div class="articles-grid reveal">
-
-        <!-- Article 1 -->
-
-        <div class="article-card featured-article">
-          <div>
-            <span class="article-tag">Enquête</span>
-            <h3 class="article-title">La Cocarde étudiante</h3>
-            <p class="article-excerpt">Enquête de groupe menée sur le collectif <em>La Cocarde étudiante</em> à Paris entre témoignages poignants, découverte du passé de certains representants ou bien des fréquentations de cet association étudiante qui est loin d'être un bisounours pour les universités.</p>
-            <span class="article-meta">22 février 2026</span>
-            <a href="assets/articles/1.html" class="article-read">Lire l'article</a>
-          </div>
-
-          <!-- Fin de Article 1 -->
-
-          <div>
-            <span class="article-tag">Politique</span>
-            <h3 class="article-title">Affaire Epstein</h3>
-            <p class="article-excerpt">De Londres à Paris, l'affaire Epstein provoque un tsunami politique. L'onde de choc des nouveaux <em>Epstein Files</em> rendus publics par le département de la justice font tomber des têtes jusqu'en Europe et en France.</p>
-            <span class="article-meta">10 février 2026</span>
-            <a href="assets/articles/2.html" class="article-read">Lire l'article</a>
-          </div>
-        </div>
+      <!-- Générée à partir de assets/articles/liste-articles.js : l'article « À la une » puis les suivants de la liste -->
+      <div class="articles-grid reveal" id="home-articles">
+        <p class="article-excerpt">Chargement des articles…</p>
       </div>
     </div>
   </div>
@@ -589,57 +505,8 @@
         <span class="section-label-line"></span>
         <a href="podcasts.html" class="section-label-link">Tous les épisodes →</a>
       </div>
-      <div class="podcasts-grid reveal">
-        <!--ek-->
-
-      <a href="https://www.youtube.com/watch?v=8rCrq1sVjwo" target="_blank" rel="noopener" class="podcast-row">
-        <img 
-          src="https://img.youtube.com/vi/8rCrq1sVjwo/mqdefault.jpg"
-          alt="Couper Décaler Ep3"
-          style="width:50px;height:50px;object-fit:cover;border-radius:4px;flex-shrink:0;"
-        />
-        <div>
-          <p class="podcast-name">Couper Décaler — Épisode 3</p>
-          <p class="podcast-series">Couper Décaler · 17 février 2026</p>
-        </div>
-        <div class="podcast-right">
-          <span class="podcast-dur">28 min</span>
-          <div class="podcast-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
-        </div>
-      </a>
-
-      <a href="https://www.youtube.com/watch?v=UT0QundaYUE" target="_blank" rel="noopener" class="podcast-row">
-        <img 
-          src="https://img.youtube.com/vi/UT0QundaYUE/mqdefault.jpg"
-          alt="Couper Décaler Ep2"
-          style="width:50px;height:50px;object-fit:cover;border-radius:4px;flex-shrink:0;"
-        />
-        <div>
-          <p class="podcast-name">Couper Décaler — Épisode 2</p>
-          <p class="podcast-series">Couper Décaler · 10 février 2026</p>
-        </div>
-        <div class="podcast-right">
-          <span class="podcast-dur">29 min</span>
-          <div class="podcast-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
-        </div>
-      </a>
-
-      <a href="https://www.youtube.com/watch?v=Z0bNbQMPD7U" target="_blank" rel="noopener" class="podcast-row">
-        <img 
-          src="https://img.youtube.com/vi/Z0bNbQMPD7U/mqdefault.jpg"
-          alt="Couper Décaler Ep1"
-          style="width:50px;height:50px;object-fit:cover;border-radius:4px;flex-shrink:0;"
-        />
-        <div>
-          <p class="podcast-name">Couper Décaler — Épisode 1</p>
-          <p class="podcast-series">Couper Décaler · 2 février 2026</p>
-        </div>
-        <div class="podcast-right">
-          <span class="podcast-dur">18 min</span>
-          <div class="podcast-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
-        </div>
-      </a>
-
+      <!-- Générée à partir de assets/podcasts/liste-podcasts.js : les premiers épisodes de la liste -->
+      <div class="podcasts-grid reveal" id="home-podcasts">
     </div>
   </div>
 
@@ -697,7 +564,103 @@
     <span>Portfolio</span>
   </footer>
 
+  <script src="assets/articles/liste-articles.js"></script>
+  <script src="assets/videos/liste-videos.js"></script>
+  <script src="assets/photos/liste-photos.js"></script>
+  <script src="assets/podcasts/liste-podcasts.js"></script>
   <script>
+    // ── PHOTOGRAPHIES : les photos de « photosAccueil », la première en grand ──
+    function homePhotoHtml(p, i) {
+      return `
+        <div class="photo-card${i === 0 ? ' featured' : ''}"${p.faded ? ' style="background:#e8e4dc;"' : ''}>
+          <img src="${escapeHtml(photoSrc(p))}" alt="${escapeHtml(p.alt)}"${p.faded ? ' style="opacity:0.5;"' : ''} />
+          <div class="photo-card-caption">${escapeHtml(p.caption)}</div>
+        </div>`;
+    }
+    document.getElementById('home-photos').insertAdjacentHTML('afterbegin', photosAccueil.map(homePhotoHtml).join(''));
+  </script>
+  <script>
+    // ── PODCASTS : les premiers épisodes de la liste ──
+    const HOME_PODCASTS_COUNT = 3;
+
+    function homePodcastHtml(p) {
+      return `
+      <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener" class="podcast-row">
+        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.alt)}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;flex-shrink:0;" />
+        <div>
+          <p class="podcast-name">${escapeHtml(p.title)}</p>
+          <p class="podcast-series">${escapeHtml([p.series, p.date].filter(Boolean).join(' · '))}</p>
+        </div>
+        <div class="podcast-right">
+          <span class="podcast-dur">${escapeHtml(p.duration)}</span>
+          <div class="podcast-btn">${PODCAST_PLAY_SVG}</div>
+        </div>
+      </a>`;
+    }
+
+    async function renderHomePodcasts() {
+      const list = await loadAllPodcasts();
+      document.getElementById('home-podcasts').innerHTML = list.slice(0, HOME_PODCASTS_COUNT).map(homePodcastHtml).join('');
+    }
+    renderHomePodcasts();
+  </script>
+  <script>
+    // ── REPORTAGES VIDÉO : la vidéo « À la une » puis les suivantes de la liste ──
+    const HOME_VIDEOS_COUNT = 2;
+
+    function homeVideoHtml(v) {
+      return `
+        <a href="${escapeHtml(v.url)}" target="_blank" rel="noopener" class="video-item">
+          <div class="video-thumb-wrap">
+            ${videoThumbImg(v)}
+            <div class="video-play-icon">${PLAY_ICON_SVG}</div>
+          </div>
+          <div class="video-info">
+            <span class="video-category">${escapeHtml(v.category)}</span>
+            <h3 class="video-title">${escapeHtml(v.title)}</h3>
+            <p class="video-desc">${escapeHtml(v.description)}</p>
+            <span class="video-meta">${escapeHtml(v.date)}</span>
+          </div>
+        </a>`;
+    }
+
+    async function renderHomeVideos() {
+      const list = await loadAllVideos();
+      const featured = list.find(v => v.featured) || list[0];
+      const shown = [featured, ...list.filter(v => v !== featured)].filter(Boolean).slice(0, HOME_VIDEOS_COUNT);
+      document.getElementById('home-videos').innerHTML = shown.map(homeVideoHtml).join('');
+    }
+    renderHomeVideos();
+  </script>
+  <script>
+    // ── REPORTAGES ÉCRITS : l'article « À la une » + les suivants de la liste ──
+    const HOME_ARTICLES_COUNT = 3;
+
+    function homeCardHtml(a, featured) {
+      const meta = [a.date, a.readTime].filter(Boolean).join(' · ');
+      const text = `
+          <div>
+            <span class="article-tag">${escapeHtml(a.category)}</span>
+            <h3 class="article-title">${escapeHtml(a.title)}</h3>
+            <p class="article-excerpt">${escapeHtml(a.excerpt)}</p>
+            <span class="article-meta">${escapeHtml(meta)}</span>
+            <span class="article-read">Lire l'article</span>
+          </div>`;
+      if (!featured) return `<a href="${escapeHtml(a.href)}" class="article-card">${text}</a>`;
+      const img = a.image ? `<img src="${escapeHtml(a.image)}" alt="${escapeHtml(a.imageAlt)}" loading="lazy" />` : '';
+      return `<a href="${escapeHtml(a.href)}" class="article-card featured-article">${text}<div class="article-card-img">${img}</div></a>`;
+    }
+
+    async function renderHomeArticles() {
+      const grid = document.getElementById('home-articles');
+      const loaded = await loadAllArticles();
+      if (!loaded.length) { grid.innerHTML = `<p class="article-excerpt">${escapeHtml(articlesErrorMessage())}</p>`; return; }
+      const featured = loaded.find(a => a.featured) || loaded[0];
+      const others = loaded.filter(a => a !== featured).slice(0, HOME_ARTICLES_COUNT - 1);
+      grid.innerHTML = homeCardHtml(featured, true) + others.map(a => homeCardHtml(a, false)).join('');
+    }
+    renderHomeArticles();
+
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((el, i) => {
         if (el.isIntersecting) {

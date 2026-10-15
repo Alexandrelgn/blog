@@ -67,7 +67,7 @@
         .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
         .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); color: var(--accent); font-weight: 600; }
         .body { font-size: 1.05rem; line-height: 1.85; color: #222; }
-        .cover-ph { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-top: 1rem; }
+        .cover-ph { width: 100%; height: auto; display: block; margin-top: 1rem; }
         .art-footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.65rem; text-transform: uppercase; color: var(--muted); margin-right: 5px; }
         .back { font-size: 0.75rem; text-transform: uppercase; color: var(--accent); text-decoration: none; font-weight: 600; }
@@ -101,6 +101,39 @@
         .prod-audio-wrap audio { flex: 1; height: 2rem; min-width: 0; }
         .prod-audio-wrap audio::-webkit-media-controls-panel { background: var(--soft); }
         .audio-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
+
+        /* Blocs déroulants */
+        .blocks-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+        .blocks-header h2 { flex: 1; border-bottom: none; margin-bottom: 0; }
+        .blocks-toggle-all { display: flex; gap: 4px; padding-bottom: 10px; }
+        .blocks-toggle-all button { padding: 3px 8px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-family: var(--sans); font-size: 0.7rem; border-radius: 3px; color: var(--muted); }
+        .blocks-toggle-all button:hover { color: var(--accent); border-color: var(--accent); }
+        .block-head { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .block-chevron { display: inline-block; font-size: 0.8rem; color: var(--muted); transition: transform 0.15s; }
+        .collapsed .block-chevron { transform: rotate(-90deg); }
+        .block-type { font-size: 0.7rem; text-transform: uppercase; color: var(--muted); font-weight: 600; white-space: nowrap; }
+        .block-summary { display: none; flex: 1; min-width: 0; font-size: 0.78rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .collapsed .block-summary { display: block; }
+        .block-head .btn-remove { float: none; margin-left: auto; font-size: 0.9rem; padding: 0 2px; }
+        .block-body { margin-top: 6px; }
+        .collapsed .block-body { display: none; }
+
+        /* Éditeur de texte enrichi (bloc encadré) */
+        .rich-toolbar { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; }
+        .rich-toolbar button { padding: 4px 10px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-family: var(--sans); font-size: 0.8rem; border-radius: 3px; }
+        .rich-toolbar button:hover { background: var(--accent-light); }
+        .rich-editor { min-height: 90px; padding: 8px; border: 1px solid var(--border); background: #fff; font-size: 0.85rem; line-height: 1.6; cursor: text; outline: none; overflow-wrap: anywhere; }
+        .rich-editor:focus { border-color: var(--accent); }
+        .rich-editor a { color: var(--accent); }
+
+        /* Encadré (preview) */
+        .body .encadre { padding: 1.5rem 1.75rem; margin: 2rem 0; }
+        .body .encadre-title { font-family: var(--serif); font-size: 1.15rem; font-style: normal; font-weight: 600; color: inherit; margin: 0 0 0.75rem; line-height: 1.35; }
+        .body .encadre p { font-size: 0.95rem; margin: 0 0 1rem; }
+        .body .encadre p:last-child { margin-bottom: 0; }
+        .body .encadre a { color: var(--accent); text-decoration: underline; }
+        .body .encadre-dark { color: #fff; }
+        .body .encadre-dark a { color: inherit; }
 
         .hidden { display: none !important; }
 
@@ -184,6 +217,7 @@
             <option value="img">Image Simple</option>
             <option value="slider">Duo d'images</option>
             <option value="link">Lien de rappel</option>
+            <option value="box">Encadré</option>
             <option value="video">Vidéo intégrée</option>
             <option value="pdf">Lecteur PDF</option>
             <option value="audio">Lecteur audio</option>
@@ -192,7 +226,15 @@
     </div>
 
     <div id="active-blocks"></div>
-    
+    <datalist id="box-colors">
+        <option value="#e8f0f9"></option>
+        <option value="#f5f4f2"></option>
+        <option value="#fdf3e1"></option>
+        <option value="#e9f5ec"></option>
+        <option value="#2d5a8e"></option>
+        <option value="#1a1a1a"></option>
+    </datalist>
+
     <div class="file-ops" style="margin-top: 8px;">
         <button class="btn btn-copy" style="margin-top: 0; grid-column: span 2;" onclick="copyFullHTML()">COPIER HTML (comme assets/articles/1.html)</button>
         <button class="btn btn-sec main-export-btn" style="grid-column: span 2;" onclick="downloadArticleHTML()">Télécharger .html</button>
@@ -209,67 +251,8 @@
 </div>
 
 <script>
-    /** Styles alignés sur assets/articles/1.html + blocs CMS (grille, lien) */
-    const ARTICLE_INLINE_CSS = `
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
-    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
-    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
-    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .wrap { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
-    .article-header { padding: 4rem 0 3rem; }
-    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2rem; }
-    .breadcrumb a { color: var(--muted); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--accent); }
-    .breadcrumb span { margin: 0 0.5rem; }
-    .art-cat { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); display: inline-block; padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; }
-    .art-title { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
-    .art-intro { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: #555; line-height: 1.65; margin-bottom: 2rem; border-left: 3px solid var(--accent); padding-left: 1.5rem; }
-    .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; flex-wrap: wrap; }
-    .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 1rem; flex-shrink: 0; }
-    .byline-name { font-size: 0.88rem; font-weight: 500; }
-    .byline-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .cover-ph { width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#d4e0ec,#b8cce0);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:center; }
-    img.cover-ph { display: block; object-fit: cover; }
-    .cover-cap { font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; font-style: italic; }
-    .body { font-size: 1.02rem; line-height: 1.85; color: #2a2a2a; }
-    .body p { margin-bottom: 1.5rem; }
-    .body h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 2.5rem 0 1rem; line-height: 1.3; }
-    .body h3 { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 400; margin: 2rem 0 0.75rem; color: #444; }
-    .body blockquote { font-family: var(--serif); font-style: italic; font-size: 1.2rem; border-left: 3px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; line-height: 1.6; }
-    .body blockquote cite { display: block; font-size: 0.78rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.75rem; }
-    .body .hl { background: var(--accent-light); padding: 1.5rem 1.75rem; margin: 2rem 0; border-left: 3px solid var(--accent); }
-    .body .hl p { margin-bottom: 0; font-size: 0.95rem; }
-    .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 2rem 0 0.5rem; }
-    .img-grid img.cover-ph { margin-bottom: 0; }
-    .rel-link { background: var(--soft); border: 1px solid var(--border); padding: 1.25rem; margin: 2rem 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-size: 0.9rem; transition: background 0.2s; }
-    .rel-link:hover { background: #efebe8; }
-    .rel-link span { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
-    .video-embed { margin: 2rem 0 0.5rem; }
-    .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0d0d0d; overflow: hidden; border: 1px solid var(--border); }
-    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    .video-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
-    .prod-pdf-wrap { display: flex; align-items: center; gap: 1.5rem; background: var(--soft); padding: 1.25rem; margin: 2rem 0 0.5rem; border: 1px solid var(--border); }
-    .prod-pdf-icon { width: 3rem; height: 3.5rem; background: #b02020; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .prod-pdf-icon span { color: white; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; }
-    .prod-pdf-info { flex: 1; min-width: 0; }
-    .prod-pdf-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; overflow-wrap: anywhere; }
-    .prod-pdf-size { font-size: 0.72rem; color: var(--muted); }
-    .prod-pdf-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--accent); color: white; text-decoration: none; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; transition: background 0.2s; flex-shrink: 0; }
-    .prod-pdf-btn:hover { background: #1d4a7e; }
-    .pdf-embed-frame { width: 100%; height: min(75vh, 720px); border: 1px solid var(--border); background: var(--soft); margin: 2rem 0 0.5rem; }
-    .pdf-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
-    .art-footer { margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
-    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
-    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } .prod-pdf-wrap { flex-wrap: wrap; } .prod-pdf-btn { width: 100%; justify-content: center; } .prod-audio-wrap { flex-wrap: wrap; } .prod-audio-wrap audio { width: 100%; flex-basis: 100%; } }
-    `.trim();
+    /** Feuille de style commune des pages articles (assets/articles/style.css), référencée par les pages exportées */
+    const ARTICLE_STYLESHEET = 'style.css';
 
     function escapeHtml(s) {
         if (s == null || s === undefined) return '';
@@ -296,6 +279,12 @@
     // --- DRAG & DROP ---
     new Sortable(blocksContainer, {
         animation: 150,
+        // Les champs, curseurs et la barre d'outils ne déclenchent pas le glisser-déposer
+        // (sinon Sortable efface la sélection de texte et capture le curseur d'échelle) :
+        // on déplace un bloc en le saisissant par son en-tête ou ses bords.
+        filter: 'input, textarea, select, button, .rich-editor, .rich-toolbar',
+        draggable: '.draggable-block',
+        preventOnFilter: false,
         onEnd: () => {
             const newOrder = [];
             blocksContainer.querySelectorAll('.draggable-block').forEach(domEl => {
@@ -425,12 +414,27 @@
             });
         }
 
+        if (type === 'box') {
+            Object.assign(block, {
+                boxTitle: '',
+                boxHtml: '',
+                boxBg: BOX_DEFAULT_BG
+            });
+        }
+
         articleBlocks.push(block);
         renderEditor(); render();
     }
 
     function renderEditor() {
-        blocksContainer.innerHTML = '<h2>Corps de l\'article</h2>';
+        blocksContainer.innerHTML = `
+            <div class="blocks-header">
+                <h2>Corps de l'article</h2>
+                ${articleBlocks.length ? `<div class="blocks-toggle-all">
+                    <button type="button" onclick="setAllBlocksCollapsed(true)">Tout réduire</button>
+                    <button type="button" onclick="setAllBlocksCollapsed(false)">Tout déplier</button>
+                </div>` : ''}
+            </div>`;
         articleBlocks.forEach(block => {
             const div = document.createElement('div');
             div.className = 'section-card draggable-block';
@@ -443,15 +447,26 @@
                 img: 'Image simple',
                 slider: 'Duo d\'images',
                 link: 'Lien de rappel',
+                box: 'Encadré',
                 video: 'Vidéo intégrée',
                 pdf: 'Lecteur PDF',
                 audio: 'Lecteur audio'
             }[block.type] || block.type;
 
             const v = (value) => escapeHtml(value || '');
-            let fields = `<button class="btn-remove" onclick="articleBlocks=articleBlocks.filter(b=>b.id!=='${block.id}');renderEditor();render()">×</button><label>${typeLabel}</label>`;
+            let fields = '';
 
-            if (block.type === 'audio') {
+            if (block.type === 'p') {
+                fields += richEditorField(block, 'html', paragraphHtml(block));
+            } else if (block.type === 'box') {
+                fields += `
+                    <label>Sous-titre</label>
+                    <input placeholder="Sous-titre de l'encadré" value="${v(block.boxTitle)}" oninput="updateBlock('${block.id}','boxTitle',this.value)">
+                    <label>Texte</label>
+                    ${richEditorField(block, 'boxHtml', block.boxHtml)}
+                    <label>Couleur de fond</label>
+                    <input type="color" list="box-colors" value="${v(normalizeBoxColor(block.boxBg))}" style="padding:2px;height:36px;" oninput="updateBlock('${block.id}','boxBg',this.value)">`;
+            } else if (block.type === 'audio') {
                 const audioSourceType = block.audioSourceType || 'auto';
                 const audioMime = block.audioMime || 'auto';
                 const audioPreload = block.audioPreload || 'metadata';
@@ -544,21 +559,215 @@
             } else if(block.type === 'slider' || block.type === 'link') {
                 fields += `<input placeholder="Image 1 / Texte" value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">`;
                 fields += `<input placeholder="Image 2 / URL" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
-                if(block.type === 'slider') fields += `<input placeholder="Légende" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+                if(block.type === 'slider') {
+                    fields += `<input placeholder="Légende" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+                    fields += scaleSliderField(block);
+                }
             } else {
                 fields += `<textarea oninput="updateBlock('${block.id}','content',this.value)">${v(block.content)}</textarea>`;
                 if (block.type === 'img') {
                     fields += `<input placeholder="Légende / crédit" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
                     fields += `<input placeholder="Texte alternatif (alt)" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+                    fields += scaleSliderField(block);
                 } else if (block.type === 'quote') {
                     fields += `<input placeholder="Source / attribution" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
                 }
             }
-            div.innerHTML = fields; blocksContainer.appendChild(div);
+            div.classList.toggle('collapsed', !!block.collapsed);
+            div.innerHTML = `
+                <div class="block-head" onclick="toggleBlock(this.parentElement)" title="Réduire / déplier">
+                    <span class="block-chevron">▾</span>
+                    <span class="block-type">${typeLabel}</span>
+                    <span class="block-summary">${escapeHtml(blockSummary(block))}</span>
+                    <button class="btn-remove" title="Supprimer le bloc" onclick="event.stopPropagation();articleBlocks=articleBlocks.filter(b=>b.id!=='${block.id}');renderEditor();render()">×</button>
+                </div>
+                <div class="block-body">${fields}</div>`;
+            blocksContainer.appendChild(div);
         });
     }
 
+    // --- BLOCS DÉROULANTS ---
+    function richText(html) {
+        const tpl = document.createElement('template');
+        tpl.innerHTML = sanitizeRichHtml(html).replace(/<br>/g, ' ');
+        return tpl.content.textContent;
+    }
+
+    /** Aperçu d'une ligne affiché quand le bloc est réduit */
+    function blockSummary(block) {
+        let s = '';
+        if (block.type === 'p') s = richText(paragraphHtml(block));
+        else if (block.type === 'box') s = block.boxTitle || richText(block.boxHtml);
+        else if (block.type === 'link') s = block.content || block.extra;
+        else s = block.content;
+        s = String(s || '').replace(/\s+/g, ' ').trim();
+        return s || '(vide)';
+    }
+
+    function toggleBlock(card, collapsed) {
+        const block = articleBlocks.find(b => b.id === card.dataset.id);
+        if (!block) return;
+        block.collapsed = collapsed !== undefined ? collapsed : !block.collapsed;
+        card.classList.toggle('collapsed', block.collapsed);
+        card.querySelector('.block-summary').textContent = blockSummary(block);
+        saveToLocal();
+    }
+
+    function setAllBlocksCollapsed(collapsed) {
+        blocksContainer.querySelectorAll('.draggable-block').forEach(card => toggleBlock(card, collapsed));
+    }
+
     function updateBlock(id, field, val) { articleBlocks.find(b => b.id === id)[field] = val; render(); }
+
+    // --- ENCADRÉ (texte enrichi) ---
+    const BOX_DEFAULT_BG = '#e8f0f9';
+
+    function normalizeBoxColor(c) {
+        return /^#[0-9a-f]{6}$/i.test(String(c || '')) ? c.toLowerCase() : BOX_DEFAULT_BG;
+    }
+
+    function isDarkColor(hex) {
+        const n = parseInt(hex.slice(1), 16);
+        const r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+        return (0.299 * r + 0.587 * g + 0.114 * b) < 140;
+    }
+
+    // Mémorise la dernière sélection faite dans chaque éditeur enrichi,
+    // pour pouvoir la restaurer si un clic sur la barre d'outils l'a effacée
+    document.addEventListener('selectionchange', () => {
+        const sel = window.getSelection();
+        if (!sel.rangeCount || !sel.anchorNode) return;
+        const node = sel.anchorNode.nodeType === Node.ELEMENT_NODE ? sel.anchorNode : sel.anchorNode.parentElement;
+        const ed = node && node.closest('.rich-editor');
+        if (ed) ed._savedRange = sel.getRangeAt(0).cloneRange();
+    });
+
+    /** Barre d'outils + zone éditable ; le HTML saisi est enregistré dans block[field] */
+    function richEditorField(block, field, html) {
+        return `
+                    <div class="rich-toolbar">
+                        <button type="button" title="Gras (Ctrl+B)" onmousedown="event.preventDefault()" onclick="richCmd(this,'bold')"><b>G</b></button>
+                        <button type="button" title="Italique (Ctrl+I)" onmousedown="event.preventDefault()" onclick="richCmd(this,'italic')"><i>I</i></button>
+                        <button type="button" title="Souligné (Ctrl+U)" onmousedown="event.preventDefault()" onclick="richCmd(this,'underline')"><u>S</u></button>
+                        <button type="button" title="Insérer un lien" onmousedown="event.preventDefault()" onclick="richCmd(this,'createLink')">🔗 Lien</button>
+                        <button type="button" title="Retirer la mise en forme et les liens" onmousedown="event.preventDefault()" onclick="richCmd(this,'clear')">✕ Effacer</button>
+                    </div>
+                    <div class="rich-editor" contenteditable="true"
+                        onpaste="event.preventDefault(); document.execCommand('insertText', false, event.clipboardData.getData('text/plain'))"
+                        oninput="updateBlock('${block.id}','${field}',this.innerHTML)">${sanitizeRichHtml(html)}</div>`;
+    }
+
+    /** Texte d'un paragraphe ; les anciens projets n'ont que du texte brut dans `content` */
+    function paragraphHtml(block) {
+        if (block.html != null) return block.html;
+        return escapeHtml(block.content || '').replace(/\n/g, '<br>');
+    }
+
+    function restoreRichSelection(ed) {
+        const sel = window.getSelection();
+        ed.focus();
+        if (ed._savedRange && ed.contains(ed._savedRange.commonAncestorContainer)) {
+            sel.removeAllRanges();
+            sel.addRange(ed._savedRange);
+        }
+        return sel;
+    }
+
+    function richCmd(btn, cmd) {
+        const ed = btn.closest('.section-card').querySelector('.rich-editor');
+        let sel = restoreRichSelection(ed);
+        if (!sel.rangeCount || !ed.contains(sel.anchorNode)) return;
+
+        if (cmd === 'createLink') {
+            if (sel.isCollapsed) { alert('Sélectionne d’abord le texte à transformer en lien.'); return; }
+            const url = (prompt('Adresse du lien :', 'https://') || '').trim();
+            if (!url || url === 'https://') return;
+            if (!isSafeDocumentUrl(url)) { alert('Lien non valide.'); return; }
+            restoreRichSelection(ed); // la fenêtre de saisie peut faire perdre la sélection
+            document.execCommand('createLink', false, url);
+        } else if (cmd === 'clear') {
+            document.execCommand('removeFormat');
+            document.execCommand('unlink');
+        } else {
+            document.execCommand(cmd);
+        }
+        ed.dispatchEvent(new Event('input'));
+    }
+
+    /** Ne garde que gras, italique, souligné, liens et retours à la ligne */
+    function sanitizeRichHtml(html) {
+        const tpl = document.createElement('template');
+        tpl.innerHTML = html || '';
+        const walk = (node) => {
+            let out = '';
+            node.childNodes.forEach(n => {
+                if (n.nodeType === Node.TEXT_NODE) { out += escapeHtml(n.textContent); return; }
+                if (n.nodeType !== Node.ELEMENT_NODE) return;
+                const tag = n.tagName.toLowerCase();
+                if (tag === 'br') { out += '<br>'; return; }
+                if (tag === 'div' || tag === 'p') {
+                    // Chaque ligne de l'éditeur est une <div> ; une <div><br></div> est une ligne vide
+                    const onlyBr = n.childNodes.length === 1 && n.firstChild.nodeName === 'BR';
+                    out += (out ? '<br>' : '') + (onlyBr ? '' : walk(n));
+                    return;
+                }
+                const inner = walk(n);
+                if (tag === 'b' || tag === 'strong') out += `<strong>${inner}</strong>`;
+                else if (tag === 'i' || tag === 'em') out += `<em>${inner}</em>`;
+                else if (tag === 'u') out += `<u>${inner}</u>`;
+                else if (tag === 'a') {
+                    const href = (n.getAttribute('href') || '').trim();
+                    if (!isSafeDocumentUrl(href)) { out += inner; return; }
+                    const ext = /^https?:/i.test(href) ? ' target="_blank" rel="noopener"' : '';
+                    out += `<a href="${escapeHtml(href)}"${ext}>${inner}</a>`;
+                }
+                else out += inner;
+            });
+            return out;
+        };
+        return walk(tpl.content);
+    }
+
+    /** Texte enrichi → paragraphes (une ligne vide sépare deux paragraphes) */
+    function richParagraphs(html) {
+        const clean = sanitizeRichHtml(html).replace(/^(<br>)+|(<br>)+$/g, '');
+        if (!clean) return '';
+        return clean.split(/(?:<br>){2,}/).map(p => `<p>${p}</p>`).join('');
+    }
+
+    function buildBoxBlockHtml(block) {
+        const bg = normalizeBoxColor(block.boxBg);
+        const dark = isDarkColor(bg) ? ' encadre-dark' : '';
+        const title = (block.boxTitle || '').trim();
+        return `<aside class="encadre${dark}" style="background:${bg};">${title ? `<h3 class="encadre-title">${escapeHtml(title)}</h3>` : ''}${richParagraphs(block.boxHtml)}</aside>`;
+    }
+
+    /** Échelle d'affichage (en % de la largeur du texte) pour les blocs image et duo d'images */
+    function getBlockScale(block) {
+        const s = parseInt(block.scale, 10);
+        return Number.isFinite(s) ? Math.min(200, Math.max(20, s)) : 100;
+    }
+
+    function scaleSliderField(block) {
+        const scale = getBlockScale(block);
+        return `
+                    <label>Échelle : <span>${scale}</span> %</label>
+                    <input type="range" min="20" max="200" step="5" value="${scale}" style="padding:0;"
+                        oninput="this.previousElementSibling.firstElementChild.textContent=this.value; updateBlock('${block.id}','scale',parseInt(this.value,10))">`;
+    }
+
+    /** Style inline centré, omis à 100 % pour garder le HTML exporté propre.
+        Au-delà de 100 %, l'élément déborde de la colonne de texte de façon symétrique,
+        sans jamais dépasser la largeur de l'écran (marge de 1rem de chaque côté). */
+    function scaleStyle(block) {
+        const scale = getBlockScale(block);
+        if (scale < 100) return ` style="width:${scale}%;margin-left:auto;margin-right:auto;"`;
+        if (scale > 100) {
+            const w = `min(${scale}%, 100vw - 2rem)`;
+            return ` style="width:${w};max-width:none;margin-left:calc(50% - ${w} / 2);margin-right:0;"`;
+        }
+        return '';
+    }
 
     function buildTagsHtml() {
         let tagsHtml = '';
@@ -787,19 +996,22 @@
             const c = b.content || '';
             const e = b.extra || '';
             const t = b.third || '';
-            if (b.type === 'p') bodyHtml += `<p>${escapeHtml(c).replace(/\n/g, '<br>')}</p>`;
+            if (b.type === 'p') bodyHtml += richParagraphs(paragraphHtml(b));
             if (b.type === 'h2') bodyHtml += `<h2>${escapeHtml(c)}</h2>`;
             if (b.type === 'quote') {
                 bodyHtml += `<blockquote>« <em>${escapeHtml(c)}</em> »<cite>— ${escapeHtml(e)}</cite></blockquote>`;
             }
             if (b.type === 'img') {
-                bodyHtml += `<img src="${escapeHtml(c)}" alt="${escapeHtml(t)}" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap">${escapeHtml(e)}</p>`;
+                bodyHtml += `<img src="${escapeHtml(c)}" alt="${escapeHtml(t)}" class="cover-ph"${scaleStyle(b)} /><p class="cover-cap"${scaleStyle(b)}>${escapeHtml(e)}</p>`;
             }
             if (b.type === 'link') {
                 bodyHtml += `<a href="${escapeHtml(e)}" class="rel-link"><span>À lire aussi</span> ${escapeHtml(c)}</a>`;
             }
             if (b.type === 'slider') {
-                bodyHtml += `<div class="img-grid"><img src="${escapeHtml(c)}" alt="" class="cover-ph" style="object-fit:cover;" /><img src="${escapeHtml(e)}" alt="" class="cover-ph" style="object-fit:cover;" /></div><p class="cover-cap">${escapeHtml(t)}</p>`;
+                bodyHtml += `<div class="img-grid"${scaleStyle(b)}><img src="${escapeHtml(c)}" alt="" class="cover-ph" /><img src="${escapeHtml(e)}" alt="" class="cover-ph" /></div><p class="cover-cap"${scaleStyle(b)}>${escapeHtml(t)}</p>`;
+            }
+            if (b.type === 'box') {
+                bodyHtml += buildBoxBlockHtml(b);
             }
             if (b.type === 'video') {
                 bodyHtml += buildVideoBlockHtml(b);
@@ -819,7 +1031,7 @@
         const alt = document.getElementById('hero-alt').value;
         const cap = document.getElementById('hero-cap').value;
         if (!url) return '';
-        return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" class="cover-ph" style="object-fit:cover;" />\n      <p class="cover-cap">${escapeHtml(cap)}</p>\n\n    `;
+        return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" class="cover-ph" />\n      <p class="cover-cap">${escapeHtml(cap)}</p>\n\n    `;
     }
 
     /** Page complète : chemins comme assets/articles/1.html (../../ vers la racine du site) */
@@ -842,9 +1054,7 @@
   <title>${escapeHtml(pageTitle)}</title>
   <link rel="icon" href="../site/favicon.ico"/>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-${ARTICLE_INLINE_CSS}
-  </style>
+  <link rel="stylesheet" href="${ARTICLE_STYLESHEET}" />
 </head>
 <body>
   <nav>
@@ -896,7 +1106,7 @@ ${buildArticleBodyHtml()}
         const heroCap = document.getElementById('hero-cap').value;
         let heroPreview = '';
         if (heroUrl) {
-            heroPreview = `<img src="${escapeHtml(heroUrl)}" alt="${escapeHtml(heroAlt)}" class="cover-ph" style="object-fit:cover;width:100%;aspect-ratio:16/9;" /><p class="cover-cap">${escapeHtml(heroCap)}</p>`;
+            heroPreview = `<img src="${escapeHtml(heroUrl)}" alt="${escapeHtml(heroAlt)}" class="cover-ph" /><p class="cover-cap">${escapeHtml(heroCap)}</p>`;
         }
 
         const bylineMeta = `${escapeHtml(document.getElementById('pub-loc').value)} · ${escapeHtml(document.getElementById('pub-date').value)} · ${escapeHtml(document.getElementById('readTime').value)}`;

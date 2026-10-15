@@ -6,66 +6,7 @@
   <title>Alexandre Ligneul - « Diplomatie » Interview de la troupe</title>
   <link rel="icon" href="../site/favicon.ico"/>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
-    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; }
-    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
-    .nav-logo { font-family: var(--serif); font-size: 1rem; text-decoration: none; color: var(--ink); }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--muted); transition: color 0.2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .wrap { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
-    .article-header { padding: 4rem 0 3rem; }
-    .breadcrumb { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2rem; }
-    .breadcrumb a { color: var(--muted); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--accent); }
-    .breadcrumb span { margin: 0 0.5rem; }
-    .art-cat { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); background: var(--accent-light); display: inline-block; padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; }
-    .art-title { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
-    .art-intro { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: #555; line-height: 1.65; margin-bottom: 2rem; border-left: 3px solid var(--accent); padding-left: 1.5rem; }
-    .byline { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; flex-wrap: wrap; }
-    .byline-av { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-style: italic; color: var(--accent); font-size: 1rem; flex-shrink: 0; }
-    .byline-name { font-size: 0.88rem; font-weight: 500; }
-    .byline-meta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .cover-ph { width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#d4e0ec,#b8cce0);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:center; }
-    img.cover-ph { display: block; object-fit: cover; }
-    .cover-cap { font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; font-style: italic; }
-    .body { font-size: 1.02rem; line-height: 1.85; color: #2a2a2a; }
-    .body p { margin-bottom: 1.5rem; }
-    .body h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 2.5rem 0 1rem; line-height: 1.3; }
-    .body h3 { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 400; margin: 2rem 0 0.75rem; color: #444; }
-    .body blockquote { font-family: var(--serif); font-style: italic; font-size: 1.2rem; border-left: 3px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; line-height: 1.6; }
-    .body blockquote cite { display: block; font-size: 0.78rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.75rem; }
-    .body .hl { background: var(--accent-light); padding: 1.5rem 1.75rem; margin: 2rem 0; border-left: 3px solid var(--accent); }
-    .body .hl p { margin-bottom: 0; font-size: 0.95rem; }
-    .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 2rem 0 0.5rem; }
-    .img-grid img.cover-ph { margin-bottom: 0; }
-    .rel-link { background: var(--soft); border: 1px solid var(--border); padding: 1.25rem; margin: 2rem 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-size: 0.9rem; transition: background 0.2s; }
-    .rel-link:hover { background: #efebe8; }
-    .rel-link span { font-size: 0.65rem; text-transform: uppercase; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
-    .video-embed { margin: 2rem 0 0.5rem; }
-    .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0d0d0d; overflow: hidden; border: 1px solid var(--border); }
-    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    .video-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
-    .prod-pdf-wrap { display: flex; align-items: center; gap: 1.5rem; background: var(--soft); padding: 1.25rem; margin: 2rem 0 0.5rem; border: 1px solid var(--border); }
-    .prod-pdf-icon { width: 3rem; height: 3.5rem; background: #b02020; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .prod-pdf-icon span { color: white; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; }
-    .prod-pdf-info { flex: 1; min-width: 0; }
-    .prod-pdf-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; overflow-wrap: anywhere; }
-    .prod-pdf-size { font-size: 0.72rem; color: var(--muted); }
-    .prod-pdf-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--accent); color: white; text-decoration: none; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; transition: background 0.2s; flex-shrink: 0; }
-    .prod-pdf-btn:hover { background: #1d4a7e; }
-    .pdf-embed-frame { width: 100%; height: min(75vh, 720px); border: 1px solid var(--border); background: var(--soft); margin: 2rem 0 0.5rem; }
-    .pdf-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
-    .art-footer { margin: 4rem 0; padding: 2rem 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .tag { padding: 0.25rem 0.75rem; border: 1px solid var(--border); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .back { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); text-decoration: none; font-weight: 500; }
-    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
-    @media (max-width: 680px) { nav, footer { padding: 1rem 1.25rem; } .wrap { padding: 0 1.25rem; } .prod-pdf-wrap { flex-wrap: wrap; } .prod-pdf-btn { width: 100%; justify-content: center; } .prod-audio-wrap { flex-wrap: wrap; } .prod-audio-wrap audio { width: 100%; flex-basis: 100%; } }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <nav>
@@ -97,7 +38,7 @@
 
     <div class="body">
 
-<h2>Cyril Gély, auteur : entre histoire et fiction</h2><p>Votre pièce s’inspire d’une rencontre historique entre Dietrich von Choltitz et Raoul Nordling. Où s’arrête la réalité et où commence la fiction ?<br></p><blockquote>« <em>Dans la réalité, les échanges entre les deux hommes se sont déroulés sur une quinzaine de jours et portaient notamment sur la libération de prisonniers. Dans la pièce, j’ai choisi de concentrer cette histoire autour d’un enjeu majeur : empêcher la destruction de Paris. Il s’agit donc d’une construction dramatique à partir de faits historiques, et non du récit exact d’une rencontre unique qui aurait suffi à sauver la capitale.</em> »<cite>— Cyril Gély</cite></blockquote><p>Écrite à l’origine dans un contexte historique précis, la pièce semble aujourd’hui faire écho à l’actualité. Est-ce quelque chose qui vous surprend ?<br></p><blockquote>« <em>Diplomatie semble avoir acquis une résonance particulière avec le temps. En travaillant sur cette histoire, je me suis rendu compte que les questions qu’elle pose dépassaient largement le cadre de la Seconde Guerre mondiale. Le rapport au pouvoir, la responsabilité individuelle et la possibilité de désobéir restent des sujets profondément actuels.</em> »<cite>— Cyril Gély</cite></blockquote><img src="../images\Articles Culture (5).png" alt="Diplomatie, Le salut de fin sous les applaudissements (B.Putzulu en bleu marine) © Alexandre Ligneul" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap">Diplomatie, Le salut de fin sous les applaudissements (B.Putzulu en bleu marine) © Alexandre Ligneul</p><h2>Bruno Putzulu, comédien : jouer sans juger
+<h2>Cyril Gély, auteur : entre histoire et fiction</h2><p>Votre pièce s’inspire d’une rencontre historique entre Dietrich von Choltitz et Raoul Nordling. Où s’arrête la réalité et où commence la fiction ?<br></p><blockquote>« <em>Dans la réalité, les échanges entre les deux hommes se sont déroulés sur une quinzaine de jours et portaient notamment sur la libération de prisonniers. Dans la pièce, j’ai choisi de concentrer cette histoire autour d’un enjeu majeur : empêcher la destruction de Paris. Il s’agit donc d’une construction dramatique à partir de faits historiques, et non du récit exact d’une rencontre unique qui aurait suffi à sauver la capitale.</em> »<cite>— Cyril Gély</cite></blockquote><p>Écrite à l’origine dans un contexte historique précis, la pièce semble aujourd’hui faire écho à l’actualité. Est-ce quelque chose qui vous surprend ?<br></p><blockquote>« <em>Diplomatie semble avoir acquis une résonance particulière avec le temps. En travaillant sur cette histoire, je me suis rendu compte que les questions qu’elle pose dépassaient largement le cadre de la Seconde Guerre mondiale. Le rapport au pouvoir, la responsabilité individuelle et la possibilité de désobéir restent des sujets profondément actuels.</em> »<cite>— Cyril Gély</cite></blockquote><img src="../images/Articles Culture (5).png" alt="Diplomatie, Le salut de fin sous les applaudissements (B.Putzulu en bleu marine) © Alexandre Ligneul" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap">Diplomatie, Le salut de fin sous les applaudissements (B.Putzulu en bleu marine) © Alexandre Ligneul</p><h2>Bruno Putzulu, comédien : jouer sans juger
 </h2><p>Comment avez-vous abordé votre personnage et sa relation avec le général von Choltitz ?<br></p><blockquote>« <em>Pour construire un personnage, il faut trouver sa posture, sa manière de parler, son accent, mais aussi s’approprier le texte. Il ne s’agit pas seulement de reproduire une figure historique. Je pense qu’il faut aussi savoir prendre de la distance avec les connaissances que l’on accumule pour laisser place au jeu et à l’interprétation.
 
 Il faut éviter de réduire un personnage à une étiquette. Comme je le dis : « Un salaud, ça ne veut rien dire. » On peut être un lâche à 14 heures et un courageux à 19 heures. Un personnage n’est jamais entièrement défini par ses actes passés : tout peut basculer en quelques heures.</em> »<cite>— Bruno Putzulu</cite></blockquote><p>Comment maintenir la tension dans un huis clos où les deux personnages s’affrontent principalement par la parole ?<br></p><blockquote>« <em>Il faut considérer cette confrontation comme un combat. Deux boxeurs peuvent se rencontrer dix fois et livrer dix combats différents. C’est pareil au théâtre : même si le texte reste le même, les rapports de force évoluent, les silences changent de sens et les personnages ne se répondent jamais exactement de la même manière.
@@ -109,7 +50,7 @@ Au début, les deux hommes entretiennent des relations relativement cordiales. M
 
 Le théâtre donne de l’espoir. Les artistes essaient de remettre l’humain au-dessus de l’horreur. Cela ne signifie pas que l’art peut tout résoudre, mais qu’il peut nous obliger à regarder les autres autrement, à interroger nos certitudes et à continuer de dialoguer.
 
-Avec Diplomatie, le théâtre ne prétend pas réécrire l’Histoire. Il nous invite plutôt à nous demander ce qui, dans une situation extrême, peut encore dépendre d’un individu. Et si les mots ne suffisent pas toujours à arrêter la violence, faut-il pour autant cesser de les employer ?</em> »<cite>— Béatrice Agenin</cite></blockquote><h2>L‘équipe de Diplomatie : </h2><img src="../images\Capture d'écran 2026-10-14 105928.png" alt="De gauche à droite : Cyril Gély(auteur), Bruno Putzulu(comédien) et Béatrice Agenin(metteuse en scène)" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap">De gauche à droite : Cyril Gély(auteur), Bruno Putzulu(comédien) et Béatrice Agenin(metteuse en scène)</p>
+Avec Diplomatie, le théâtre ne prétend pas réécrire l’Histoire. Il nous invite plutôt à nous demander ce qui, dans une situation extrême, peut encore dépendre d’un individu. Et si les mots ne suffisent pas toujours à arrêter la violence, faut-il pour autant cesser de les employer ?</em> »<cite>— Béatrice Agenin</cite></blockquote><h2>L‘équipe de Diplomatie : </h2><img src="../images/Capture d'écran 2026-10-14 105928.png" alt="De gauche à droite : Cyril Gély(auteur), Bruno Putzulu(comédien) et Béatrice Agenin(metteuse en scène)" class="cover-ph" style="object-fit:cover;" /><p class="cover-cap">De gauche à droite : Cyril Gély(auteur), Bruno Putzulu(comédien) et Béatrice Agenin(metteuse en scène)</p>
 
     </div>
 

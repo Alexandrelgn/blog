@@ -85,60 +85,40 @@
       <p class="page-subtitle">Épisodes audio, séries et reportages sonores</p>
     </header>
 
-    <div class="episodes-list reveal">
-      <a href="https://www.youtube.com/watch?v=8rCrq1sVjwo" target="_blank" rel="noopener" class="ep">
-        <img class="ep-thumb"
-          src="https://img.youtube.com/vi/8rCrq1sVjwo/mqdefault.jpg"
-          alt="Couper Décaler Ep3" />
-        <div>
-          <p class="ep-title">Couper Décaler — Épisode 3</p>
-          <p class="ep-desc">Troisième épisode du podcast Couper Décaler.</p>
-          <p class="ep-meta">Couper Décaler · Épisode 3 · 17 février 2026</p>
-        </div>
-        <div class="ep-right">
-          <span class="ep-dur">28 min</span>
-          <div class="ep-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
-        </div>
-      </a>
-
-      <a href="https://www.youtube.com/watch?v=UT0QundaYUE" target="_blank" rel="noopener" class="ep">
-        <img class="ep-thumb"
-          src="https://img.youtube.com/vi/UT0QundaYUE/mqdefault.jpg"
-          alt="Couper Décaler Ep2" />
-        <div>
-          <p class="ep-title">Couper Décaler — Épisode 2</p>
-          <p class="ep-desc">Deuxième épisode du podcast Couper Décaler.</p>
-          <p class="ep-meta">Couper Décaler · Épisode 2 · 10 février 2026</p>
-        </div>
-        <div class="ep-right">
-          <span class="ep-dur">29 min</span>
-          <div class="ep-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
-        </div>
-      </a>
-
-      <a href="https://www.youtube.com/watch?v=Z0bNbQMPD7U" target="_blank" rel="noopener" class="ep">
-        <img class="ep-thumb"
-          src="https://img.youtube.com/vi/Z0bNbQMPD7U/mqdefault.jpg"
-          alt="Couper Décaler Ep1" />
-        <div>
-          <p class="ep-title">Couper Décaler — Épisode 1</p>
-          <p class="ep-desc">Premier épisode du podcast Couper Décaler.</p>
-          <p class="ep-meta">Couper Décaler · Épisode 1 · 2 février 2026</p>
-        </div>
-        <div class="ep-right">
-          <span class="ep-dur">18 min</span>
-          <div class="ep-btn"><svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg></div>
-        </div>
-      </a>
-
-
-
+    <!-- Générée à partir de assets/podcasts/liste-podcasts.js -->
+    <div class="episodes-list reveal" id="episodes">
       </div>
     </div>
   </div>
 
   <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio</span></footer>
 
+  <script src="assets/podcasts/liste-podcasts.js"></script>
+  <script>
+    // ── ÉPISODES : toute la liste, dans l'ordre ──
+    function episodeHtml(p) {
+      const meta = [p.series, p.episode ? 'Épisode ' + p.episode : '', p.date].filter(Boolean).join(' · ');
+      return `
+      <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener" class="ep">
+        <img class="ep-thumb" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.alt)}" />
+        <div>
+          <p class="ep-title">${escapeHtml(p.title)}</p>
+          <p class="ep-desc">${escapeHtml(p.description)}</p>
+          <p class="ep-meta">${escapeHtml(meta)}</p>
+        </div>
+        <div class="ep-right">
+          <span class="ep-dur">${escapeHtml(p.duration)}</span>
+          <div class="ep-btn">${PODCAST_PLAY_SVG}</div>
+        </div>
+      </a>`;
+    }
+
+    async function renderEpisodes() {
+      const list = await loadAllPodcasts();
+      document.getElementById('episodes').innerHTML = list.map(episodeHtml).join('');
+    }
+    renderEpisodes();
+  </script>
   <script>
     const obs = new IntersectionObserver(es => {
       es.forEach((e, i) => { if (e.isIntersecting) { e.target.style.transitionDelay=(i*0.08)+'s'; e.target.classList.add('visible'); }});

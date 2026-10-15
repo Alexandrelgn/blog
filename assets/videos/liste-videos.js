@@ -1,33 +1,19 @@
-// ── LISTE DES VIDÉOS ──
-// Utilisée par videos.html (page Vidéos) et index.html (section « Reportages vidéo »).
+// ── VIDÉOS ──
+// Utilisé par videos.html (page Vidéos) et index.html (section « Reportages vidéo »).
 //
-// Pour publier une vidéo : ajouter une ligne avec son lien YouTube.
+// La liste des vidéos est dans assets/videos/videos.json (modifiable avec Pages CMS).
 // Le titre et la miniature sont récupérés automatiquement sur YouTube.
-// La catégorie, la date et la description sont à écrire ici (YouTube ne les fournit pas).
+// La catégorie, la date et la description sont écrites dans la liste (YouTube ne les fournit pas).
 // L'ordre de la liste est l'ordre d'affichage ; « featured: true » la met « À la une ».
 // Champs facultatifs : title (remplace le titre YouTube), image (remplace la miniature), tags.
-const videos = [
-  {
-    url: "https://youtu.be/bUumyKAdm0w",
-    featured: true,
-    category: "Portrait · Interview",
-    date: "24 novembre 2025",
-    description: "Rencontre avec un mannequin parisien sur son parcours, les coulisses du secteur et les questions d'identité dans l'industrie de la mode. Un portrait humain au cœur d'un monde peu connu.",
-    tags: ["Mode", "Portrait", "Paris"]
-  },
-  {
-    url: "https://youtu.be/uyvNkkosqoM",
-    category: "Reportage",
-    date: "17 février 2026",
-    description: "A la rencontre du rappeur He4tDem qui pond un morceau sous nos yeux, il revient sur sa façon de travailler et son parcours tout ca dans la joie et la bonne humeur."
-  },
-  {
-    url: "https://youtu.be/PqDhAMX6BFE",
-    category: "Reportage",
-    date: "5 mars 2026",
-    description: "Ancien réseau de transport de marchandises, la Petite Ceinture illustre aujourd'hui pleinement les enjeux de la gestion urbaine. À la veille des élections municipales, quel avenir pour cette friche ?..."
-  }
-];
+const VIDEOS_DATA = 'assets/videos/videos.json';
+
+/** Lit un fichier de données JSON du site (sans cache, pour voir tout de suite une publication) */
+async function loadJson(path) {
+  const res = await fetch(path, { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`${path} : ${res.status}`);
+  return res.json();
+}
 
 function escapeHtml(s) {
   return String(s == null ? '' : s)
@@ -74,8 +60,13 @@ async function loadVideo(entry) {
   };
 }
 
-function loadAllVideos() {
-  return Promise.all(videos.map(loadVideo));
+async function loadAllVideos() {
+  try {
+    return await Promise.all((await loadJson(VIDEOS_DATA)).map(loadVideo));
+  } catch (e) {
+    console.warn('Liste des vidéos non chargée —', e);
+    return [];
+  }
 }
 
 /** Balise <img> de la miniature, avec repli sur la version standard */

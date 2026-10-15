@@ -51,6 +51,19 @@
         .modal-social a { color: var(--accent); text-decoration: none; font-weight: 500; }
         .modal-social a:hover { text-decoration: underline; }
         
+        /* --- PUBLICATION GITHUB --- */
+        .gh-hint { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin: 6px 0 0; }
+        .gh-check { display: flex; align-items: center; gap: 6px; text-transform: none; font-size: 0.8rem; color: var(--ink); font-weight: 400; }
+        .gh-check input { width: auto; }
+        .gh-status { font-size: 0.8rem; line-height: 1.5; margin: 10px 0 0; overflow-wrap: anywhere; }
+        .gh-status:empty { display: none; }
+        .gh-status.ok { color: #1e7a3c; }
+        .gh-status.error { color: var(--danger); }
+        .gh-status a { color: inherit; }
+        #gh-settings { margin-top: 12px; font-size: 0.8rem; }
+        #gh-settings summary { cursor: pointer; color: var(--muted); }
+        #gh-publish-btn:disabled { opacity: 0.6; cursor: wait; }
+
         .credits { margin-top: auto; padding: 20px 0; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--muted); text-align: center; }
         .credits strong { color: var(--accent); cursor: pointer; text-decoration: underline; }
 
@@ -238,6 +251,38 @@
     <div class="file-ops" style="margin-top: 8px;">
         <button class="btn btn-copy" style="margin-top: 0; grid-column: span 2;" onclick="copyFullHTML()">COPIER HTML (comme assets/articles/1.html)</button>
         <button class="btn btn-sec main-export-btn" style="grid-column: span 2;" onclick="downloadArticleHTML()">Télécharger .html</button>
+    </div>
+
+    <div class="section-card" id="gh-card">
+        <h2>Publier sur le site</h2>
+        <p class="gh-hint">Envoie l'article directement sur GitHub et l'ajoute à la liste des écrits. Le site en ligne est mis à jour en 1 à 2 minutes.</p>
+        <label>Nom du fichier</label>
+        <input type="text" id="gh-filename" readonly>
+        <label class="gh-check"><input type="checkbox" id="gh-featured"> Mettre « À la une »</label>
+        <button class="btn btn-add" id="gh-publish-btn" onclick="publishToGitHub()">🚀 Publier sur GitHub</button>
+
+        <label style="margin-top:15px">Envoyer une image sur le site</label>
+        <input type="file" id="gh-image" accept="image/*" onchange="uploadImageToGitHub(this)">
+        <p class="gh-hint">L'image est rangée dans assets/images/ ; son chemin pour l'article (../images/…) est copié dans le presse-papiers.</p>
+
+        <p class="gh-status" id="gh-status"></p>
+
+        <details id="gh-settings">
+            <summary>Réglages GitHub</summary>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div><label>Compte</label><input type="text" id="gh-owner" placeholder="Alexandrelgn"></div>
+                <div><label>Dépôt</label><input type="text" id="gh-repo" placeholder="blog"></div>
+            </div>
+            <label>Branche</label>
+            <input type="text" id="gh-branch" placeholder="main">
+            <label>Jeton d'accès GitHub</label>
+            <input type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off">
+            <p class="gh-hint">Jeton « fine-grained » limité à ce dépôt, avec l'autorisation <em>Contents : Read and write</em>. Il reste enregistré dans ce navigateur uniquement.</p>
+            <div class="file-ops" style="margin-top:6px">
+                <button class="btn btn-sec main-export-btn" onclick="saveGitHubSettings()">Enregistrer</button>
+                <button class="btn btn-sec main-export-btn" onclick="forgetGitHubToken()">Oublier le jeton</button>
+            </div>
+        </details>
     </div>
 
     <div class="credits">
@@ -1128,6 +1173,7 @@ ${buildArticleBodyHtml()}
                     <a href="#" class="back">← Retour aux écrits</a>
                 </footer>
             </article>`;
+        document.getElementById('gh-filename').value = articleFileName();
         saveToLocal();
     }
 
@@ -1141,17 +1187,220 @@ ${buildArticleBodyHtml()}
         }
     }
 
+    /** Nom du fichier de l'article, tir\u00e9 du \u00ab Nom court \u00bb : sans accents ni espaces (ex. Petite-Ceinture.html) */
+    function articleFileName() {
+        const base = (document.getElementById('nav-short').value.trim() || 'article')
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^\w\-]+/g, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '');
+        return `${base || 'article'}.html`;
+    }
+
     function downloadArticleHTML() {
         const blob = new Blob([buildFullArticleHTML()], { type: 'text/html;charset=utf-8' });
         const a = document.createElement('a');
-        const base = (document.getElementById('nav-short').value.trim() || 'article').replace(/[^\w\u00C0-\u024f\-]+/gi, '-').replace(/^-|-$/g, '') || 'article';
         a.href = URL.createObjectURL(blob);
-        a.download = `${base}.html`;
+        a.download = articleFileName();
         a.click();
         URL.revokeObjectURL(a.href);
     }
-    
+
+    // --- PUBLICATION SUR GITHUB ---
+    // Utilise l'API \u00ab contents \u00bb de GitHub : chaque envoi cr\u00e9e un commit dans le d\u00e9p\u00f4t,
+    // et GitHub Pages republie le site. Le jeton n'est enregistr\u00e9 que dans ce navigateur.
+    const GH_DEFAULTS = { owner: 'Alexandrelgn', repo: 'blog', branch: 'main' };
+    const GH_ARTICLES_DIR = 'assets/articles/';
+    const GH_ARTICLES_LIST = 'assets/articles/articles.json';
+    const GH_IMAGES_DIR = 'assets/images/';
+
+    function readStore(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    function writeStore(key, value) { try { value == null ? localStorage.removeItem(key) : localStorage.setItem(key, value); } catch (e) {} }
+
+    function ghSettings() {
+        const field = (id, def) => document.getElementById(id).value.trim() || def;
+        return {
+            owner: field('gh-owner', GH_DEFAULTS.owner),
+            repo: field('gh-repo', GH_DEFAULTS.repo),
+            branch: field('gh-branch', GH_DEFAULTS.branch),
+            token: document.getElementById('gh-token').value.trim()
+        };
+    }
+
+    function loadGitHubSettings() {
+        let saved = {};
+        try { saved = JSON.parse(readStore('gh_settings') || '{}'); } catch (e) {}
+        document.getElementById('gh-owner').value = saved.owner || GH_DEFAULTS.owner;
+        document.getElementById('gh-repo').value = saved.repo || GH_DEFAULTS.repo;
+        document.getElementById('gh-branch').value = saved.branch || GH_DEFAULTS.branch;
+        document.getElementById('gh-token').value = readStore('gh_token') || '';
+        // R\u00e9glages ouverts tant qu'aucun jeton n'est enregistr\u00e9
+        document.getElementById('gh-settings').open = !readStore('gh_token');
+    }
+
+    function saveGitHubSettings() {
+        const s = ghSettings();
+        writeStore('gh_settings', JSON.stringify({ owner: s.owner, repo: s.repo, branch: s.branch }));
+        writeStore('gh_token', s.token || null);
+        setGhStatus(s.token ? 'R\u00e9glages enregistr\u00e9s dans ce navigateur.' : 'R\u00e9glages enregistr\u00e9s (aucun jeton).', 'ok');
+    }
+
+    function forgetGitHubToken() {
+        writeStore('gh_token', null);
+        document.getElementById('gh-token').value = '';
+        setGhStatus('Jeton supprim\u00e9 de ce navigateur.', 'ok');
+    }
+
+    function setGhStatus(html, kind) {
+        const el = document.getElementById('gh-status');
+        el.className = 'gh-status' + (kind ? ' ' + kind : '');
+        el.innerHTML = html;
+    }
+
+    /** Appel \u00e0 l'API GitHub ; renvoie null pour un fichier inexistant (404) quand allow404 est vrai */
+    async function ghRequest(s, method, path, body, allow404) {
+        const url = `https://api.github.com/repos/${encodeURIComponent(s.owner)}/${encodeURIComponent(s.repo)}/contents/${path.split('/').map(encodeURIComponent).join('/')}`
+            + (method === 'GET' ? `?ref=${encodeURIComponent(s.branch)}` : '');
+        const res = await fetch(url, {
+            method,
+            cache: 'no-store',
+            headers: {
+                'Accept': 'application/vnd.github+json',
+                'Authorization': `Bearer ${s.token}`,
+                'X-GitHub-Api-Version': '2022-11-28',
+                ...(body ? { 'Content-Type': 'application/json' } : {})
+            },
+            body: body ? JSON.stringify(body) : undefined
+        });
+        if (res.status === 404 && allow404) return null;
+        if (!res.ok) {
+            let detail = '';
+            try { detail = (await res.json()).message || ''; } catch (e) {}
+            const hints = {
+                401: 'Jeton invalide ou expir\u00e9.',
+                403: 'Le jeton n\u2019a pas le droit d\u2019\u00e9crire dans ce d\u00e9p\u00f4t (autorisation \u00ab Contents : Read and write \u00bb).',
+                404: 'D\u00e9p\u00f4t ou branche introuvable, ou jeton sans acc\u00e8s \u00e0 ce d\u00e9p\u00f4t.',
+                409: 'Conflit : le fichier a chang\u00e9 entre-temps, r\u00e9essaie.',
+                422: 'GitHub a refus\u00e9 l\u2019envoi.'
+            };
+            throw new Error(`${hints[res.status] || 'Erreur GitHub.'} (${res.status}${detail ? ' \u2014 ' + detail : ''})`);
+        }
+        return res.json();
+    }
+
+    function utf8ToBase64(text) {
+        const bytes = new TextEncoder().encode(text);
+        let bin = '';
+        for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+        return btoa(bin);
+    }
+
+    function base64ToUtf8(b64) {
+        const bin = atob(b64.replace(/\s/g, ''));
+        return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+    }
+
+    /** Cr\u00e9e ou remplace un fichier du d\u00e9p\u00f4t ; sha = version actuelle du fichier (null s'il est nouveau) */
+    function ghPutFile(s, path, base64, message, sha) {
+        return ghRequest(s, 'PUT', path, { message, content: base64, branch: s.branch, ...(sha ? { sha } : {}) });
+    }
+
+    /** Adresse publique probable du site sur GitHub Pages */
+    function ghPagesUrl(s, path) {
+        const userSite = s.repo.toLowerCase() === `${s.owner.toLowerCase()}.github.io`;
+        return `https://${s.owner.toLowerCase()}.github.io/${userSite ? '' : s.repo + '/'}${path}`;
+    }
+
+    function requireToken(s) {
+        if (s.token) return true;
+        document.getElementById('gh-settings').open = true;
+        setGhStatus('Renseigne d\u2019abord ton jeton d\u2019acc\u00e8s GitHub dans les r\u00e9glages ci-dessous.', 'error');
+        return false;
+    }
+
+    async function publishToGitHub() {
+        const s = ghSettings();
+        if (!requireToken(s)) return;
+        const file = articleFileName();
+        const featured = document.getElementById('gh-featured').checked;
+        const path = GH_ARTICLES_DIR + file;
+        const btn = document.getElementById('gh-publish-btn');
+        btn.disabled = true;
+        try {
+            setGhStatus('V\u00e9rification du d\u00e9p\u00f4t\u2026');
+            const existing = await ghRequest(s, 'GET', path, null, true);
+            const action = existing ? 'remplacer l\u2019article existant' : 'publier un nouvel article';
+            if (!confirm(`Tu vas ${action} \u00ab ${file} \u00bb sur ${s.owner}/${s.repo} (${s.branch}).\nContinuer ?`)) {
+                setGhStatus('Publication annul\u00e9e.');
+                return;
+            }
+
+            setGhStatus('Envoi de l\u2019article\u2026');
+            const title = document.getElementById('meta-title').value.trim() || file;
+            await ghPutFile(s, path, utf8ToBase64(buildFullArticleHTML()),
+                `${existing ? 'Mise \u00e0 jour' : 'Publication'} de l\u2019article : ${title}`, existing && existing.sha);
+
+            // Ajout \u00e0 la liste des \u00e9crits (en t\u00eate), et \u00ab \u00C0 la une \u00bb si demand\u00e9
+            setGhStatus('Mise \u00e0 jour de la liste des \u00e9crits\u2026');
+            const listFile = await ghRequest(s, 'GET', GH_ARTICLES_LIST, null, true);
+            const list = listFile ? JSON.parse(base64ToUtf8(listFile.content)) : [];
+            let entry = list.find(a => a.file === file);
+            const added = !entry;
+            if (added) { entry = { file }; list.unshift(entry); }
+            const featuredChanged = featured && !entry.featured;
+            if (featured) list.forEach(a => { if (a === entry) a.featured = true; else delete a.featured; });
+            if (added || featuredChanged) {
+                await ghPutFile(s, GH_ARTICLES_LIST, utf8ToBase64(JSON.stringify(list, null, 2) + '\n'),
+                    added ? `Ajout de ${file} \u00e0 la liste des \u00e9crits` : `${file} \u00e0 la une`, listFile && listFile.sha);
+            }
+
+            const url = ghPagesUrl(s, path);
+            setGhStatus(`\u2705 Article ${existing ? 'mis \u00e0 jour' : 'publi\u00e9'}${added ? ' et ajout\u00e9 \u00e0 la liste des \u00e9crits' : ''}. `
+                + `Il sera en ligne dans 1 \u00e0 2 minutes : <a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`, 'ok');
+        } catch (err) {
+            setGhStatus('\u274c ' + escapeHtml(err.message), 'error');
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result).split(',')[1]);
+            reader.onerror = () => reject(reader.error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function uploadImageToGitHub(input) {
+        const img = input.files && input.files[0];
+        input.value = '';
+        if (!img) return;
+        const s = ghSettings();
+        if (!requireToken(s)) return;
+        // Nom sans accents ni espaces, extension en minuscules
+        const dot = img.name.lastIndexOf('.');
+        const stem = (dot > 0 ? img.name.slice(0, dot) : img.name).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^\w\-]+/g, '-').replace(/^-|-$/g, '') || 'image';
+        const name = stem + (dot > 0 ? img.name.slice(dot).toLowerCase() : '');
+        const path = GH_IMAGES_DIR + name;
+        try {
+            setGhStatus(`Envoi de l\u2019image ${escapeHtml(name)}\u2026`);
+            if (await ghRequest(s, 'GET', path, null, true)) {
+                setGhStatus(`Une image \u00ab ${escapeHtml(name)} \u00bb existe d\u00e9j\u00e0 sur le site : renomme ton fichier avant de l\u2019envoyer.`, 'error');
+                return;
+            }
+            await ghPutFile(s, path, await readFileAsBase64(img), `Ajout de l\u2019image ${name}`);
+            const articlePath = `../images/${name}`;
+            let copied = false;
+            try { await navigator.clipboard.writeText(articlePath); copied = true; } catch (e) {}
+            setGhStatus(`\u2705 Image envoy\u00e9e. Chemin \u00e0 utiliser dans l\u2019article : <code>${escapeHtml(articlePath)}</code>${copied ? ' (copi\u00e9)' : ''}`, 'ok');
+        } catch (err) {
+            setGhStatus('\u274c ' + escapeHtml(err.message), 'error');
+        }
+    }
+
     window.onload = () => {
+        loadGitHubSettings();
         const saved = localStorage.getItem('cms_draft');
         if (saved) applyData(JSON.parse(saved)); else { renderAuthorsEditor(); render(); }
     };

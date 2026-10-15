@@ -458,7 +458,7 @@
         <span class="section-label-line"></span>
         <a href="photos.html" class="section-label-link">Toute la galerie →</a>
       </div>
-      <!-- Générée à partir de « photosAccueil » dans assets/photos/liste-photos.js -->
+      <!-- Générée à partir de assets/photos/accueil.json -->
       <div class="photos-grid reveal" id="home-photos">
         <p>©Alexandre Ligneul - Tous droits réservés</p>
       </div>
@@ -577,7 +577,9 @@
           <div class="photo-card-caption">${escapeHtml(p.caption)}</div>
         </div>`;
     }
-    document.getElementById('home-photos').insertAdjacentHTML('afterbegin', photosAccueil.map(homePhotoHtml).join(''));
+    loadPhotosAccueil().then(list => {
+      document.getElementById('home-photos').insertAdjacentHTML('afterbegin', list.map(homePhotoHtml).join(''));
+    });
   </script>
   <script>
     // ── PODCASTS : les premiers épisodes de la liste ──

@@ -439,33 +439,45 @@
 
   <script src="assets/photos/liste-photos.js"></script>
   <script>
-    // ── BOUTONS DE FILTRE : un par catégorie utilisée dans la liste ──
-    document.getElementById('filters').insertAdjacentHTML('beforeend', photoCategories().map(c =>
-      `<button class="filter-btn" data-filter="${escapeHtml(c.id)}">${escapeHtml(c.label)}</button>`
-    ).join(''));
+    // ── GÉNÉRATION DE LA GALERIE (filtres, photos, ouverture de la visionneuse) ──
+    async function renderGallery() {
+      const photos = await loadPhotos();
 
-    // ── GÉNÉRATION DE LA GALERIE ──
-    const gallery = document.getElementById('gallery');
-    gallery.innerHTML = photos.map(photo => `
-        <div class="masonry-item" data-category="${escapeHtml(photo.category)}" data-title="${escapeHtml(photo.title)}" data-meta="${escapeHtml(photo.meta)}" data-alt="${escapeHtml(photo.alt)}">
-          <img src="${escapeHtml(photoSrc(photo))}" alt="${escapeHtml(photo.title)}" />
-          <div class="masonry-caption">
-            <span class="masonry-caption-title">${escapeHtml(photo.title)}</span>
-            <span class="masonry-caption-meta">${escapeHtml(photo.meta)}</span>
-          </div>
-        </div>`).join('');
+      // Boutons de filtre : un par catégorie utilisée dans la liste
+      document.getElementById('filters').insertAdjacentHTML('beforeend', photoCategories(photos).map(c =>
+        `<button class="filter-btn" data-filter="${escapeHtml(c.id)}">${escapeHtml(c.label)}</button>`
+      ).join(''));
 
-    // ── FILTRES ──
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const f = btn.dataset.filter;
-        document.querySelectorAll('.masonry-item').forEach(item => {
-          item.style.display = (f === 'all' || item.dataset.category === f) ? '' : 'none';
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = photos.map(photo => `
+          <div class="masonry-item" data-category="${escapeHtml(photo.category)}" data-title="${escapeHtml(photo.title)}" data-meta="${escapeHtml(photo.meta)}" data-alt="${escapeHtml(photo.alt)}">
+            <img src="${escapeHtml(photoSrc(photo))}" alt="${escapeHtml(photo.title)}" />
+            <div class="masonry-caption">
+              <span class="masonry-caption-title">${escapeHtml(photo.title)}</span>
+              <span class="masonry-caption-meta">${escapeHtml(photo.meta)}</span>
+            </div>
+          </div>`).join('');
+
+      // Filtres
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const f = btn.dataset.filter;
+          document.querySelectorAll('.masonry-item').forEach(item => {
+            item.style.display = (f === 'all' || item.dataset.category === f) ? '' : 'none';
+          });
         });
       });
-    });
+
+      // Un clic sur une photo ouvre la visionneuse
+      document.querySelectorAll('.masonry-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const vis = getVisible();
+          openLightbox(vis.indexOf(item));
+        });
+      });
+    }
 
     // ── LIGHTBOX ──
     let current = 0;
@@ -503,13 +515,6 @@
       openLightbox(current);
     }
 
-    document.querySelectorAll('.masonry-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const vis = getVisible();
-        openLightbox(vis.indexOf(item));
-      });
-    });
-
     document.getElementById('lb-close').addEventListener('click', closeLightbox);
     document.getElementById('lb-prev').addEventListener('click', () => navigate(-1));
     document.getElementById('lb-next').addEventListener('click', () => navigate(1));
@@ -526,6 +531,8 @@
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    renderGallery();
   </script>
 </body>
 </html>

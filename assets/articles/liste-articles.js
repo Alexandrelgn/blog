@@ -1,19 +1,20 @@
-// ── LISTE DES ARTICLES ──
-// Utilisée par articles.html (page Écrits) et index.html (section « Reportages écrits »).
+// ── ARTICLES ──
+// Utilisé par articles.html (page Écrits) et index.html (section « Reportages écrits »).
 //
-// Pour publier un article : déposer le fichier dans assets/articles/ puis ajouter son nom ici.
-// Titre, catégorie, chapeau, date, durée de lecture et image sont lus directement dans l'article.
+// La liste des articles est dans assets/articles/articles.json (modifiable avec Pages CMS,
+// ou publiée directement par le bouton « Publier sur GitHub » de articlecreator.html).
+// Chaque entrée donne le nom du fichier de l'article ; titre, catégorie, chapeau, date, durée
+// de lecture et image sont lus directement dans l'article.
 // L'ordre de la liste est l'ordre d'affichage ; « featured: true » le met « À la une ».
 // Champs facultatifs pour remplacer ce qui est lu dans l'article : excerpt, image, category.
-const articles = [
-  { file: "1.html", featured: true },
-  { file: "Diplomatie-Une-nuit-pour-sauver-Paris.html" },
-  { file: "Diplomatie-Interview-de-la-troupe.html" },
-  { file: "L-Opéra-Comique-fait-peau-neuve.html" },
-  { file: "100-made-in-opera-et-for-opera.html" },
-  { file: "RS-mai-juin-2026.html" },
-  { file: "2.html" }
-];
+const ARTICLES_DATA = 'assets/articles/articles.json';
+
+/** Lit un fichier de données JSON du site (sans cache, pour voir tout de suite une publication) */
+async function loadJson(path) {
+  const res = await fetch(path, { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`${path} : ${res.status}`);
+  return res.json();
+}
 
 // Chemin du dossier des articles, depuis les pages à la racine du site
 const ARTICLES_DIR = 'assets/articles/';
@@ -55,6 +56,13 @@ async function loadArticle(entry) {
 
 /** Charge tous les articles de la liste, dans l'ordre ; ceux qui échouent sont ignorés */
 async function loadAllArticles() {
+  let articles;
+  try {
+    articles = await loadJson(ARTICLES_DATA);
+  } catch (e) {
+    console.warn('Liste des articles non chargée —', e);
+    return [];
+  }
   const results = await Promise.allSettled(articles.map(loadArticle));
   results.filter(r => r.status === 'rejected').forEach(r => console.warn('Article non chargé —', r.reason));
   return results.filter(r => r.status === 'fulfilled').map(r => r.value);

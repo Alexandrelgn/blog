@@ -1,38 +1,20 @@
-// ── LISTE DES PODCASTS ──
-// Utilisée par podcasts.html (page Podcasts) et index.html (section « Podcasts »).
+// ── PODCASTS ──
+// Utilisé par podcasts.html (page Podcasts) et index.html (section « Podcasts »).
 //
-// Pour publier un épisode : ajouter un bloc en haut de la liste avec son lien YouTube.
+// La liste des épisodes est dans assets/podcasts/podcasts.json (modifiable avec Pages CMS).
 // La miniature est récupérée automatiquement sur YouTube.
 // Le titre est « Série — Épisode N » quand series et episode sont remplis ;
 // sinon c'est le titre de la vidéo YouTube.
 // L'ordre de la liste est l'ordre d'affichage ; l'accueil montre les 3 premiers.
 // Champs facultatifs : title (remplace le titre), image (remplace la miniature).
-const podcasts = [
-  {
-    url: "https://www.youtube.com/watch?v=8rCrq1sVjwo",
-    series: "Couper Décaler",
-    episode: 3,
-    date: "17 février 2026",
-    duration: "28 min",
-    description: "Troisième épisode du podcast Couper Décaler."
-  },
-  {
-    url: "https://www.youtube.com/watch?v=UT0QundaYUE",
-    series: "Couper Décaler",
-    episode: 2,
-    date: "10 février 2026",
-    duration: "29 min",
-    description: "Deuxième épisode du podcast Couper Décaler."
-  },
-  {
-    url: "https://www.youtube.com/watch?v=Z0bNbQMPD7U",
-    series: "Couper Décaler",
-    episode: 1,
-    date: "2 février 2026",
-    duration: "18 min",
-    description: "Premier épisode du podcast Couper Décaler."
-  }
-];
+const PODCASTS_DATA = 'assets/podcasts/podcasts.json';
+
+/** Lit un fichier de données JSON du site (sans cache, pour voir tout de suite une publication) */
+async function loadJson(path) {
+  const res = await fetch(path, { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`${path} : ${res.status}`);
+  return res.json();
+}
 
 function escapeHtml(s) {
   return String(s == null ? '' : s)
@@ -81,8 +63,13 @@ async function loadPodcast(entry) {
   };
 }
 
-function loadAllPodcasts() {
-  return Promise.all(podcasts.map(loadPodcast));
+async function loadAllPodcasts() {
+  try {
+    return await Promise.all((await loadJson(PODCASTS_DATA)).map(loadPodcast));
+  } catch (e) {
+    console.warn('Liste des podcasts non chargée —', e);
+    return [];
+  }
 }
 
 const PODCAST_PLAY_SVG = '<svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>';

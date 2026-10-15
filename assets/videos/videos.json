@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://youtu.be/bUumyKAdm0w",
+    "featured": true,
+    "category": "Portrait · Interview",
+    "date": "24 novembre 2025",
+    "description": "Rencontre avec un mannequin parisien sur son parcours, les coulisses du secteur et les questions d'identité dans l'industrie de la mode. Un portrait humain au cœur d'un monde peu connu.",
+    "tags": [
+      "Mode",
+      "Portrait",
+      "Paris"
+    ]
+  },
+  {
+    "url": "https://youtu.be/uyvNkkosqoM",
+    "category": "Reportage",
+    "date": "17 février 2026",
+    "description": "A la rencontre du rappeur He4tDem qui pond un morceau sous nos yeux, il revient sur sa façon de travailler et son parcours tout ca dans la joie et la bonne humeur."
+  },
+  {
+    "url": "https://youtu.be/PqDhAMX6BFE",
+    "category": "Reportage",
+    "date": "5 mars 2026",
+    "description": "Ancien réseau de transport de marchandises, la Petite Ceinture illustre aujourd'hui pleinement les enjeux de la gestion urbaine. À la veille des élections municipales, quel avenir pour cette friche ?..."
+  }
+]

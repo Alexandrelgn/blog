@@ -1,0 +1,182 @@
+# Configuration de Pages CMS (https://pagescms.org)
+# Décrit les formulaires du panneau d'administration : chaque enregistrement crée un commit
+# dans le dépôt GitHub, et GitHub Pages republie le site.
+
+media:
+  input: assets/images
+  # Chemin écrit dans les fichiers de données, sans « / » initial pour fonctionner
+  # aussi quand le site est publié dans un sous-dossier (utilisateur.github.io/blog/)
+  output: assets/images
+
+content:
+  - name: articles
+    label: Écrits (liste des articles)
+    type: file
+    path: assets/articles/articles.json
+    format: json
+    list: true
+    fields:
+      - name: file
+        label: Fichier de l'article
+        type: string
+        required: true
+        description: Nom exact du fichier dans assets/articles/ (ex. Petite-Ceinture.html). Titre, catégorie, chapeau et image sont lus dans l'article.
+      - name: featured
+        label: À la une
+        type: boolean
+        description: Un seul article à la une à la fois.
+      - name: excerpt
+        label: Résumé (facultatif)
+        type: text
+        description: Remplace le chapeau de l'article sur les cartes.
+      - name: category
+        label: Catégorie (facultatif)
+        type: string
+        description: Remplace la catégorie de l'article.
+      - name: image
+        label: Vignette (facultatif)
+        type: string
+        description: Adresse d'une image qui remplace la vignette de l'article.
+
+  - name: videos
+    label: Vidéos
+    type: file
+    path: assets/videos/videos.json
+    format: json
+    list: true
+    fields:
+      - name: url
+        label: Lien YouTube
+        type: string
+        required: true
+        description: Le titre et la miniature sont récupérés automatiquement sur YouTube.
+      - name: featured
+        label: À la une
+        type: boolean
+      - name: category
+        label: Catégorie
+        type: string
+        description: Ex. Reportage, Portrait · Interview
+      - name: date
+        label: Date
+        type: string
+        description: Ex. 12 octobre 2026
+      - name: description
+        label: Description
+        type: text
+      - name: tags
+        label: Étiquettes (vidéo à la une)
+        type: string
+        list: true
+      - name: title
+        label: Titre (facultatif)
+        type: string
+        description: Remplace le titre YouTube.
+      - name: image
+        label: Miniature (facultatif)
+        type: string
+        description: Adresse d'une image qui remplace la miniature YouTube.
+
+  - name: photos
+    label: Photos (galerie)
+    type: file
+    path: assets/photos/photos.json
+    format: json
+    list: true
+    fields:
+      - name: file
+        label: Photo
+        type: image
+        required: true
+      - name: title
+        label: Titre
+        type: string
+        required: true
+      - name: meta
+        label: Lieu et date
+        type: string
+        description: Ex. Paris 12ème · 16 octobre 2025
+      - name: category
+        label: Catégorie
+        type: select
+        required: true
+        options:
+          values:
+            - name: politique
+              label: Politique
+            - name: societe
+              label: Société
+            - name: culture
+              label: Culture
+            - name: efj
+              label: EFJ
+      - name: alt
+        label: Description
+        type: text
+        description: Affichée dans la visionneuse et lue par les lecteurs d'écran.
+      - name: src
+        label: Image hébergée ailleurs (facultatif)
+        type: string
+        description: Adresse complète (ex. Cloudinary) qui remplace la photo envoyée.
+
+  - name: photos-accueil
+    label: Photos de l'accueil
+    type: file
+    path: assets/photos/accueil.json
+    format: json
+    list: true
+    fields:
+      - name: src
+        label: Adresse de l'image
+        type: string
+        description: Adresse complète (ex. Cloudinary). Laisser vide pour utiliser la photo ci-dessous.
+      - name: file
+        label: Photo du site
+        type: image
+      - name: caption
+        label: Légende
+        type: string
+      - name: alt
+        label: Description
+        type: string
+      - name: faded
+        label: Photo atténuée
+        type: boolean
+
+  - name: podcasts
+    label: Podcasts
+    type: file
+    path: assets/podcasts/podcasts.json
+    format: json
+    list: true
+    fields:
+      - name: url
+        label: Lien YouTube
+        type: string
+        required: true
+        description: La miniature est récupérée automatiquement sur YouTube.
+      - name: series
+        label: Série
+        type: string
+        description: Ex. Couper Décaler
+      - name: episode
+        label: Numéro d'épisode
+        type: number
+        description: Avec la série, donne le titre « Série — Épisode N ».
+      - name: date
+        label: Date
+        type: string
+      - name: duration
+        label: Durée
+        type: string
+        description: Ex. 28 min
+      - name: description
+        label: Description
+        type: text
+      - name: title
+        label: Titre (facultatif)
+        type: string
+        description: Remplace le titre « Série — Épisode N ».
+      - name: image
+        label: Miniature (facultatif)
+        type: string

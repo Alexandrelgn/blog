@@ -66,6 +66,16 @@ img.cover-ph { width: 100%; height: auto; display: block; margin-bottom: 0.75rem
 .video-embed { margin: 2rem 0 0.5rem; }
 .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0d0d0d; overflow: hidden; border: 1px solid var(--border); }
 .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* Vidéo chargée seulement au clic : rien n'est demandé à YouTube (ni cookie ni image) avant */
+.video-consent { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; cursor: pointer; background: linear-gradient(135deg, #1a2030, #2a3050); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; padding: 1.5rem; font-family: var(--sans); text-align: center; }
+.video-consent:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.video-consent-play { width: 4rem; height: 4rem; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
+.video-consent-play::before { content: ''; border-style: solid; border-width: 0.7rem 0 0.7rem 1.1rem; border-color: transparent transparent transparent #fff; margin-left: 0.25rem; }
+.video-consent:hover .video-consent-play { transform: scale(1.08); background: #1d4a7e; }
+.video-consent-title { font-family: var(--serif); font-size: 1.05rem; line-height: 1.4; max-width: 32rem; }
+.video-consent-note { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+.body .video-consent-info { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin: 0.5rem 0 0; }
+.video-consent-info a { color: inherit; }
 .video-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
 
 /* --- PDF --- */

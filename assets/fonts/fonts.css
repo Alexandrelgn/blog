@@ -1,0 +1,27 @@
+/* Polices hébergées sur le site (au lieu de Google Fonts) : aucune requête vers un serveur tiers.
+   Lora et Inter, versions variables, jeu de caractères latin (accents français compris).
+   Source : Fontsource (https://fontsource.org). Licence SIL Open Font License 1.1, voir Lora-OFL.txt et Inter-OFL.txt. */
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('lora-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('lora-latin-wght-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('inter-latin-wght-normal.woff2') format('woff2');
+}

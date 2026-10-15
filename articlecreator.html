@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS Alexandre Ligneul - Éditeur</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/fonts/fonts.css" />
     <link rel="icon" href="assets/site/admin-favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <style>
@@ -92,6 +92,13 @@
         .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0d0d0d; overflow: hidden; border: 1px solid var(--border); }
         .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
         .video-error { background: var(--soft); border: 1px dashed var(--border); padding: 1rem; margin: 2rem 0; font-size: 0.85rem; color: var(--muted); }
+        .video-consent { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; cursor: pointer; background: linear-gradient(135deg, #1a2030, #2a3050); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; padding: 1.5rem; font-family: var(--sans); text-align: center; }
+        .video-consent-play { width: 4rem; height: 4rem; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; }
+        .video-consent-play::before { content: ''; border-style: solid; border-width: 0.7rem 0 0.7rem 1.1rem; border-color: transparent transparent transparent #fff; margin-left: 0.25rem; }
+        .video-consent-title { font-family: var(--serif); font-size: 1.05rem; line-height: 1.4; max-width: 32rem; }
+        .video-consent-note { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+        .video-consent-info { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin: 0.5rem 0 0; }
+        .video-consent-info a { color: inherit; }
         .prod-pdf-wrap { display: flex; align-items: center; gap: 1.5rem; background: var(--soft); padding: 1.25rem; margin: 2rem 0 0.5rem; border: 1px solid var(--border); }
         .prod-pdf-icon { width: 3rem; height: 3.5rem; background: #b02020; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .prod-pdf-icon span { color: white; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; }
@@ -949,9 +956,22 @@
         if (!data.ok) return `<div class="video-error">${escapeHtml(data.message)}</div>`;
         const title = block.third || 'Vidéo intégrée';
         const caption = block.extra || '';
-        const allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-        const fullscreen = block.allowFullscreen !== false ? ' allowfullscreen' : '';
-        return `<div class="video-embed"><div class="video-frame"><iframe src="${escapeHtml(data.src)}" title="${escapeHtml(title)}" loading="lazy" allow="${allow}"${fullscreen}></iframe></div></div>${caption ? `<p class="cover-cap">${escapeHtml(caption)}</p>` : ''}`;
+        const provider = { youtube: 'YouTube', dailymotion: 'Dailymotion', vimeo: 'Vimeo' }[data.platform] || '';
+
+        // Conformité cookies (CNIL) : le lecteur n'est chargé qu'au clic du visiteur, qui démarre alors la lecture.
+        // Avant ce clic, aucune requête n'est faite vers la plateforme vidéo.
+        let src = data.src;
+        if (provider) {
+            try { const u = new URL(src); u.searchParams.set('autoplay', '1'); src = u.toString(); } catch (e) {}
+        }
+        const allow = 'autoplay; encrypted-media; picture-in-picture' + (block.allowFullscreen !== false ? '; fullscreen' : '');
+        const fullscreen = block.allowFullscreen !== false ? "f.setAttribute('allowfullscreen','');" : '';
+        const onclick = `var f=document.createElement('iframe');f.src=this.dataset.src;f.title=this.dataset.title;f.allow='${allow}';${fullscreen}this.replaceWith(f)`;
+        const who = provider || 'un service externe';
+        return `<div class="video-embed"><div class="video-frame"><button type="button" class="video-consent" data-src="${escapeHtml(src)}" data-title="${escapeHtml(title)}" onclick="${escapeHtml(onclick)}">`
+            + `<span class="video-consent-play"></span><span class="video-consent-title">${escapeHtml(title)}</span><span class="video-consent-note">Lire la vidéo${provider ? ' · ' + provider : ''}</span></button></div>`
+            + `<p class="video-consent-info">La vidéo est hébergée par ${who} : en la lançant, vous acceptez que ${provider || 'ce service'} dépose des cookies sur votre appareil. <a href="../../mentions-legales.html#cookies">En savoir plus</a></p></div>`
+            + `${caption ? `<p class="cover-cap">${escapeHtml(caption)}</p>` : ''}`;
     }
 
 
@@ -1098,7 +1118,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escapeHtml(pageTitle)}</title>
   <link rel="icon" href="../site/favicon.ico"/>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../fonts/fonts.css" />
   <link rel="stylesheet" href="${ARTICLE_STYLESHEET}" />
 </head>
 <body>
@@ -1138,7 +1158,7 @@ ${buildArticleBodyHtml()}
     </footer>
   </article>
 
-  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio</span></footer>
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="../../mentions-legales.html" style="color:#888582;">Mentions légales</a></span></footer>
 </body>
 </html>`;
     }

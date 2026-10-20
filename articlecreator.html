@@ -176,11 +176,14 @@
         .advanced-card[open] summary { border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 4px; }
 
         /* --- BANDEAU DE L'ÉDITEUR --- */
-        .editor-bar { display: flex; align-items: center; gap: 10px; }
+        .editor-bar { display: flex; flex-direction: column; gap: 8px; }
+        .editor-bar-row { display: flex; align-items: center; gap: 8px; }
         .editor-bar .btn { padding: 8px 12px; white-space: nowrap; }
+        .editor-switch { flex: 1; min-width: 0; padding: 7px 8px; font-size: 0.8rem; }
         .editor-bar-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
         .editor-file { font-size: 0.78rem; font-weight: 600; overflow-wrap: anywhere; }
-        .editor-dirty { font-size: 0.7rem; color: #8a5a00; }
+        .editor-state { font-size: 0.7rem; color: var(--muted); }
+        .editor-state.unsaved { color: #8a5a00; }
         .import-report { border-left: 4px solid #e0a800; font-size: 0.8rem; line-height: 1.5; }
         .import-report p { margin: 6px 0; }
         .import-report ul { margin: 6px 0; padding-left: 18px; }
@@ -201,7 +204,7 @@
         .admin-brand { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; flex: 1; }
         .admin-repo { font-size: 0.75rem; color: var(--muted); }
         .admin-top .btn { padding: 8px 12px; }
-        .admin-main { max-width: 920px; margin: 0 auto; padding: 24px 16px 60px; }
+        .admin-main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 60px; }
         body.is-busy .admin-main { pointer-events: none; opacity: 0.6; cursor: wait; }
         .login-card { max-width: 420px; margin: 40px auto; }
         .login-card .btn { width: 100%; }
@@ -224,6 +227,7 @@
         .badge { display: inline-block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 2px; background: var(--soft); color: var(--muted); margin: 5px 4px 0 0; font-weight: 600; }
         .badge-une { background: var(--accent-light); color: var(--accent); }
         .badge-draft { background: #fdf3e1; color: #8a5a00; }
+        .badge-local { background: #fbe9eb; color: #a3333d; }
         .badge-error { background: #fbe9eb; color: var(--danger); }
         .lib-actions { display: flex; gap: 6px; align-items: center; }
         .btn-mini { padding: 6px 10px; border: 1px solid var(--border); background: #fff; border-radius: 3px; cursor: pointer; font-family: var(--sans); font-size: 0.75rem; color: var(--ink); line-height: 1.2; }
@@ -240,6 +244,22 @@
         .lib-empty { font-size: 0.85rem; color: var(--muted); padding: 6px 0 12px; margin: 0; }
         .sortable-ghost { opacity: 0.4; }
 
+        /* Colonne des brouillons, plus discrète que la liste des écrits */
+        .lib-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; align-items: start; }
+        .drafts-col { position: sticky; top: 72px; border-left: 1px solid var(--border); padding-left: 18px; }
+        .drafts-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 22px 0 6px; }
+        .drafts-head h2 { font-size: 0.95rem; color: var(--muted); border: none; margin: 0; padding: 0; }
+        .draft-item { display: flex; align-items: flex-start; border-bottom: 1px solid var(--border); }
+        .draft-open { flex: 1; min-width: 0; text-align: left; background: none; border: none; padding: 9px 2px; cursor: pointer; font-family: var(--sans); color: var(--ink); }
+        .draft-open:hover .draft-title { color: var(--accent); }
+        .draft-title { display: block; font-family: var(--serif); font-size: 0.86rem; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+        .draft-meta { display: block; font-size: 0.68rem; color: var(--muted); margin-top: 3px; line-height: 1.4; overflow-wrap: anywhere; }
+        .draft-unsaved { display: block; font-size: 0.68rem; color: #a3333d; margin-top: 2px; }
+        .draft-del { background: none; border: none; color: var(--muted); cursor: pointer; padding: 9px 4px; font-size: 0.95rem; line-height: 1; opacity: 0; }
+        .draft-item:hover .draft-del, .draft-del:focus { opacity: 1; }
+        .draft-del:hover { color: var(--danger); }
+        .drafts-empty { font-size: 0.75rem; color: var(--muted); line-height: 1.5; margin: 6px 0; }
+
         @media (max-width: 800px) {
             body { grid-template-columns: 1fr; height: auto; overflow: auto; }
             .editor-panel { overflow: visible; border-right: none; }
@@ -250,6 +270,9 @@
             .lib-thumb { display: none; }
             .lib-actions { grid-column: 2; flex-wrap: wrap; }
             .lib-menu-list { right: auto; left: 0; }
+            .lib-layout { grid-template-columns: 1fr; gap: 0; }
+            .drafts-col { position: static; border-left: none; padding-left: 0; order: -1; }
+            .draft-del { opacity: 1; }
         }
 
 
@@ -322,25 +345,36 @@
                 <button type="button" class="btn btn-primary" onclick="newArticle()">+ Nouvel article</button>
             </div>
             <p class="gh-status" id="admin-status"></p>
-            <div id="lib-drafts"></div>
-            <h2 class="lib-heading">Liste des écrits <span class="lib-hint">dans l'ordre d'affichage du site : glisse ⠿ pour le changer</span></h2>
-            <div id="order-bar" class="order-bar hidden">
-                <span>L'ordre a changé.</span>
-                <button type="button" class="btn btn-primary" onclick="saveOrder()">Enregistrer l'ordre</button>
-                <button type="button" class="btn btn-light" onclick="cancelOrder()">Annuler</button>
+            <div class="lib-layout">
+                <div class="lib-main-col">
+                    <h2 class="lib-heading">Liste des écrits <span class="lib-hint">dans l'ordre d'affichage du site : glisse ⠿ pour le changer</span></h2>
+                    <div id="order-bar" class="order-bar hidden">
+                        <span>L'ordre a changé.</span>
+                        <button type="button" class="btn btn-primary" onclick="saveOrder()">Enregistrer l'ordre</button>
+                        <button type="button" class="btn btn-light" onclick="cancelOrder()">Annuler</button>
+                    </div>
+                    <div id="lib-rows" class="lib-rows"></div>
+                    <div id="lib-offlist"></div>
+                </div>
+                <!-- Brouillons : assets/articles/drafts/ sur GitHub, et articles pas encore enregistrés de ce navigateur -->
+                <aside class="drafts-col" id="drafts-col"></aside>
             </div>
-            <div id="lib-rows" class="lib-rows"></div>
-            <div id="lib-offlist"></div>
         </section>
     </main>
 </div>
 
 <div class="editor-panel">
     <div class="editor-bar">
-        <button type="button" class="btn btn-light" id="editor-back" onclick="showView('admin')">← Articles</button>
-        <div class="editor-bar-info">
-            <span class="editor-file" id="editor-file"></span>
-            <span class="editor-dirty hidden" id="editor-dirty">● Modifications non publiées</span>
+        <div class="editor-bar-row">
+            <button type="button" class="btn btn-light" id="editor-back" onclick="leaveEditor()">← Articles</button>
+            <select id="editor-switch" class="editor-switch hidden" title="Passer à un autre article ou brouillon" onchange="switchArticle(this.value)"></select>
+        </div>
+        <div class="editor-bar-row">
+            <div class="editor-bar-info">
+                <span class="editor-file" id="editor-file"></span>
+                <span class="editor-state" id="editor-state"></span>
+            </div>
+            <button type="button" class="btn btn-primary" id="draft-save-btn" onclick="saveDraft()" title="Enregistrer le brouillon sur GitHub, sans le publier (Ctrl+S)">Enregistrer</button>
         </div>
     </div>
     <div class="section-card import-report hidden" id="import-report"></div>
@@ -531,7 +565,8 @@
     function importJSON(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
-        reader.onload = (e) => { applyData(JSON.parse(e.target.result)); };
+        // Un fichier de brouillon (assets/articles/drafts/) range l'article sous « article »
+        reader.onload = (e) => { const data = JSON.parse(e.target.result); applyData(data.article || data); };
         reader.readAsText(file);
     }
 
@@ -581,13 +616,18 @@
     }
 
     // --- ARTICLE OUVERT ET BROUILLONS ---
-    // Chaque article a son propre brouillon dans ce navigateur (cms_drafts), tant qu'il a des
-    // modifications non publiées. currentKey : clé du brouillon (nom du fichier, ou « nouveau-… »
-    // pour un article jamais publié). currentFile : nom du fichier figé (null tant qu'un nouvel
-    // article n'est pas publié : il suit alors le Nom court). currentSha : version GitHub du
-    // fichier ouvert (null s'il n'existe pas encore). baseSnapshot : état de l'article à
-    // l'ouverture ou à la dernière publication, pour savoir s'il a été modifié depuis.
-    let currentKey = null, currentFile = null, currentSha = null, baseSnapshot = null;
+    // Deux niveaux de brouillons :
+    // - les brouillons enregistrés sur GitHub, dans assets/articles/drafts/ (bouton « Enregistrer »),
+    //   visibles dans la colonne « Brouillons » du panneau et reprenables depuis n'importe quel navigateur ;
+    // - une sauvegarde de secours dans ce navigateur (cms_drafts), tant que l'article ouvert a des
+    //   modifications non enregistrées, pour ne rien perdre si la page se ferme.
+    // currentKey : clé de l'article (nom du fichier publié, « drafts/… » pour un nouvel article
+    // enregistré en brouillon, « nouveau-… » sinon). currentFile : nom du fichier publié, figé (null
+    // tant qu'un nouvel article n'est pas publié : il suit alors le Nom court). currentSha : version
+    // GitHub de ce fichier (null s'il n'existe pas encore). currentDraft : brouillon GitHub lié
+    // ({ name, sha }, ou null). baseSnapshot : état de l'article au dernier enregistrement
+    // (ouverture, brouillon ou publication), pour savoir s'il a été modifié depuis.
+    let currentKey = null, currentFile = null, currentSha = null, currentDraft = null, baseSnapshot = null;
 
     function readDrafts() { try { return JSON.parse(readStore('cms_drafts') || '{}') || {}; } catch (e) { return {}; } }
     function writeDrafts(drafts) { writeStore('cms_drafts', JSON.stringify(drafts)); }
@@ -597,34 +637,36 @@
     function articleSnapshot() { return JSON.stringify(buildArticleSource()); }
     function isDirty() { return baseSnapshot === null || articleSnapshot() !== baseSnapshot; }
 
-    /** Enregistre le brouillon de l'article ouvert s'il a été modifié, le supprime sinon */
+    /** Sauvegarde de secours de l'article ouvert s'il a des modifications non enregistrées, supprimée sinon */
     function saveToLocal() {
         if (!currentKey) return; // article en cours de chargement
         const dirty = isDirty();
         const drafts = readDrafts();
-        if (dirty) drafts[currentKey] = { data: readEditorData(), file: currentFile, baseSha: currentSha, base: baseSnapshot, savedAt: new Date().toISOString() };
+        if (dirty) drafts[currentKey] = { data: readEditorData(), file: currentFile, baseSha: currentSha, draft: currentDraft, base: baseSnapshot, savedAt: new Date().toISOString() };
         else delete drafts[currentKey];
         writeDrafts(drafts);
         updateEditorBar(dirty);
     }
 
     /** Charge un article dans l'éditeur ; base = état de référence (par défaut, l'état chargé : aucune modification) */
-    function loadIntoEditor({ key, file, sha, data, base, show = true }) {
+    function loadIntoEditor({ key, file, sha, draft = null, data, base, show = true }) {
         currentKey = null; // rien n'est enregistré pendant le chargement
         applyData(data);
         baseSnapshot = base !== undefined ? base : articleSnapshot();
         currentKey = key;
         currentFile = file || null;
         currentSha = sha || null;
+        currentDraft = draft;
         writeSession('cms_current', key);
         document.getElementById('gh-featured').checked = false;
         render();
+        renderSwitcher();
         if (show) showView('editor');
     }
 
     /** État de l'éditeur, pour y revenir si l'ouverture d'un autre article est annulée */
     function captureEditor() {
-        return { key: currentKey, file: currentFile, sha: currentSha, base: baseSnapshot, data: readEditorData() };
+        return { key: currentKey, file: currentFile, sha: currentSha, draft: currentDraft, base: baseSnapshot, data: readEditorData() };
     }
 
     function newArticle() {
@@ -633,21 +675,109 @@
         setGhStatus('');
     }
 
-    function openDraft(key) {
+    /** Reprend une sauvegarde de secours de ce navigateur */
+    function openLocalDraft(key) {
         const d = readDrafts()[key];
         if (!d) return;
-        loadIntoEditor({ key, file: d.file, sha: d.baseSha, data: d.data, base: d.base });
+        loadIntoEditor({ key, file: d.file, sha: d.baseSha, draft: d.draft || null, data: d.data, base: d.base });
         showImportReport(null);
         setGhStatus('');
     }
 
-    /** Retour à l'éditeur ; sans article en cours, reprend le dernier brouillon de ce navigateur */
+    /** Propose de reprendre les modifications non enregistrées gardées par ce navigateur pour cet article.
+        Renvoie « resumed » (reprises), « continue » (abandonnées ou absentes) ou « cancel ». */
+    async function offerRecovery(key) {
+        const local = readDrafts()[key];
+        if (!local) return 'continue';
+        const title = (local.data && local.data.meta && local.data.meta.title) || 'cet article';
+        const choice = await askDialog({
+            title: 'Modifications non enregistrées',
+            html: `<p>Ce navigateur a gardé des modifications non enregistrées de « ${escapeHtml(title)} », du ${escapeHtml(formatDate(local.savedAt))}.</p>`,
+            buttons: [{ label: 'Annuler', value: null }, { label: 'Les abandonner', value: 'drop' }, { label: 'Les reprendre', value: 'resume', kind: 'primary' }]
+        });
+        if (!choice) return 'cancel';
+        if (choice === 'resume') { openLocalDraft(key); return 'resumed'; }
+        const drafts = readDrafts();
+        delete drafts[key];
+        writeDrafts(drafts);
+        return 'continue';
+    }
+
+    /** Retour à l'éditeur ; sans article en cours, reprend la dernière sauvegarde de secours de ce navigateur */
     function backToEditor() {
-        if (!currentFile && !isDirty()) {
+        if (!currentFile && !currentDraft && !isDirty()) {
             const recent = Object.entries(readDrafts()).sort((a, b) => String(b[1].savedAt).localeCompare(String(a[1].savedAt)))[0];
-            if (recent) return openDraft(recent[0]);
+            if (recent) return openLocalDraft(recent[0]);
         }
         showView('editor');
+    }
+
+    /** Remet l'article ouvert dans son état du dernier enregistrement (« ne pas enregistrer ») */
+    function revertToBase() {
+        const key = currentKey;
+        currentKey = null;
+        applyData(baseSnapshot ? JSON.parse(baseSnapshot) : BLANK_DATA);
+        baseSnapshot = articleSnapshot();
+        currentKey = key;
+        saveToLocal(); // l'article n'est plus modifié : la sauvegarde de secours est supprimée
+    }
+
+    /** Avant de quitter l'article ouvert : enregistrer, abandonner les modifications ou rester.
+        Renvoie faux si l'on reste sur l'article. */
+    async function confirmLeave(action) {
+        if (!currentKey || !isDirty()) return true;
+        const title = document.getElementById('meta-title').value.trim() || 'Cet article';
+        const choice = await askDialog({
+            title: 'Modifications non enregistrées',
+            html: `<p>« ${escapeHtml(title)} » a été modifié depuis ${currentDraft ? 'son dernier enregistrement' : currentSha ? 'sa publication' : 'sa création'}.</p>
+                ${ghConnected ? '' : '<p class="gh-hint">Tu n’es pas connecté : les modifications peuvent rester dans ce navigateur, sans être enregistrées sur GitHub.</p>'}`,
+            buttons: [
+                { label: 'Annuler', value: null },
+                { label: 'Ne pas enregistrer', value: 'discard' },
+                ghConnected ? { label: `Enregistrer et ${action}`, value: 'save', kind: 'primary' } : { label: `Garder dans ce navigateur et ${action}`, value: 'keep', kind: 'primary' }
+            ]
+        });
+        if (!choice) return false;
+        if (choice === 'save') return saveDraft();
+        if (choice === 'discard') revertToBase();
+        return true;
+    }
+
+    /** Bouton « ← Articles » de l'éditeur */
+    async function leaveEditor() {
+        if (!ghConnected) return showView('admin'); // écran de connexion : l'article reste dans l'éditeur
+        if (await confirmLeave('quitter')) showView('admin');
+    }
+
+    /** Menu « Changer d'article » de l'éditeur */
+    async function switchArticle(value) {
+        document.getElementById('editor-switch').value = '';
+        if (!value || !(await confirmLeave('changer'))) return;
+        const id = value.slice(value.indexOf(':') + 1);
+        if (value === 'new') newArticle();
+        else if (value.startsWith('draft:')) await openGitHubDraft(id);
+        else if (value.startsWith('file:')) await openArticle(id);
+        else if (value.startsWith('local:')) openLocalDraft(id);
+    }
+
+    /** Liste des autres articles et brouillons, pour passer de l'un à l'autre sans revenir au panneau */
+    function renderSwitcher() {
+        const select = document.getElementById('editor-switch');
+        select.classList.toggle('hidden', !ghConnected);
+        if (!ghConnected) return;
+        const option = (value, label) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`;
+        const drafts = library.drafts.filter(d => !(currentDraft && currentDraft.name === d.name))
+            .map(d => option('draft:' + d.name, d.title || d.name));
+        const local = localOnlyDrafts().filter(([key]) => key !== currentKey)
+            .map(([key, d]) => option('local:' + key, `${(d.data && d.data.meta && d.data.meta.title) || 'Sans titre'} (ce navigateur)`));
+        const listed = new Set(library.list.map(e => e.file));
+        const published = [...library.list.map(e => e.file), ...library.files.map(f => f.name).filter(f => !listed.has(f) && !(library.infos[f] || {}).redirect)]
+            .filter(f => f !== currentFile && library.files.some(x => x.name === f))
+            .map(f => option('file:' + f, articleTitle(f)));
+        select.innerHTML = '<option value="">Changer d’article…</option>'
+            + (drafts.length || local.length ? `<optgroup label="Brouillons">${drafts.join('')}${local.join('')}</optgroup>` : '')
+            + (published.length ? `<optgroup label="Articles publiés">${published.join('')}</optgroup>` : '')
+            + option('new', '+ Nouvel article');
     }
 
     /** L'ancien brouillon unique (cms_draft) devient un brouillon parmi les autres */
@@ -665,11 +795,16 @@
         writeStore('cms_draft', null);
     }
 
-    /** Bandeau en haut de l'éditeur : fichier ouvert et modifications non publiées */
+    /** Bandeau en haut de l'éditeur : fichier ouvert et état d'enregistrement */
     function updateEditorBar(dirty) {
         if (dirty === undefined) dirty = !!currentKey && isDirty();
         document.getElementById('editor-file').textContent = currentFile || `Nouvel article · ${articleFileName()}`;
-        document.getElementById('editor-dirty').classList.toggle('hidden', !dirty);
+        const state = document.getElementById('editor-state');
+        state.textContent = dirty ? '● Modifications non enregistrées'
+            : currentDraft ? 'Brouillon enregistré · pas encore publié'
+            : currentSha ? 'Publié · à jour' : '';
+        state.classList.toggle('unsaved', dirty);
+        document.getElementById('draft-save-btn').disabled = !ghConnected;
         document.getElementById('gh-filename').value = publishFileName();
         document.getElementById('gh-filename-hint').textContent = currentFile
             ? 'Nom figé : pour le changer, utilise « Renommer » dans la liste des articles.'
@@ -1557,6 +1692,7 @@ ${buildArticleBodyHtml()}
     const GH_DEFAULTS = { owner: 'Alexandrelgn', repo: 'blog', branch: 'main' };
     const GH_ARTICLES_DIR = 'assets/articles/';
     const GH_ARTICLES_LIST = 'assets/articles/articles.json';
+    const GH_DRAFTS_DIR = 'assets/articles/drafts/';
     const GH_IMAGES_DIR = 'assets/images/';
 
     function readStore(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
@@ -1617,7 +1753,7 @@ ${buildArticleBodyHtml()}
         writeStore('gh_token', null);
         document.getElementById('gh-token').value = '';
         ghConnected = false;
-        library = { list: [], files: [], infos: {} };
+        library = { list: [], files: [], infos: {}, drafts: [] };
         pendingOrder = null;
         updateConnectionUi();
         setStatusIn('login-status', 'D\u00e9connect\u00e9 : le jeton a \u00e9t\u00e9 supprim\u00e9 de ce navigateur.', 'ok');
@@ -1634,6 +1770,8 @@ ${buildArticleBodyHtml()}
         document.getElementById('gh-connection').innerHTML = ghConnected
             ? `Connect\u00e9 \u00e0 <strong>${escapeHtml(repo)}</strong> \u00b7 <button type="button" class="link-btn" onclick="logout()">Se d\u00e9connecter</button>`
             : `Non connect\u00e9 \u00b7 <button type="button" class="link-btn" onclick="showView('admin')">Se connecter</button>`;
+        updateEditorBar();
+        renderSwitcher();
     }
 
     // --- VUES ET MESSAGES ---
@@ -1825,7 +1963,7 @@ ${buildArticleBodyHtml()}
                         <p>Tu peux \u00e9craser cette version avec la tienne, ou recharger la version en ligne : tes modifications non publi\u00e9es seraient alors perdues.</p>`,
                     buttons: [{ label: 'Annuler', value: null }, { label: 'Recharger la version en ligne', value: 'reload' }, { label: '\u00c9craser quand m\u00eame', value: 'overwrite', kind: 'danger' }]
                 });
-                if (choice === 'reload') { setGhStatus(''); await openArticle(file, { online: true }); return; }
+                if (choice === 'reload') { setGhStatus(''); await openArticle(file, { online: true, draft: currentDraft }); return; }
                 if (choice !== 'overwrite') { setGhStatus('Publication annul\u00e9e.'); return; }
                 const latest = await ghRequest(s, 'GET', path, null, true);
                 res = await ghPutFile(s, path, content, message, latest && latest.sha);
@@ -1840,9 +1978,21 @@ ${buildArticleBodyHtml()}
             currentSha = res.content.sha;
             writeSession('cms_current', file);
             baseSnapshot = articleSnapshot();
-            saveToLocal();
             showImportReport(null);
             libraryStale = true;
+            // Le brouillon GitHub de l'article est publié : il n'a plus lieu d'être
+            let draftNote = '';
+            if (currentDraft) {
+                setGhStatus('Suppression du brouillon publié…');
+                const draftName = currentDraft.name;
+                try {
+                    await deleteDraftFile(draftName, currentDraft.sha, `Suppression du brouillon ${draftName} (article publié)`);
+                } catch (err) {
+                    draftNote = ` Le brouillon <code>drafts/${escapeHtml(draftName)}</code> n’a pas pu être supprimé (${escapeHtml(err.message)}) : supprime-le depuis le panneau.`;
+                }
+            }
+            saveToLocal();
+            renderSwitcher();
 
             // Ajout \u00e0 la liste des \u00e9crits (en t\u00eate), et \u00ab \u00C0 la une \u00bb si demand\u00e9
             setGhStatus('Mise \u00e0 jour de la liste des \u00e9crits\u2026');
@@ -1860,7 +2010,7 @@ ${buildArticleBodyHtml()}
 
             const url = ghPagesUrl(s, path.replace(/\.html$/, ''));
             setGhStatus(`\u2705 Article ${sha ? 'mis \u00e0 jour' : 'publi\u00e9'}${added ? ' et ajout\u00e9 \u00e0 la liste des \u00e9crits' : ''}. `
-                + `Il sera en ligne dans 1 \u00e0 2 minutes : <a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`, 'ok');
+                + `Il sera en ligne dans 1 \u00e0 2 minutes : <a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>${draftNote}`, 'ok');
         } catch (err) {
             setGhStatus('\u274c ' + escapeHtml(err.message), 'error');
         } finally {
@@ -1947,12 +2097,20 @@ ${buildArticleBodyHtml()}
         if (resolve) resolve(value);
     }
 
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && dialogResolve) closeDialog(null); });
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dialogResolve) closeDialog(null);
+        // Ctrl+S dans l'éditeur : enregistrer le brouillon sur GitHub
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && !isAdminView() && !dialogResolve) {
+            e.preventDefault();
+            if (ghConnected) saveDraft();
+        }
+    });
 
     // --- PANNEAU : LISTE DES ARTICLES ---
     // library.list : contenu de articles.json ; library.files : fichiers .html du dossier des articles ;
-    // library.infos : titre, catégorie, date et image lus dans chaque article.
-    let library = { list: [], files: [], infos: {} };
+    // library.infos : titre, catégorie, date et image lus dans chaque article ;
+    // library.drafts : brouillons du dossier assets/articles/drafts/ ({ name, sha, file, title, savedAt, heroUrl }).
+    let library = { list: [], files: [], infos: {}, drafts: [] };
     let libraryStale = false;   // la liste doit être relue (après une publication)
     let pendingOrder = null;    // nouvel ordre pas encore enregistré
     const articleInfoCache = new Map(); // version (sha) d'un fichier → infos lues dedans
@@ -1971,15 +2129,19 @@ ${buildArticleBodyHtml()}
         const s = ghSettings();
         setAdminStatus('Chargement des articles…');
         try {
-            const [listFile, dir] = await Promise.all([
+            const [listFile, dir, draftDir] = await Promise.all([
                 ghRequest(s, 'GET', GH_ARTICLES_LIST, null, true),
-                ghRequest(s, 'GET', GH_ARTICLES_DIR.replace(/\/$/, ''), null, true)
+                ghRequest(s, 'GET', GH_ARTICLES_DIR.replace(/\/$/, ''), null, true),
+                ghRequest(s, 'GET', GH_DRAFTS_DIR.replace(/\/$/, ''), null, true) // absent tant qu'aucun brouillon n'existe
             ]);
             const list = listFile ? JSON.parse(base64ToUtf8(listFile.content)) : [];
             const files = (Array.isArray(dir) ? dir : []).filter(f => f.type === 'file' && /\.html$/i.test(f.name)).map(f => ({ name: f.name, sha: f.sha }));
+            const draftFiles = (Array.isArray(draftDir) ? draftDir : []).filter(f => f.type === 'file' && /\.json$/i.test(f.name));
             const infos = {};
+            const drafts = [];
             await runLimited(files, 4, async f => { infos[f.name] = await readArticleInfo(s, f); });
-            library = { list, files, infos };
+            await runLimited(draftFiles, 4, async f => { drafts.push({ name: f.name, sha: f.sha, ...await readDraftInfo(s, f) }); });
+            library = { list, files, infos, drafts };
             libraryStale = false;
             pendingOrder = null;
             renderLibrary();
@@ -2003,6 +2165,32 @@ ${buildArticleBodyHtml()}
         const info = parseArticleInfo(base64ToUtf8(file.content));
         articleInfoCache.set(f.sha, info);
         return info;
+    }
+
+    /** Infos d'un brouillon (titre, date, article publié qu'il modifie) ; lues une fois par version */
+    async function readDraftInfo(s, f) {
+        if (articleInfoCache.has(f.sha)) return articleInfoCache.get(f.sha);
+        const file = await ghRequest(s, 'GET', GH_DRAFTS_DIR + f.name);
+        let info;
+        try {
+            const json = JSON.parse(base64ToUtf8(file.content));
+            const m = (json.article && json.article.meta) || {};
+            info = { file: json.file || null, savedAt: json.savedAt || '', title: m.title || '', heroUrl: m.heroUrl || '' };
+        } catch (e) {
+            info = { file: null, savedAt: '', title: '', heroUrl: '', broken: true };
+        }
+        articleInfoCache.set(f.sha, info);
+        return info;
+    }
+
+    /** Clé de la sauvegarde de secours qui correspond à un brouillon GitHub */
+    function draftKey(d) { return d.file || 'drafts/' + d.name; }
+
+    /** Sauvegardes de secours de ce navigateur qui ne correspondent à aucun article publié ni brouillon GitHub */
+    function localOnlyDrafts() {
+        const attached = new Set([...library.files.map(f => f.name), ...library.drafts.map(draftKey)]);
+        return Object.entries(readDrafts()).filter(([key]) => !attached.has(key))
+            .sort((a, b) => String(b[1].savedAt).localeCompare(String(a[1].savedAt)));
     }
 
     /** Infos affichées dans la liste (même lecture que liste-articles.js) ; redirect = ancienne adresse d'un article renommé */
@@ -2059,7 +2247,7 @@ ${buildArticleBodyHtml()}
         const rows = document.getElementById('lib-rows');
         rows.classList.toggle('no-drag', filtering);
         const order = pendingOrder || library.list.map(e => e.file);
-        rows.innerHTML = order.filter(matches).map(file => libraryRowHtml(file, entries.get(file), drafts[file], !fileNames.has(file))).join('')
+        rows.innerHTML = order.filter(matches).map(file => libraryRowHtml(file, entries.get(file), !!drafts[file], !fileNames.has(file))).join('')
             || `<p class="lib-empty">${filtering ? 'Aucun article ne correspond.' : 'La liste des écrits est vide.'}</p>`;
         document.getElementById('order-bar').classList.toggle('hidden', !pendingOrder);
 
@@ -2067,26 +2255,53 @@ ${buildArticleBodyHtml()}
         const offList = library.files.filter(f => !entries.has(f.name) && !info(f.name).redirect && matches(f.name));
         document.getElementById('lib-offlist').innerHTML = offList.length
             ? `<h2 class="lib-heading">Hors liste <span class="lib-hint">dans le dépôt, mais pas affichés sur le site</span></h2>`
-                + offList.map(f => libraryRowHtml(f.name, null, drafts[f.name], false)).join('')
+                + offList.map(f => libraryRowHtml(f.name, null, !!drafts[f.name], false)).join('')
             : '';
 
-        // Brouillons d'articles qui ne sont pas encore sur GitHub (nouveaux articles, copies)
-        const newDrafts = Object.entries(drafts).filter(([, d]) => !d.file || !fileNames.has(d.file))
-            .sort((a, b) => String(b[1].savedAt).localeCompare(String(a[1].savedAt)));
-        document.getElementById('lib-drafts').innerHTML = newDrafts.length
-            ? `<h2 class="lib-heading">Brouillons non publiés <span class="lib-hint">enregistrés dans ce navigateur</span></h2>`
-                + newDrafts.map(([key, d]) => draftRowHtml(key, d)).join('')
-            : '';
+        renderDraftsColumn(drafts);
+        renderSwitcher();
     }
 
-    function libraryRowHtml(file, entry, draft, missing) {
+    /** Colonne « Brouillons » : brouillons enregistrés sur GitHub, puis articles pas encore enregistrés de ce navigateur */
+    function renderDraftsColumn(local) {
+        const items = [
+            ...library.drafts.map(d => ({
+                attr: `data-draft="${escapeHtml(d.name)}"`,
+                title: d.broken ? `${d.name} (illisible)` : d.title || 'Sans titre',
+                meta: [formatDate(d.savedAt), d.file ? `modifie ${d.file}` : 'nouvel article'].filter(Boolean).join(' · '),
+                unsaved: !!local[draftKey(d)],
+                date: d.savedAt
+            })),
+            ...localOnlyDrafts().map(([key, d]) => ({
+                attr: `data-local="${escapeHtml(key)}"`,
+                title: (d.data && d.data.meta && d.data.meta.title) || 'Sans titre',
+                meta: `${formatDate(d.savedAt)} · pas encore enregistré, dans ce navigateur`,
+                unsaved: false,
+                date: d.savedAt
+            }))
+        ].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+        document.getElementById('drafts-col').innerHTML = `
+            <div class="drafts-head"><h2>Brouillons</h2><span class="lib-hint">${items.length || ''}</span></div>
+            ${items.map(it => `<div class="draft-item" ${it.attr}>
+                <button type="button" class="draft-open" data-act="open" title="Ouvrir dans l’éditeur">
+                    <span class="draft-title">${escapeHtml(it.title)}</span>
+                    <span class="draft-meta">${escapeHtml(it.meta)}</span>
+                    ${it.unsaved ? '<span class="draft-unsaved">● modifications non enregistrées dans ce navigateur</span>' : ''}
+                </button>
+                <button type="button" class="draft-del" data-act="drop" title="Supprimer le brouillon">×</button>
+            </div>`).join('')
+            || '<p class="drafts-empty">Aucun brouillon. Dans l’éditeur, « Enregistrer » range l’article ici sans le publier.</p>'}`;
+    }
+
+    function libraryRowHtml(file, entry, unsaved, missing) {
         const info = library.infos[file] || {};
         const meta = [(entry && entry.category) || info.cat, info.date].filter(Boolean).join(' · ');
         const image = (entry && entry.image) || info.image;
         const badges = [
             entry && entry.featured ? '<span class="badge badge-une">À la une</span>' : '',
             !entry ? '<span class="badge">Hors liste</span>' : '',
-            draft ? '<span class="badge badge-draft">Brouillon local</span>' : '',
+            library.drafts.some(d => d.file === file) ? '<span class="badge badge-draft">Brouillon en cours</span>' : '',
+            unsaved ? '<span class="badge badge-local">Modifications non enregistrées</span>' : '',
             missing ? '<span class="badge badge-error">Fichier introuvable</span>' : ''
         ].join('');
         const menu = missing ? [['unlist', 'Retirer de la liste']] : [
@@ -2116,40 +2331,28 @@ ${buildArticleBodyHtml()}
         </div>`;
     }
 
-    function draftRowHtml(key, d) {
-        const m = (d.data && d.data.meta) || {};
-        return `<div class="lib-row" data-draft="${escapeHtml(key)}">
-            <span class="lib-handle"></span>
-            <div class="lib-thumb">${m.heroUrl ? `<img src="${escapeHtml(articleAssetUrl(m.heroUrl))}" alt="" loading="lazy">` : ''}</div>
-            <div class="lib-main">
-                <div class="lib-title">${escapeHtml(m.title || 'Sans titre')}</div>
-                <div class="lib-meta">Enregistré le ${escapeHtml(formatDate(d.savedAt))} · <code>${escapeHtml(d.file || 'nom choisi à la publication')}</code></div>
-                <div><span class="badge badge-draft">Non publié</span></div>
-            </div>
-            <div class="lib-actions">
-                <button type="button" class="btn-mini" data-act="open-draft">Ouvrir</button>
-                <button type="button" class="btn-mini" data-act="drop-draft">Supprimer</button>
-            </div>
-        </div>`;
-    }
-
     // Un seul menu « ⋯ » ouvert à la fois
     document.addEventListener('click', (e) => {
         document.querySelectorAll('details.lib-menu[open]').forEach(d => { if (!d.contains(e.target)) d.removeAttribute('open'); });
     });
 
-    // Boutons des lignes de la liste
+    // Boutons des lignes de la liste et de la colonne des brouillons
     let libraryBusy = false;
     document.getElementById('library').addEventListener('click', async (e) => {
         const btn = e.target.closest('button[data-act]');
-        const row = btn && btn.closest('.lib-row');
+        const row = btn && btn.closest('[data-file], [data-draft], [data-local]');
         if (!row || libraryBusy) return;
         const menu = btn.closest('details');
         if (menu) menu.removeAttribute('open');
         const act = btn.dataset.act;
-        const file = row.dataset.file;
-        const key = row.dataset.draft;
-        const actions = {
+        const { file, draft, local } = row.dataset;
+        const actions = draft !== undefined ? {
+            open: () => openGitHubDraft(draft),
+            drop: () => deleteGitHubDraft(draft)
+        } : local !== undefined ? {
+            open: () => openLocalDraft(local),
+            drop: () => dropLocalDraft(local)
+        } : {
             edit: () => openArticle(file),
             view: () => window.open(ghPagesUrl(ghSettings(), GH_ARTICLES_DIR + file.replace(/\.html$/i, '')), '_blank', 'noopener'),
             feature: () => toggleFeatured(file),
@@ -2158,9 +2361,7 @@ ${buildArticleBodyHtml()}
             duplicate: () => duplicateArticle(file),
             rename: () => renameArticle(file),
             unlist: () => removeFromList(file),
-            delete: () => deleteArticle(file),
-            'open-draft': () => openDraft(key),
-            'drop-draft': () => dropDraft(key)
+            delete: () => deleteArticle(file)
         };
         if (!actions[act]) return;
         libraryBusy = true;
@@ -2380,8 +2581,17 @@ ${buildArticleBodyHtml()}
             e.file = name;
             return `${file} renommé en ${name} dans la liste des écrits`;
         });
-        // Le brouillon local et l'article ouvert dans l'éditeur suivent le nouveau nom
+        // Les brouillons GitHub de cet article, la sauvegarde de secours et l'article ouvert suivent le nouveau nom
         const newSha = created.content.sha;
+        for (const d of library.drafts.filter(d => d.file === file)) {
+            setAdminStatus('Renommage : mise à jour du brouillon…');
+            const remoteDraft = await ghRequest(s, 'GET', GH_DRAFTS_DIR + d.name);
+            const json = JSON.parse(base64ToUtf8(remoteDraft.content));
+            json.file = name;
+            if (json.fileSha === old.sha) json.fileSha = newSha;
+            const saved = await ghPutFile(s, GH_DRAFTS_DIR + d.name, utf8ToBase64(JSON.stringify(json, null, 2) + '\n'), `Brouillon ${d.name} : article renommé en ${name}`, remoteDraft.sha);
+            if (currentDraft && currentDraft.name === d.name) currentDraft = { name: d.name, sha: saved.content.sha };
+        }
         const drafts = readDrafts();
         if (drafts[file]) {
             drafts[name] = { ...drafts[file], file: name, baseSha: drafts[file].baseSha === old.sha ? newSha : drafts[file].baseSha };
@@ -2400,9 +2610,11 @@ ${buildArticleBodyHtml()}
 
     async function deleteArticle(file) {
         const listed = library.list.some(e => e.file === file);
+        const linkedDrafts = library.drafts.filter(d => d.file === file);
         const ok = await askDialog({
             title: 'Supprimer l’article',
             html: `<p>Le fichier <code>${escapeHtml(file)}</code> sera supprimé du dépôt${listed ? ' et retiré de la liste des écrits' : ''}. Les liens vers cet article ne fonctionneront plus.</p>
+                ${linkedDrafts.length ? `<p>Son brouillon en cours (<code>drafts/${escapeHtml(linkedDrafts[0].name)}</code>) sera aussi supprimé.</p>` : ''}
                 <p class="gh-hint">L’historique Git du dépôt en garde une copie. Pour seulement masquer l’article, utilise plutôt « Retirer de la liste ».</p>
                 <label for="dlg-confirm">Retape le nom du fichier pour confirmer</label>
                 <input id="dlg-confirm" autocomplete="off" spellcheck="false" placeholder="${escapeHtml(file)}">`,
@@ -2427,6 +2639,7 @@ ${buildArticleBodyHtml()}
         setAdminStatus('Suppression du fichier…');
         const current = await ghRequest(s, 'GET', GH_ARTICLES_DIR + file, null, true);
         if (current) await ghDeleteFile(s, GH_ARTICLES_DIR + file, `Suppression de l’article : ${articleTitle(file)}`, current.sha);
+        for (const d of linkedDrafts) await deleteDraftFile(d.name, d.sha, `Suppression du brouillon ${d.name} (article supprimé)`);
         const drafts = readDrafts();
         delete drafts[file];
         writeDrafts(drafts);
@@ -2435,23 +2648,147 @@ ${buildArticleBodyHtml()}
         await reloadLibrary(`✅ « ${file} » supprimé.`);
     }
 
-    async function dropDraft(key) {
+    /** Supprime une sauvegarde de secours de ce navigateur (article jamais enregistré sur GitHub) */
+    async function dropLocalDraft(key) {
         const d = readDrafts()[key];
         if (!d) return;
         const ok = await askDialog({
             title: 'Supprimer le brouillon',
-            html: `<p>Le brouillon « ${escapeHtml((d.data && d.data.meta && d.data.meta.title) || 'Sans titre')} » sera effacé de ce navigateur. Rien n’est modifié sur le site.</p>`,
+            html: `<p>« ${escapeHtml((d.data && d.data.meta && d.data.meta.title) || 'Sans titre')} » n’a jamais été enregistré sur GitHub : il sera effacé de ce navigateur.</p>`,
             buttons: [{ label: 'Annuler', value: false }, { label: 'Supprimer', value: true, kind: 'danger' }]
         });
         if (!ok) return;
         const drafts = readDrafts();
         delete drafts[key];
         writeDrafts(drafts);
-        if (currentKey === key) {
-            newArticle();
-            showView('admin');
-        }
+        if (currentKey === key) loadIntoEditor({ key: 'nouveau-' + Date.now(), data: BLANK_DATA, show: false });
         renderLibrary();
+    }
+
+    // --- BROUILLONS SUR GITHUB (assets/articles/drafts/) ---
+    // Un brouillon est un fichier JSON reprenable par l'éditeur :
+    // { version, file (article publié qu'il modifie, ou null), fileSha (version de cet article au
+    //   moment de l'ouverture), savedAt, article (données de l'éditeur, comme la source d'un article) }.
+    // Il n'apparaît pas dans la liste des écrits ; il est supprimé quand l'article est publié.
+
+    /** Nom libre pour un nouveau brouillon : celui de l'article publié, sinon tiré du Nom court ou du titre */
+    async function freeDraftName(s) {
+        const base = currentFile ? currentFile.replace(/\.html$/i, '')
+            : fileBaseFromText(document.getElementById('nav-short').value) || fileBaseFromText(document.getElementById('meta-title').value) || 'brouillon';
+        const taken = new Set(library.drafts.map(d => d.name.toLowerCase()));
+        for (let i = 1; ; i++) {
+            const name = `${base}${i > 1 ? '-' + i : ''}.json`;
+            if (taken.has(name.toLowerCase())) continue;
+            if (!(await ghRequest(s, 'GET', GH_DRAFTS_DIR + name, null, true))) return name;
+        }
+    }
+
+    /** Enregistre l'article ouvert comme brouillon sur GitHub, sans le publier ; renvoie vrai si c'est fait */
+    async function saveDraft() {
+        const s = ghSettings();
+        if (!requireToken(s)) return false;
+        const btn = document.getElementById('draft-save-btn');
+        btn.disabled = true;
+        try {
+            setGhStatus('Enregistrement du brouillon…');
+            const name = currentDraft ? currentDraft.name : await freeDraftName(s);
+            const path = GH_DRAFTS_DIR + name;
+            const title = document.getElementById('meta-title').value.trim() || name;
+            const savedAt = new Date().toISOString();
+            const content = utf8ToBase64(JSON.stringify({ version: 1, file: currentFile, fileSha: currentSha, savedAt, article: buildArticleSource() }, null, 2) + '\n');
+            let res;
+            try {
+                res = await ghPutFile(s, path, content, `Brouillon : ${title}`, currentDraft && currentDraft.sha);
+            } catch (err) {
+                if (!isShaConflict(err)) throw err;
+                const overwrite = await askDialog({
+                    title: 'Le brouillon a changé sur GitHub',
+                    html: `<p>Le brouillon <code>drafts/${escapeHtml(name)}</code> a été enregistré ailleurs (un autre navigateur ?) depuis que tu l’as ouvert.</p><p>Écraser cette version avec la tienne ?</p>`,
+                    buttons: [{ label: 'Annuler', value: false }, { label: 'Écraser', value: true, kind: 'danger' }]
+                });
+                if (!overwrite) { setGhStatus('Enregistrement annulé.'); return false; }
+                const latest = await ghRequest(s, 'GET', path, null, true);
+                res = await ghPutFile(s, path, content, `Brouillon : ${title}`, latest && latest.sha);
+            }
+            // Un nouvel article enregistré prend la clé de son brouillon ; la sauvegarde de secours n'a plus lieu d'être
+            const drafts = readDrafts();
+            delete drafts[currentKey];
+            writeDrafts(drafts);
+            currentDraft = { name, sha: res.content.sha };
+            if (!currentFile) currentKey = 'drafts/' + name;
+            writeSession('cms_current', currentKey);
+            baseSnapshot = articleSnapshot();
+            saveToLocal();
+            // La colonne des brouillons et le menu « Changer d'article » sont mis à jour sans tout relire
+            library.drafts = [...library.drafts.filter(d => d.name !== name),
+                { name, sha: res.content.sha, file: currentFile, savedAt, title: document.getElementById('meta-title').value, heroUrl: document.getElementById('hero-url').value }];
+            renderSwitcher();
+            setGhStatus(`✅ Brouillon enregistré sur GitHub (<code>drafts/${escapeHtml(name)}</code>), sans être publié.`, 'ok');
+            return true;
+        } catch (err) {
+            setGhStatus('❌ ' + escapeHtml(err.message), 'error');
+            return false;
+        } finally {
+            btn.disabled = !ghConnected;
+        }
+    }
+
+    /** Ouvre un brouillon GitHub dans l'éditeur ; options.skipRecovery : la sauvegarde de secours a déjà été proposée */
+    async function openGitHubDraft(name, options = {}) {
+        const known = library.drafts.find(d => d.name === name);
+        if (!options.skipRecovery && known) {
+            const recovery = await offerRecovery(draftKey(known));
+            if (recovery !== 'continue') return;
+        }
+        setStatus(`Ouverture du brouillon « ${escapeHtml(name)} »…`);
+        try {
+            const remote = await ghRequest(ghSettings(), 'GET', GH_DRAFTS_DIR + name);
+            const json = JSON.parse(base64ToUtf8(remote.content));
+            setAdminStatus('');
+            loadIntoEditor({ key: json.file || 'drafts/' + name, file: json.file || null, sha: json.fileSha || null, draft: { name, sha: remote.sha }, data: json.article || json });
+            showImportReport(null);
+            setGhStatus('');
+        } catch (err) {
+            setStatus('❌ ' + escapeHtml(err instanceof SyntaxError ? `Brouillon illisible (${name}).` : err.message), 'error');
+        }
+    }
+
+    /** Supprime un fichier de brouillon (en relisant sa version s'il a changé entre-temps) */
+    async function deleteDraftFile(name, sha, message) {
+        const s = ghSettings();
+        try {
+            await ghDeleteFile(s, GH_DRAFTS_DIR + name, message, sha);
+        } catch (err) {
+            if (!isShaConflict(err) && err.status !== 404) throw err;
+            const latest = await ghRequest(s, 'GET', GH_DRAFTS_DIR + name, null, true);
+            if (latest) await ghDeleteFile(s, GH_DRAFTS_DIR + name, message, latest.sha);
+        }
+        library.drafts = library.drafts.filter(d => d.name !== name);
+        if (currentDraft && currentDraft.name === name) currentDraft = null;
+    }
+
+    /** Bouton « × » de la colonne des brouillons */
+    async function deleteGitHubDraft(name) {
+        const d = library.drafts.find(x => x.name === name);
+        if (!d) return;
+        const ok = await askDialog({
+            title: 'Supprimer le brouillon',
+            html: `<p>Le brouillon « ${escapeHtml(d.title || name)} » (<code>drafts/${escapeHtml(name)}</code>) sera supprimé du dépôt.</p>
+                <p class="gh-hint">${d.file ? `L’article publié <code>${escapeHtml(d.file)}</code> ne change pas.` : 'Cet article n’a jamais été publié : son contenu ne restera que dans l’historique Git.'}</p>`,
+            buttons: [{ label: 'Annuler', value: false }, { label: 'Supprimer le brouillon', value: true, kind: 'danger' }]
+        });
+        if (!ok) return;
+        setAdminStatus('Suppression du brouillon…');
+        const wasOpen = currentDraft && currentDraft.name === name;
+        await deleteDraftFile(name, d.sha, `Suppression du brouillon ${name}`);
+        // Un nouvel article dont on supprime le brouillon : l'éditeur repart d'un article vierge
+        if (wasOpen && !currentFile) loadIntoEditor({ key: 'nouveau-' + Date.now(), data: BLANK_DATA, show: false });
+        else if (wasOpen) updateEditorBar();
+        const drafts = readDrafts();
+        delete drafts['drafts/' + name];
+        writeDrafts(drafts);
+        await loadLibrary();
+        setAdminStatus(`✅ Brouillon « ${escapeHtml(d.title || name)} » supprimé.`, 'ok');
     }
 
     // --- OUVRIR UN ARTICLE PUBLIÉ ---
@@ -2489,37 +2826,40 @@ ${buildArticleBodyHtml()}
         return imported;
     }
 
-    /** Ouvre un article publié dans l'éditeur ; options.online : ignorer le brouillon local */
+    /** Ouvre un article publié dans l'éditeur. Propose d'abord les modifications non enregistrées de ce
+        navigateur, puis son brouillon GitHub s'il en a un. options.online : version en ligne directement
+        (options.draft garde alors le brouillon GitHub lié). */
     async function openArticle(file, options = {}) {
+        let linkedDraft = options.online ? options.draft || null : null;
+        if (!options.online) {
+            const recovery = await offerRecovery(file);
+            if (recovery !== 'continue') return;
+            const draft = library.drafts.find(d => d.file === file);
+            if (draft) {
+                const choice = await askDialog({
+                    title: 'Brouillon en cours',
+                    html: `<p>Un brouillon de cet article est enregistré${draft.savedAt ? ` (le ${escapeHtml(formatDate(draft.savedAt))})` : ''}, pas encore publié.</p>
+                        <p class="gh-hint">Si tu repars de la version en ligne, ce brouillon sera remplacé à ton prochain enregistrement.</p>`,
+                    buttons: [{ label: 'Annuler', value: null }, { label: 'Version en ligne', value: 'online' }, { label: 'Reprendre le brouillon', value: 'draft', kind: 'primary' }]
+                });
+                if (!choice) return;
+                if (choice === 'draft') return openGitHubDraft(draft.name, { skipRecovery: true });
+                linkedDraft = { name: draft.name, sha: draft.sha };
+            }
+        }
         const s = ghSettings();
         setStatus(`Ouverture de « ${escapeHtml(file)} »…`);
         let previous = null;
         try {
             const remote = await ghRequest(s, 'GET', GH_ARTICLES_DIR + file);
             const doc = new DOMParser().parseFromString(base64ToUtf8(remote.content), 'text/html');
-            const draft = !options.online && readDrafts()[file];
-            let useDraft = false;
-            if (draft) {
-                const changed = draft.baseSha && draft.baseSha !== remote.sha;
-                const choice = await askDialog({
-                    title: 'Modifications non publiées',
-                    html: `<p>Tu as un brouillon non publié pour cet article, enregistré le ${escapeHtml(formatDate(draft.savedAt))}.</p>
-                        ${changed ? '<p class="dialog-warn">La version en ligne a changé depuis ce brouillon : si tu le reprends, la publication te demandera quelle version garder.</p>' : ''}`,
-                    buttons: [{ label: 'Annuler', value: null }, { label: 'Repartir de la version en ligne', value: 'online' }, { label: 'Reprendre mon brouillon', value: 'draft', kind: 'primary' }]
-                });
-                if (!choice) { setStatus(''); return; }
-                useDraft = choice === 'draft';
-            }
             previous = captureEditor();
             currentKey = null; // rien n'est enregistré pendant la lecture
             const read = await readPublishedArticle(doc);
             if (!read) { loadIntoEditor({ ...previous, show: false }); setStatus(''); return; }
-            const base = articleSnapshot(); // la version en ligne sert de référence
             setAdminStatus('');
-            loadIntoEditor(useDraft
-                ? { key: file, file, sha: draft.baseSha || remote.sha, data: draft.data, base }
-                : { key: file, file, sha: remote.sha, data: read.data, base });
-            showImportReport(useDraft ? null : read.report);
+            loadIntoEditor({ key: file, file, sha: remote.sha, draft: linkedDraft, data: read.data });
+            showImportReport(read.report);
             setGhStatus('');
         } catch (err) {
             if (previous && !currentKey) loadIntoEditor({ ...previous, show: false });
@@ -2769,7 +3109,7 @@ ${buildArticleBodyHtml()}
         // Après un rechargement de la page, on reprend l'article en cours s'il a des modifications non publiées
         const key = readSession('cms_current');
         const draft = key && readDrafts()[key];
-        if (draft) loadIntoEditor({ key, file: draft.file, sha: draft.baseSha, data: draft.data, base: draft.base, show: false });
+        if (draft) loadIntoEditor({ key, file: draft.file, sha: draft.baseSha, draft: draft.draft || null, data: draft.data, base: draft.base, show: false });
         else loadIntoEditor({ key: 'nouveau-' + Date.now(), data: BLANK_DATA, show: false });
         showView(draft && readSession('cms_view') === 'editor' ? 'editor' : 'admin');
         updateConnectionUi();

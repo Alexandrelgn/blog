@@ -528,9 +528,12 @@
         <textarea id="meta-title" oninput="render()">Titre de l'article...</textarea>
         <label>Chapeau</label>
         <textarea id="meta-intro" oninput="render()">Introduction...</textarea>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div><label>Lieu</label><input type="text" id="pub-loc" value="Paris" oninput="render()"></div>
-            <div><label>Date</label><input type="text" id="pub-date" value="2026" oninput="render()"></div>
+        <label>Lieu</label>
+        <input type="text" id="pub-loc" value="Paris" oninput="render()">
+        <label>Date</label>
+        <div class="field-inline">
+            <input type="date" id="pub-date-picker" title="Choisir une date" onchange="document.getElementById('pub-date').value = frenchDateFromIso(this.value); render()">
+            <input type="text" id="pub-date" value="2026" placeholder="17 février 2026" oninput="syncDatePicker(this, document.getElementById('pub-date-picker')); render()">
         </div>
         <label>Lecture (affichée sous les auteurs)</label>
         <input type="text" id="readTime" value="8 min de lecture" oninput="render()">
@@ -942,6 +945,7 @@
         document.getElementById('meta-intro').value = m.intro || '';
         document.getElementById('pub-loc').value = m.loc || '';
         document.getElementById('pub-date').value = m.date || '';
+        syncDatePicker(document.getElementById('pub-date'), document.getElementById('pub-date-picker'));
         document.getElementById('readTime').value = m.readTime != null ? m.readTime : (m.time != null ? m.time : '8 min de lecture');
         document.getElementById('hero-url').value = m.heroUrl || '';
         document.getElementById('hero-alt').value = m.heroAlt || '';
@@ -3356,6 +3360,24 @@ ${buildArticleBodyHtml()}
         return month < 0 ? '' : `${m[3]}-${String(month + 1).padStart(2, '0')}-${String(m[1]).padStart(2, '0')}`;
     }
 
+    /** Une date tapée à la main se reporte dans le sélecteur quand elle a la forme « 17 février 2026 » */
+    function syncDatePicker(textInput, picker) {
+        if (picker) picker.value = isoFromFrenchDate(textInput.value);
+    }
+
+    /** Vrai si le texte ressemble à une date (« 4 octobre 2025 », « octobre 2025 », « 2025 ») */
+    function looksLikeDate(text) {
+        const s = normalizeSearch(String(text || '').trim());
+        return !!isoFromFrenchDate(text) || /^\d{4}$/.test(s) || MONTHS_FR.some(m => s.includes(normalizeSearch(m)) && /\d{4}/.test(s));
+    }
+
+    /** « Paris 12ème · 16 octobre 2025 » → { place: « Paris 12ème », date: « 16 octobre 2025 » } */
+    function splitPlaceDate(text) {
+        const parts = String(text || '').split(' · ');
+        if (parts.length > 1 && looksLikeDate(parts[parts.length - 1])) return { place: parts.slice(0, -1).join(' · '), date: parts[parts.length - 1] };
+        return looksLikeDate(text) ? { place: '', date: String(text).trim() } : { place: String(text || ''), date: '' };
+    }
+
     // --- YOUTUBE ---
     const youtubeInfo = new Map(); // lien → { title } ; null si la vidéo est introuvable (privée, supprimée)
 
@@ -3496,7 +3518,7 @@ ${buildArticleBodyHtml()}
             fields: [
                 { name: 'file', label: 'Photo du site', type: 'image', hint: 'Envoie une photo (rangée dans assets/images/) ou écris son chemin.' },
                 { name: 'title', label: 'Titre', type: 'string' },
-                { name: 'meta', label: 'Lieu et date', type: 'string', placeholder: 'Paris 12ème · 16 octobre 2025' },
+                { name: 'meta', label: 'Lieu et date', type: 'placeDate', placeholder: 'Paris 12ème', hint: 'Affichés « Lieu · Date » sous la photo.' },
                 { name: 'category', label: 'Catégorie', type: 'category', newLabel: 'Nouvelle catégorie…', labels: PHOTO_CATEGORIES, slug: true, hint: 'Sert de filtre sur la page Photos.' },
                 { name: 'alt', label: 'Description', type: 'text', hint: 'Affichée dans la visionneuse et lue par les lecteurs d’écran.' },
                 { name: 'src', label: 'Image hébergée ailleurs (facultatif)', type: 'string', placeholder: 'https://res.cloudinary.com/…', hint: 'Adresse complète qui remplace la photo du site.' }
@@ -3884,6 +3906,13 @@ ${buildArticleBodyHtml()}
             return `${label}<div class="field-inline"><input type="date" data-date-for="${f.name}" value="${isoFromFrenchDate(v)}" title="Choisir une date">
                 <input id="f-${f.name}" name="${f.name}" placeholder="17 février 2026" value="${escapeHtml(v)}"></div>${hint || ''}`;
         }
+        if (f.type === 'placeDate') {
+            // Un seul champ dans le fichier (« Lieu · Date »), saisi en deux parties
+            const { place, date } = splitPlaceDate(v);
+            return `<label for="f-${f.name}">Lieu</label><input id="f-${f.name}" name="${f.name}__place" placeholder="${escapeHtml(f.placeholder || '')}" value="${escapeHtml(place)}">
+                <label>Date</label><div class="field-inline"><input type="date" data-date-for="${f.name}__date" value="${isoFromFrenchDate(date)}" title="Choisir une date">
+                <input name="${f.name}__date" placeholder="16 octobre 2025" value="${escapeHtml(date)}"></div>${hint}`;
+        }
         if (f.type === 'category') {
             // Menu des valeurs déjà utilisées (et des valeurs prévues, ex. catégories de photos) ;
             // celles écrites de plusieurs façons sont signalées
@@ -3914,6 +3943,7 @@ ${buildArticleBodyHtml()}
             const t = e.target;
             if (t.name === 'url') { clearTimeout(ytTimer); ytTimer = setTimeout(checkYoutubeField, 400); }
             if (t.name === 'episode') delete t.dataset.auto; // numéro choisi à la main
+            if (t.name) syncDatePicker(t, form.querySelector(`[data-date-for="${t.name}"]`)); // date tapée → sélecteur
             if (t.name && t.name.endsWith('__new')) checkNewCategory(id, t.name.slice(0, -5));
             updateEntryPreview();
         };
@@ -3996,6 +4026,7 @@ ${buildArticleBodyHtml()}
             else if (f.type === 'tags') v = text(f.name).split(',').map(t => t.trim()).filter(Boolean);
             else if (f.type === 'episode') v = text(f.name) === '' ? '' : Number(text(f.name));
             else if (f.type === 'checkbox') v = form.elements[f.name] && form.elements[f.name].checked ? true : ''; // écrit seulement si coché
+            else if (f.type === 'placeDate') v = [text(f.name + '__place'), text(f.name + '__date')].filter(Boolean).join(' · ');
             else v = text(f.name);
             if (Array.isArray(v) ? v.length : v !== '') entry[f.name] = v;
         }

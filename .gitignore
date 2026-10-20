@@ -11,3 +11,6 @@ TUTORIEL.pdf
 
 # Fichiers système de Windows / OneDrive
 desktop.ini
+
+# Dossier utile à claude avec skills, infos etc
+.claude/

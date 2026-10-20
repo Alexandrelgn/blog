@@ -1,11 +1,12 @@
 // ── VIDÉOS ──
 // Utilisé par videos.html (page Vidéos) et index.html (section « Reportages vidéo »).
 //
-// La liste des vidéos est dans assets/videos/videos.json (modifiable avec Pages CMS).
+// La liste des vidéos est dans assets/videos/videos.json (modifiable avec le panneau articlecreator.html).
 // Le titre et la miniature sont récupérés automatiquement sur YouTube.
 // La catégorie, la date et la description sont écrites dans la liste (YouTube ne les fournit pas).
 // L'ordre de la liste est l'ordre d'affichage ; « featured: true » la met « À la une ».
-// Champs facultatifs : title (remplace le titre YouTube), image (remplace la miniature), tags.
+// Champs facultatifs : title (remplace le titre YouTube), image (remplace la miniature), tags,
+// hidden (true : vidéo masquée du site). Les brouillons (drafts.json) ne sont jamais lus ici.
 const VIDEOS_DATA = 'assets/videos/videos.json';
 
 /** Lit un fichier de données JSON du site (sans cache, pour voir tout de suite une publication) */
@@ -62,7 +63,7 @@ async function loadVideo(entry) {
 
 async function loadAllVideos() {
   try {
-    return await Promise.all((await loadJson(VIDEOS_DATA)).map(loadVideo));
+    return await Promise.all((await loadJson(VIDEOS_DATA)).filter(entry => !entry.hidden).map(loadVideo));
   } catch (e) {
     console.warn('Liste des vidéos non chargée —', e);
     return [];

@@ -1,12 +1,13 @@
 // ── PODCASTS ──
 // Utilisé par podcasts.html (page Podcasts) et index.html (section « Podcasts »).
 //
-// La liste des épisodes est dans assets/podcasts/podcasts.json (modifiable avec Pages CMS).
+// La liste des épisodes est dans assets/podcasts/podcasts.json (modifiable avec le panneau articlecreator.html).
 // La miniature est récupérée automatiquement sur YouTube.
 // Le titre est « Série — Épisode N » quand series et episode sont remplis ;
 // sinon c'est le titre de la vidéo YouTube.
 // L'ordre de la liste est l'ordre d'affichage ; l'accueil montre les 3 premiers.
-// Champs facultatifs : title (remplace le titre), image (remplace la miniature).
+// Champs facultatifs : title (remplace le titre), image (remplace la miniature),
+// hidden (true : épisode masqué du site). Les brouillons (drafts.json) ne sont jamais lus ici.
 const PODCASTS_DATA = 'assets/podcasts/podcasts.json';
 
 /** Lit un fichier de données JSON du site (sans cache, pour voir tout de suite une publication) */
@@ -65,7 +66,7 @@ async function loadPodcast(entry) {
 
 async function loadAllPodcasts() {
   try {
-    return await Promise.all((await loadJson(PODCASTS_DATA)).map(loadPodcast));
+    return await Promise.all((await loadJson(PODCASTS_DATA)).filter(entry => !entry.hidden).map(loadPodcast));
   } catch (e) {
     console.warn('Liste des podcasts non chargée —', e);
     return [];

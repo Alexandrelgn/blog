@@ -37,6 +37,10 @@ content:
         label: Vignette (facultatif)
         type: string
         description: Adresse d'une image qui remplace la vignette de l'article.
+      - name: hidden
+        label: Masqué du site
+        type: boolean
+        description: L'article reste dans la liste mais n'apparaît plus sur le site.
 
   - name: videos
     label: Vidéos
@@ -76,6 +80,10 @@ content:
         label: Miniature (facultatif)
         type: string
         description: Adresse d'une image qui remplace la miniature YouTube.
+      - name: hidden
+        label: Masquée du site
+        type: boolean
+        description: La vidéo reste dans la liste mais n'apparaît plus sur le site.
 
   - name: photos
     label: Photos (galerie)
@@ -180,3 +188,7 @@ content:
       - name: image
         label: Miniature (facultatif)
         type: string
+      - name: hidden
+        label: Masqué du site
+        type: boolean
+        description: L'épisode reste dans la liste mais n'apparaît plus sur le site.

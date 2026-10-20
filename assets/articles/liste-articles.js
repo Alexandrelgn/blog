@@ -1,12 +1,12 @@
 // ── ARTICLES ──
 // Utilisé par articles.html (page Écrits) et index.html (section « Reportages écrits »).
 //
-// La liste des articles est dans assets/articles/articles.json (modifiable avec Pages CMS,
-// ou publiée directement par le bouton « Publier sur GitHub » de articlecreator.html).
+// La liste des articles est dans assets/articles/articles.json (gérée par le panneau articlecreator.html).
 // Chaque entrée donne le nom du fichier de l'article ; titre, catégorie, chapeau, date, durée
 // de lecture et image sont lus directement dans l'article.
 // L'ordre de la liste est l'ordre d'affichage ; « featured: true » le met « À la une ».
 // Champs facultatifs pour remplacer ce qui est lu dans l'article : excerpt, image, category.
+// « hidden: true » masque l'article du site (il reste dans la liste du panneau).
 const ARTICLES_DATA = 'assets/articles/articles.json';
 
 /** Lit un fichier de données JSON du site (sans cache, pour voir tout de suite une publication) */
@@ -59,7 +59,7 @@ async function loadArticle(entry) {
 async function loadAllArticles() {
   let articles;
   try {
-    articles = await loadJson(ARTICLES_DATA);
+    articles = (await loadJson(ARTICLES_DATA)).filter(entry => !entry.hidden);
   } catch (e) {
     console.warn('Liste des articles non chargée —', e);
     return [];

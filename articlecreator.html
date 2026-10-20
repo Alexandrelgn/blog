@@ -259,6 +259,60 @@
         .draft-item:hover .draft-del, .draft-del:focus { opacity: 1; }
         .draft-del:hover { color: var(--danger); }
         .drafts-empty { font-size: 0.75rem; color: var(--muted); line-height: 1.5; margin: 6px 0; }
+        .badge-hidden { background: #ececec; color: #555; }
+        .lib-row.is-hidden .lib-thumb, .lib-row.is-hidden .lib-title { opacity: 0.55; }
+        .btn-star:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* Onglets du panneau */
+        .admin-tabs { display: flex; gap: 2px; box-shadow: inset 0 -1px 0 var(--border); margin-bottom: 14px; overflow-x: auto; overflow-y: hidden; }
+        .admin-tabs button { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 14px; font-family: var(--sans); font-size: 0.85rem; color: var(--muted); cursor: pointer; white-space: nowrap; }
+        .admin-tabs button:hover { color: var(--ink); }
+        .admin-tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+        /* Tableau de bord */
+        .dash-shortcuts { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .dash-shortcuts .btn { width: auto; margin: 0; padding: 8px 12px; }
+        .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+        .dash-card { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
+        .dash-card h2 { font-size: 0.95rem; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+        .dash-count { font-family: var(--sans); font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+        .dash-list { list-style: none; margin: 0; padding: 0; }
+        .dash-list li { border-bottom: 1px solid var(--soft); }
+        .dash-list li:last-child { border-bottom: none; }
+        .dash-link { display: block; width: 100%; text-align: left; background: none; border: none; padding: 7px 0; cursor: pointer; font-family: var(--sans); color: var(--ink); }
+        .dash-link:hover .dash-item-title { color: var(--accent); }
+        .dash-item-title { display: block; font-size: 0.84rem; line-height: 1.35; overflow-wrap: anywhere; }
+        .dash-item-meta { display: block; font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+        .dash-empty { font-size: 0.78rem; color: var(--muted); margin: 4px 0; }
+        .dash-stats { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); }
+        .dash-stats strong { display: block; font-family: var(--serif); font-size: 1.4rem; color: var(--ink); }
+
+        /* Formulaire d'une entrée (tiroir latéral) */
+        .drawer { position: fixed; inset: 0; z-index: 1800; background: rgba(0,0,0,0.35); display: flex; justify-content: flex-end; }
+        .drawer-panel { width: min(540px, 100%); height: 100%; background: #fff; display: flex; flex-direction: column; box-shadow: -8px 0 24px rgba(0,0,0,0.12); }
+        .drawer-head { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+        .drawer-head h2 { flex: 1; margin: 0; padding: 0; border: none; }
+        .drawer-head .btn-remove { float: none; font-size: 1.2rem; }
+        .drawer-body { flex: 1; overflow-y: auto; padding: 4px 18px 14px; }
+        .drawer-preview-wrap { border-top: 1px solid var(--border); background: var(--soft); padding: 10px 18px; max-height: 38vh; overflow-y: auto; }
+        .drawer-preview-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+        #drawer-status { padding: 0 18px; }
+        .drawer-foot { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; padding: 12px 18px; border-top: 1px solid var(--border); }
+        .drawer-foot .btn { width: auto; margin: 0; padding: 9px 14px; font-size: 0.82rem; }
+        .field-hint { font-size: 0.7rem; color: var(--muted); margin: 4px 0 0; line-height: 1.45; }
+        .field-hint.ok { color: #1e7a3c; }
+        .field-hint.error { color: var(--danger); }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .field-inline { display: flex; gap: 6px; align-items: center; }
+        .field-inline input[type="date"] { width: auto; flex: 0 0 auto; }
+        .field-inline .btn { width: auto; margin: 0; padding: 7px 10px; white-space: nowrap; font-size: 0.75rem; }
+        .preview-card { background: #fff; border: 1px solid var(--border); display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 10px; }
+        .preview-thumb { aspect-ratio: 16 / 9; background: #ddd; overflow: hidden; }
+        .preview-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .preview-cat { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+        .preview-title { font-family: var(--serif); font-weight: 600; font-size: 0.95rem; line-height: 1.3; margin: 3px 0; }
+        .preview-meta { font-size: 0.68rem; color: var(--muted); }
+        .preview-desc { font-size: 0.75rem; color: #555; margin: 5px 0 0; line-height: 1.45; white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
         @media (max-width: 800px) {
             body { grid-template-columns: 1fr; height: auto; overflow: auto; }
@@ -273,6 +327,8 @@
             .lib-layout { grid-template-columns: 1fr; gap: 0; }
             .drafts-col { position: static; border-left: none; padding-left: 0; order: -1; }
             .draft-del { opacity: 1; }
+            .preview-card { grid-template-columns: 1fr; }
+            .field-row { grid-template-columns: 1fr; }
         }
 
 
@@ -306,10 +362,10 @@
     </div>
 </div>
 
-<!-- Panneau de gestion des articles : connexion, puis liste des écrits -->
+<!-- Panneau de gestion du site : connexion, puis onglets (tableau de bord, écrits, vidéos, podcasts) -->
 <div id="admin-view" class="admin-view">
     <header class="admin-top">
-        <span class="admin-brand">Gestion des écrits</span>
+        <span class="admin-brand">Gestion du site</span>
         <span class="admin-repo" id="admin-repo"></span>
         <button type="button" class="btn btn-light" onclick="backToEditor()">Éditeur →</button>
         <button type="button" class="btn btn-light hidden" id="admin-logout" onclick="logout()">Se déconnecter</button>
@@ -337,14 +393,24 @@
             </form>
         </section>
 
-        <section id="library" class="hidden">
+        <div id="admin-app" class="hidden">
+        <nav class="admin-tabs" role="tablist" aria-label="Rubriques du site">
+            <button type="button" role="tab" data-tab="tableau-de-bord">Tableau de bord</button>
+            <button type="button" role="tab" data-tab="ecrits">Écrits</button>
+            <button type="button" role="tab" data-tab="videos">Vidéos</button>
+            <button type="button" role="tab" data-tab="podcasts">Podcasts</button>
+        </nav>
+        <p class="gh-status" id="admin-status"></p>
+
+        <section id="tab-tableau-de-bord" class="tab-panel hidden" role="tabpanel"></section>
+
+        <section id="library" class="tab-panel hidden" role="tabpanel">
             <div class="lib-toolbar">
                 <input type="search" id="lib-search" placeholder="Rechercher un article…" oninput="renderLibrary()">
                 <select id="lib-cat" onchange="renderLibrary()"><option value="">Toutes les catégories</option></select>
                 <button type="button" class="btn btn-light" onclick="loadLibrary()">↻ Actualiser</button>
                 <button type="button" class="btn btn-primary" onclick="newArticle()">+ Nouvel article</button>
             </div>
-            <p class="gh-status" id="admin-status"></p>
             <div class="lib-layout">
                 <div class="lib-main-col">
                     <h2 class="lib-heading">Liste des écrits <span class="lib-hint">dans l'ordre d'affichage du site : glisse ⠿ pour le changer</span></h2>
@@ -360,7 +426,29 @@
                 <aside class="drafts-col" id="drafts-col"></aside>
             </div>
         </section>
+
+        <!-- Vidéos et podcasts : listes JSON gérées par le même moteur (voir COLLECTIONS dans le script) -->
+        <section id="tab-videos" class="tab-panel hidden" role="tabpanel" data-collection="videos"></section>
+        <section id="tab-podcasts" class="tab-panel hidden" role="tabpanel" data-collection="podcasts"></section>
+        </div>
     </main>
+</div>
+
+<!-- Formulaire d'une entrée (vidéo, podcast), ouvert sur le côté du panneau -->
+<div id="entry-drawer" class="drawer hidden" onclick="if (event.target === this) closeEntryEditor()">
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+        <header class="drawer-head">
+            <h2 id="drawer-title"></h2>
+            <button type="button" class="btn-remove" title="Fermer" onclick="closeEntryEditor()">×</button>
+        </header>
+        <form id="drawer-form" class="drawer-body" onsubmit="event.preventDefault()"></form>
+        <div class="drawer-preview-wrap">
+            <p class="drawer-preview-label">Aperçu de la carte</p>
+            <div id="drawer-preview"></div>
+        </div>
+        <p class="gh-status" id="drawer-status"></p>
+        <footer class="drawer-foot" id="drawer-buttons"></footer>
+    </div>
 </div>
 
 <div class="editor-panel">
@@ -400,7 +488,9 @@
         <label>Nom court (Ariane)</label>
         <input type="text" id="nav-short" value="Article" oninput="render()">
         <label>Catégorie</label>
-        <input type="text" id="meta-cat" value="Société" oninput="render()">
+        <input type="text" id="meta-cat" value="Société" list="cat-options" autocomplete="off" oninput="render()" onchange="checkArticleCategory()">
+        <datalist id="cat-options"></datalist>
+        <p class="gh-hint" id="meta-cat-hint"></p>
         <label>Tags (séparés par virgules)</label>
         <input type="text" id="meta-tags" value="Enquête, Politique" oninput="render()">
         <label>Titre</label>
@@ -1738,7 +1828,7 @@ ${buildArticleBodyHtml()}
             setStatusIn('login-status', '');
             updateConnectionUi();
             if (isAdminView()) showView('admin');
-            loadLibrary();
+            loadAll();
         } catch (err) {
             ghConnected = false;
             updateConnectionUi();
@@ -1755,6 +1845,7 @@ ${buildArticleBodyHtml()}
         ghConnected = false;
         library = { list: [], files: [], infos: {}, drafts: [] };
         pendingOrder = null;
+        Object.values(collectionState).forEach(st => Object.assign(st, { list: [], drafts: [], loaded: false, pendingOrder: null }));
         updateConnectionUi();
         setStatusIn('login-status', 'D\u00e9connect\u00e9 : le jeton a \u00e9t\u00e9 supprim\u00e9 de ce navigateur.', 'ok');
         showView('admin');
@@ -1766,7 +1857,7 @@ ${buildArticleBodyHtml()}
         const repo = `${s.owner}/${s.repo} (${s.branch})`;
         document.getElementById('admin-repo').textContent = ghConnected ? `Connect\u00e9 \u00e0 ${repo}` : '';
         document.getElementById('admin-logout').classList.toggle('hidden', !ghConnected);
-        document.getElementById('editor-back').textContent = ghConnected ? '\u2190 Articles' : 'Se connecter';
+        document.getElementById('editor-back').textContent = ghConnected ? '\u2190 Panneau' : 'Se connecter';
         document.getElementById('gh-connection').innerHTML = ghConnected
             ? `Connect\u00e9 \u00e0 <strong>${escapeHtml(repo)}</strong> \u00b7 <button type="button" class="link-btn" onclick="logout()">Se d\u00e9connecter</button>`
             : `Non connect\u00e9 \u00b7 <button type="button" class="link-btn" onclick="showView('admin')">Se connecter</button>`;
@@ -1783,10 +1874,42 @@ ${buildArticleBodyHtml()}
         writeSession('cms_view', view);
         if (view === 'admin') {
             document.getElementById('login-screen').classList.toggle('hidden', ghConnected);
-            document.getElementById('library').classList.toggle('hidden', !ghConnected);
-            if (ghConnected && libraryStale) loadLibrary();
-            else if (ghConnected) renderLibrary(); // brouillons \u00e0 jour
+            document.getElementById('admin-app').classList.toggle('hidden', !ghConnected);
+            if (ghConnected) showTab(currentTab());
         }
+    }
+
+    // --- ONGLETS DU PANNEAU ---
+    // L'onglet affich\u00e9 est dans l'adresse (#ecrits, #videos\u2026) : recharger la page le rouvre.
+    const TABS = ['tableau-de-bord', 'ecrits', 'videos', 'podcasts'];
+
+    function currentTab() {
+        const hash = location.hash.slice(1);
+        return TABS.includes(hash) ? hash : 'tableau-de-bord';
+    }
+
+    function showTab(tab) {
+        if (!TABS.includes(tab)) tab = 'tableau-de-bord';
+        if (location.hash.slice(1) !== tab) history.replaceState(null, '', '#' + tab);
+        document.querySelectorAll('.admin-tabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+        const panels = { 'tableau-de-bord': 'tab-tableau-de-bord', ecrits: 'library', videos: 'tab-videos', podcasts: 'tab-podcasts' };
+        Object.entries(panels).forEach(([t, id]) => document.getElementById(id).classList.toggle('hidden', t !== tab));
+        // Les donn\u00e9es d\u00e9j\u00e0 lues ne sont pas relues ; seule une liste modifi\u00e9e entre-temps l'est
+        if (tab === 'ecrits') { if (libraryStale) loadLibrary(); else renderLibrary(); }
+        else if (COLLECTIONS[tab]) { if (!collectionState[tab].loaded) loadCollection(tab); else renderCollection(tab); }
+        else { if (libraryStale) loadLibrary(); renderDashboard(); }
+    }
+
+    document.querySelector('.admin-tabs').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-tab]');
+        if (btn) { setAdminStatus(''); showTab(btn.dataset.tab); }
+    });
+    window.addEventListener('hashchange', () => { if (isAdminView() && ghConnected) showTab(currentTab()); });
+
+    /** Lecture de toutes les rubriques, \u00e0 la connexion : le tableau de bord se remplit en une passe */
+    async function loadAll() {
+        await Promise.all([loadLibrary(), ...Object.keys(COLLECTIONS).map(id => loadCollection(id))]);
+        renderDashboard();
     }
 
     function setStatusIn(id, html, kind) {
@@ -1886,16 +2009,23 @@ ${buildArticleBodyHtml()}
         mutate renvoie le message du commit, ou false s'il n'y a rien à changer.
         Si la liste a changé entre la lecture et l'envoi, on recommence une fois. */
     async function updateArticlesList(mutate) {
+        const { changed } = await updateJsonList(GH_ARTICLES_LIST, mutate);
+        if (changed) libraryStale = true;
+        return changed;
+    }
+
+    /** Même principe pour n'importe quelle liste JSON du dépôt (vidéos, podcasts, brouillons) ;
+        renvoie { changed, list } avec la liste telle qu'elle est maintenant sur GitHub */
+    async function updateJsonList(path, mutate) {
         const s = ghSettings();
         for (let attempt = 0; ; attempt++) {
-            const listFile = await ghRequest(s, 'GET', GH_ARTICLES_LIST, null, true);
-            const list = listFile ? JSON.parse(base64ToUtf8(listFile.content)) : [];
+            const file = await ghRequest(s, 'GET', path, null, true);
+            const list = file ? JSON.parse(base64ToUtf8(file.content)) : [];
             const message = mutate(list);
-            if (!message) return false;
+            if (!message) return { changed: false, list };
             try {
-                await ghPutFile(s, GH_ARTICLES_LIST, utf8ToBase64(JSON.stringify(list, null, 2) + '\n'), message, listFile && listFile.sha);
-                libraryStale = true;
-                return true;
+                await ghPutFile(s, path, utf8ToBase64(JSON.stringify(list, null, 2) + '\n'), message, file && file.sha);
+                return { changed: true, list };
             } catch (err) {
                 if (attempt === 0 && isShaConflict(err)) continue;
                 throw err;
@@ -2027,12 +2157,11 @@ ${buildArticleBodyHtml()}
         });
     }
 
-    async function uploadImageToGitHub(input) {
-        const img = input.files && input.files[0];
-        input.value = '';
-        if (!img) return;
+    /** Envoie une image dans assets/images/ ; renvoie son nom de fichier, ou null (message affich\u00e9 par setMsg).
+        Le chemin \u00e0 \u00e9crire d\u00e9pend de la rubrique : \u00ab ../images/nom \u00bb dans un article, \u00ab assets/images/nom \u00bb ailleurs. */
+    async function uploadImage(img, setMsg) {
         const s = ghSettings();
-        if (!requireToken(s)) return;
+        if (!s.token) { setMsg('Connecte-toi d\u2019abord avec ton jeton GitHub.', 'error'); return null; }
         // Nom sans accents ni espaces, extension en minuscules
         const dot = img.name.lastIndexOf('.');
         const stem = (dot > 0 ? img.name.slice(0, dot) : img.name).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -2040,19 +2169,30 @@ ${buildArticleBodyHtml()}
         const name = stem + (dot > 0 ? img.name.slice(dot).toLowerCase() : '');
         const path = GH_IMAGES_DIR + name;
         try {
-            setGhStatus(`Envoi de l\u2019image ${escapeHtml(name)}\u2026`);
+            setMsg(`Envoi de l\u2019image ${escapeHtml(name)}\u2026`);
             if (await ghRequest(s, 'GET', path, null, true)) {
-                setGhStatus(`Une image \u00ab ${escapeHtml(name)} \u00bb existe d\u00e9j\u00e0 sur le site : renomme ton fichier avant de l\u2019envoyer.`, 'error');
-                return;
+                setMsg(`Une image \u00ab ${escapeHtml(name)} \u00bb existe d\u00e9j\u00e0 sur le site : renomme ton fichier avant de l\u2019envoyer.`, 'error');
+                return null;
             }
             await ghPutFile(s, path, await readFileAsBase64(img), `Ajout de l\u2019image ${name}`);
-            const articlePath = `../images/${name}`;
-            let copied = false;
-            try { await navigator.clipboard.writeText(articlePath); copied = true; } catch (e) {}
-            setGhStatus(`\u2705 Image envoy\u00e9e. Chemin \u00e0 utiliser dans l\u2019article : <code>${escapeHtml(articlePath)}</code>${copied ? ' (copi\u00e9)' : ''}`, 'ok');
+            return name;
         } catch (err) {
-            setGhStatus('\u274c ' + escapeHtml(err.message), 'error');
+            setMsg('\u274c ' + escapeHtml(err.message), 'error');
+            return null;
         }
+    }
+
+    /** Bouton \u00ab Envoyer une image sur le site \u00bb de l'\u00e9diteur d'articles */
+    async function uploadImageToGitHub(input) {
+        const img = input.files && input.files[0];
+        input.value = '';
+        if (!img) return;
+        const name = await uploadImage(img, setGhStatus);
+        if (!name) return;
+        const articlePath = `../images/${name}`;
+        let copied = false;
+        try { await navigator.clipboard.writeText(articlePath); copied = true; } catch (e) {}
+        setGhStatus(`\u2705 Image envoy\u00e9e. Chemin \u00e0 utiliser dans l\u2019article : <code>${escapeHtml(articlePath)}</code>${copied ? ' (copi\u00e9)' : ''}`, 'ok');
     }
 
     // --- FENÊTRE DE DIALOGUE ---
@@ -2099,6 +2239,7 @@ ${buildArticleBodyHtml()}
 
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && dialogResolve) closeDialog(null);
+        else if (e.key === 'Escape' && entryEdit) closeEntryEditor();
         // Ctrl+S dans l'éditeur : enregistrer le brouillon sur GitHub
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && !isAdminView() && !dialogResolve) {
             e.preventDefault();
@@ -2260,6 +2401,8 @@ ${buildArticleBodyHtml()}
 
         renderDraftsColumn(drafts);
         renderSwitcher();
+        renderArticleCategories();
+        renderDashboard();
     }
 
     /** Colonne « Brouillons » : brouillons enregistrés sur GitHub, puis articles pas encore enregistrés de ce navigateur */
@@ -2297,8 +2440,10 @@ ${buildArticleBodyHtml()}
         const info = library.infos[file] || {};
         const meta = [(entry && entry.category) || info.cat, info.date].filter(Boolean).join(' · ');
         const image = (entry && entry.image) || info.image;
+        const hidden = !!(entry && entry.hidden);
         const badges = [
             entry && entry.featured ? '<span class="badge badge-une">À la une</span>' : '',
+            hidden ? '<span class="badge badge-hidden">Masqué</span>' : '',
             !entry ? '<span class="badge">Hors liste</span>' : '',
             library.drafts.some(d => d.file === file) ? '<span class="badge badge-draft">Brouillon en cours</span>' : '',
             unsaved ? '<span class="badge badge-local">Modifications non enregistrées</span>' : '',
@@ -2309,13 +2454,13 @@ ${buildArticleBodyHtml()}
             entry ? ['meta', 'Infos de la liste…'] : ['list', 'Ajouter à la liste'],
             ['duplicate', 'Dupliquer…'],
             ['rename', 'Renommer…'],
-            entry ? ['unlist', 'Retirer de la liste'] : null,
+            entry ? ['hide', hidden ? 'Afficher sur le site' : 'Masquer du site'] : null,
             ['delete', 'Supprimer…', 'danger']
         ].filter(Boolean);
         const star = entry && !missing
-            ? `<button type="button" class="btn-mini btn-star${entry.featured ? ' on' : ''}" data-act="feature" title="${entry.featured ? 'Retirer de la une' : 'Mettre à la une'}">${entry.featured ? '★' : '☆'}</button>`
+            ? `<button type="button" class="btn-mini btn-star${entry.featured ? ' on' : ''}" data-act="feature" ${hidden ? 'disabled title="Un article masqué ne peut pas être à la une"' : `title="${entry.featured ? 'Retirer de la une' : 'Mettre à la une'}"`}>${entry.featured ? '★' : '☆'}</button>`
             : '';
-        return `<div class="lib-row" data-file="${escapeHtml(file)}">
+        return `<div class="lib-row${hidden ? ' is-hidden' : ''}" data-file="${escapeHtml(file)}">
             <span class="lib-handle" title="Glisser pour changer l’ordre">${entry ? '⠿' : ''}</span>
             <div class="lib-thumb">${image ? `<img src="${escapeHtml(articleAssetUrl(image))}" alt="" loading="lazy">` : ''}</div>
             <div class="lib-main">
@@ -2361,6 +2506,7 @@ ${buildArticleBodyHtml()}
             duplicate: () => duplicateArticle(file),
             rename: () => renameArticle(file),
             unlist: () => removeFromList(file),
+            hide: () => toggleHiddenArticle(file),
             delete: () => deleteArticle(file)
         };
         if (!actions[act]) return;
@@ -2379,7 +2525,7 @@ ${buildArticleBodyHtml()}
     /** Relit la liste depuis GitHub, puis affiche un message */
     async function reloadLibrary(message) {
         await loadLibrary();
-        setAdminStatus(message + ' Le site est mis à jour en 1 à 2 minutes.', 'ok');
+        setAdminStatus(escapeHtml(message) + ' Le site est mis à jour en 1 à 2 minutes.', 'ok');
     }
 
     function articleTitle(file) { return (library.infos[file] || {}).title || file; }
@@ -2412,12 +2558,25 @@ ${buildArticleBodyHtml()}
         setAdminStatus('Mise à jour de la une…');
         await updateArticlesList(list => {
             const entry = list.find(a => a.file === file);
-            if (!entry) return false;
+            if (!entry || (on && entry.hidden)) return false; // un article masqué ne va pas à la une
             list.forEach(a => delete a.featured);
             if (on) entry.featured = true;
             return on ? `${file} à la une` : `${file} retiré de la une`;
         });
         await reloadLibrary(on ? `✅ « ${articleTitle(file)} » est à la une.` : `✅ « ${articleTitle(file)} » n’est plus à la une.`);
+    }
+
+    /** Masque l'article du site (il garde sa place dans la liste), ou le réaffiche */
+    async function toggleHiddenArticle(file) {
+        const hide = !((library.list.find(e => e.file === file) || {}).hidden);
+        setAdminStatus(hide ? 'Masquage de l’article…' : 'Réaffichage de l’article…');
+        await updateArticlesList(list => {
+            const entry = list.find(a => a.file === file);
+            if (!entry || !!entry.hidden === hide) return false;
+            if (hide) { entry.hidden = true; delete entry.featured; } else delete entry.hidden;
+            return hide ? `Article masqué : ${file}` : `Article réaffiché : ${file}`;
+        });
+        await reloadLibrary(hide ? `✅ « ${articleTitle(file)} » est masqué : il n’apparaît plus sur le site.` : `✅ « ${articleTitle(file)} » est de nouveau visible sur le site.`);
     }
 
     async function addToList(file) {
@@ -3096,6 +3255,793 @@ ${buildArticleBodyHtml()}
             report: { blocks: blocks.length - raw, raw, warnings }
         };
     }
+
+    // --- CATÉGORIES ---
+    // Une même catégorie peut s'écrire de plusieurs façons (« Production Studio » / « Production, Studio ») :
+    // on les compare sans accents, majuscules ni ponctuation, pour réutiliser celle qui existe déjà.
+    function categoryKey(s) { return normalizeSearch(s).replace(/[^a-z0-9]+/g, ''); }
+
+    /** Orthographe existante équivalente à « value » (null si value existe telle quelle ou n'a pas d'équivalent) */
+    function existingCategory(value, values) {
+        if (!value || values.includes(value)) return null;
+        const key = categoryKey(value);
+        return values.find(v => categoryKey(v) === key) || null;
+    }
+
+    /** Clés écrites de plusieurs façons dans une liste de valeurs (doublons à unifier) */
+    function duplicateKeys(values) {
+        const seen = new Map();
+        values.forEach(v => seen.set(categoryKey(v), (seen.get(categoryKey(v)) || 0) + 1));
+        return new Set([...seen].filter(([, n]) => n > 1).map(([k]) => k));
+    }
+
+    function articleCategories() {
+        const cats = [...library.list.map(e => e.category), ...Object.values(library.infos).filter(i => !i.redirect).map(i => i.cat)];
+        return [...new Set(cats.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'fr'));
+    }
+
+    /** Suggestions du champ « Catégorie » de l'éditeur d'articles */
+    function renderArticleCategories() {
+        document.getElementById('cat-options').innerHTML = articleCategories().map(c => `<option value="${escapeHtml(c)}"></option>`).join('');
+    }
+
+    /** Une catégorie tapée autrement qu'une catégorie existante est remplacée par celle-ci */
+    function checkArticleCategory() {
+        const input = document.getElementById('meta-cat');
+        const existing = existingCategory(input.value.trim(), articleCategories());
+        document.getElementById('meta-cat-hint').textContent = existing ? `Catégorie existante utilisée : « ${existing} ».` : '';
+        if (existing) { input.value = existing; render(); }
+    }
+
+    // --- DATES ---
+    // Les fichiers gardent la date en texte (« 17 février 2026 ») ; le sélecteur de date l'écrit.
+    const MONTHS_FR = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+    function frenchDateFromIso(iso) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+        if (!m) return '';
+        const day = Number(m[3]);
+        return `${day === 1 ? '1er' : day} ${MONTHS_FR[Number(m[2]) - 1]} ${m[1]}`;
+    }
+
+    /** « 17 février 2026 » → « 2026-02-17 » (vide si la date n'a pas cette forme) */
+    function isoFromFrenchDate(text) {
+        const m = /^(\d{1,2})(?:er)?\s+([^\s\d]+)\s+(\d{4})$/i.exec(String(text || '').trim());
+        if (!m) return '';
+        const month = MONTHS_FR.findIndex(x => normalizeSearch(x) === normalizeSearch(m[2]));
+        return month < 0 ? '' : `${m[3]}-${String(month + 1).padStart(2, '0')}-${String(m[1]).padStart(2, '0')}`;
+    }
+
+    // --- YOUTUBE ---
+    const youtubeInfo = new Map(); // lien → { title } ; null si la vidéo est introuvable (privée, supprimée)
+
+    /** Identifiant d'une vidéo YouTube (vide si le lien n'est pas YouTube) */
+    function youtubeVideoId(url) {
+        try {
+            const host = new URL(url).hostname.replace(/^(www|m)\./, '');
+            if (!/^(youtu\.be|youtube\.com|youtube-nocookie\.com)$/.test(host)) return '';
+        } catch (e) {
+            return '';
+        }
+        return getVideoId(url, 'youtube');
+    }
+
+    function youtubeThumb(url) {
+        const id = youtubeVideoId(url);
+        return id ? `https://img.youtube.com/vi/${encodeURIComponent(id)}/mqdefault.jpg` : '';
+    }
+
+    /** Titre YouTube (oEmbed, comme liste-videos.js) ; gardé en mémoire */
+    async function fetchYoutubeInfo(url) {
+        if (youtubeInfo.has(url)) return youtubeInfo.get(url);
+        try {
+            const res = await fetch('https://www.youtube.com/oembed?format=json&url=' + encodeURIComponent(url));
+            const info = res.ok ? { title: (await res.json()).title || '' } : null;
+            youtubeInfo.set(url, info);
+            return info;
+        } catch (e) {
+            return undefined; // réseau indisponible : on réessaiera
+        }
+    }
+
+    // --- RUBRIQUES EN LISTE : VIDÉOS, PODCASTS ---
+    // Chaque rubrique est une liste JSON ordonnée (l'ordre du fichier est l'ordre du site), avec à côté un
+    // fichier de brouillons (drafts.json) que le site ne lit jamais. Le même moteur affiche la liste, la
+    // colonne des brouillons et le formulaire ; COLLECTIONS décrit les champs, dans l'ordre du fichier.
+    // « hidden: true » masque une entrée du site (liste-videos.js et liste-podcasts.js l'ignorent).
+    const COLLECTIONS = {
+        videos: {
+            label: 'Vidéos', noun: 'Vidéo', one: 'une vidéo', the: 'la vidéo', newLabel: '+ Ajouter une vidéo', hiddenLabel: 'Masquée',
+            path: 'assets/videos/videos.json',
+            draftsPath: 'assets/videos/drafts.json',
+            featured: true,
+            group: { field: 'category', all: 'Toutes les catégories' },
+            fields: [
+                { name: 'url', label: 'Lien YouTube', type: 'youtube' },
+                { name: 'featured', type: 'featured' }, // géré par l'étoile de la liste
+                { name: 'category', label: 'Catégorie', type: 'category', newLabel: 'Nouvelle catégorie…' },
+                { name: 'date', label: 'Date', type: 'date' },
+                { name: 'description', label: 'Description', type: 'text' },
+                { name: 'tags', label: 'Étiquettes', type: 'tags', hint: 'Séparées par des virgules. Affichées pour la vidéo à la une.' },
+                { name: 'title', label: 'Titre (facultatif)', type: 'string', hint: 'Remplace le titre YouTube.' },
+                { name: 'image', label: 'Miniature (facultatif)', type: 'image', hint: 'Remplace la miniature YouTube.' }
+            ],
+            words: { add: 'Vidéo ajoutée', edit: 'Vidéo modifiée', del: 'Vidéo supprimée', hide: 'Vidéo masquée', show: 'Vidéo réaffichée', draft: 'Brouillon de vidéo', order: 'Ordre des vidéos modifié' },
+            title: (e, yt) => e.title || (yt && yt.title) || 'Vidéo',
+            meta: (e) => [e.category, e.date]
+        },
+        podcasts: {
+            label: 'Podcasts', noun: 'Podcast', one: 'un épisode', the: 'l’épisode', newLabel: '+ Ajouter un épisode', hiddenLabel: 'Masqué',
+            path: 'assets/podcasts/podcasts.json',
+            draftsPath: 'assets/podcasts/drafts.json',
+            featured: false,
+            group: { field: 'series', all: 'Toutes les séries' },
+            fields: [
+                { name: 'url', label: 'Lien YouTube', type: 'youtube' },
+                { name: 'series', label: 'Série', type: 'category', newLabel: 'Nouvelle série…' },
+                { name: 'episode', label: 'N° d’épisode', type: 'episode' },
+                { name: 'date', label: 'Date', type: 'date' },
+                { name: 'duration', label: 'Durée', type: 'string', placeholder: '28 min' },
+                { name: 'description', label: 'Description', type: 'text' },
+                { name: 'title', label: 'Titre (facultatif)', type: 'string', hint: 'Remplace « Série — Épisode N ».' },
+                { name: 'image', label: 'Miniature (facultatif)', type: 'image', hint: 'Remplace la miniature YouTube.' }
+            ],
+            words: { add: 'Podcast ajouté', edit: 'Podcast modifié', del: 'Podcast supprimé', hide: 'Podcast masqué', show: 'Podcast réaffiché', draft: 'Brouillon de podcast', order: 'Ordre des podcasts modifié' },
+            // Même titre que liste-podcasts.js : « Série — Épisode N », sinon le titre YouTube
+            title: (e, yt) => e.title || (e.series && e.episode != null && e.episode !== '' ? `${e.series} — Épisode ${e.episode}` : '') || (yt && yt.title) || e.series || 'Épisode',
+            meta: (e) => [e.date, e.duration]
+        }
+    };
+    const collectionState = Object.fromEntries(Object.keys(COLLECTIONS).map(id => [id, { list: [], drafts: [], loaded: false, loading: null, pendingOrder: null, sortable: null }]));
+
+    function entryTitle(id, e) { return COLLECTIONS[id].title(e, youtubeInfo.get(e.url)); }
+
+    /** Valeurs déjà utilisées d'un champ (catégories, séries), brouillons compris */
+    function collectionValues(id, field) {
+        const st = collectionState[id];
+        return [...new Set([...st.list, ...st.drafts].map(e => e[field]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'fr'));
+    }
+
+    /** Lit la liste et les brouillons d'une rubrique ; les titres YouTube arrivent ensuite */
+    function loadCollection(id) {
+        const st = collectionState[id];
+        if (st.loading) return st.loading;
+        st.loading = (async () => {
+            const c = COLLECTIONS[id], s = ghSettings();
+            try {
+                const [listFile, draftsFile] = await Promise.all([ghRequest(s, 'GET', c.path, null, true), ghRequest(s, 'GET', c.draftsPath, null, true)]);
+                st.list = listFile ? JSON.parse(base64ToUtf8(listFile.content)) : [];
+                st.drafts = draftsFile ? JSON.parse(base64ToUtf8(draftsFile.content)) : [];
+                st.loaded = true;
+                st.pendingOrder = null;
+                renderCollection(id);
+                await runLimited([...st.list, ...st.drafts].filter(e => e.url && !youtubeInfo.has(e.url)), 4, e => fetchYoutubeInfo(e.url));
+                renderCollection(id);
+            } catch (err) {
+                setAdminStatus('❌ ' + escapeHtml(`${c.label} : ${err.message}`), 'error');
+            } finally {
+                st.loading = null;
+            }
+        })();
+        return st.loading;
+    }
+
+    /** Structure de l'onglet (barre d'outils, liste, colonne des brouillons), créée une fois */
+    function collectionPanel(id) {
+        const panel = document.getElementById('tab-' + id);
+        if (panel.dataset.ready) return panel;
+        const c = COLLECTIONS[id], st = collectionState[id];
+        panel.innerHTML = `
+            <div class="lib-toolbar">
+                <input type="search" data-role="search" placeholder="Rechercher…">
+                <select data-role="group"></select>
+                <button type="button" class="btn btn-light" data-act="reload">↻ Actualiser</button>
+                <button type="button" class="btn btn-primary" data-act="new">${escapeHtml(c.newLabel)}</button>
+            </div>
+            <div class="lib-layout">
+                <div class="lib-main-col">
+                    <h2 class="lib-heading">${escapeHtml(c.label)} <span class="lib-hint">dans l'ordre d'affichage du site : glisse ⠿ pour le changer</span></h2>
+                    <div class="order-bar hidden" data-role="order-bar">
+                        <span>L'ordre a changé.</span>
+                        <button type="button" class="btn btn-primary" data-act="save-order">Enregistrer l'ordre</button>
+                        <button type="button" class="btn btn-light" data-act="cancel-order">Annuler</button>
+                    </div>
+                    <div class="lib-rows" data-role="rows"></div>
+                </div>
+                <aside class="drafts-col" data-role="drafts"></aside>
+            </div>`;
+        panel.querySelector('[data-role="search"]').addEventListener('input', () => renderCollection(id));
+        panel.querySelector('[data-role="group"]').addEventListener('change', () => renderCollection(id));
+        st.sortable = new Sortable(panel.querySelector('[data-role="rows"]'), {
+            handle: '.lib-handle',
+            draggable: '.lib-row',
+            animation: 150,
+            onEnd: () => {
+                const order = [...panel.querySelectorAll('[data-role="rows"] .lib-row')].map(row => row.dataset.url);
+                st.pendingOrder = order.join('\n') === st.list.map(e => e.url).join('\n') ? null : order;
+                panel.querySelector('[data-role="order-bar"]').classList.toggle('hidden', !st.pendingOrder);
+            }
+        });
+        panel.addEventListener('click', (e) => onCollectionClick(id, e));
+        panel.dataset.ready = '1';
+        return panel;
+    }
+
+    function renderCollection(id) {
+        const c = COLLECTIONS[id], st = collectionState[id];
+        const panel = collectionPanel(id);
+        const field = c.group.field;
+
+        // Filtre par catégorie ou par série (reconstruit à chaque fois, en gardant le choix)
+        const groupSelect = panel.querySelector('[data-role="group"]');
+        const groups = collectionValues(id, field);
+        const chosen = groupSelect.value;
+        groupSelect.innerHTML = `<option value="">${escapeHtml(c.group.all)}</option>` + groups.map(g => `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join('');
+        groupSelect.value = groups.includes(chosen) ? chosen : '';
+
+        const q = normalizeSearch(panel.querySelector('[data-role="search"]').value.trim());
+        const group = groupSelect.value;
+        const filtering = !!(q || group);
+        const matches = (e) => (!group || e[field] === group)
+            && (!q || normalizeSearch([entryTitle(id, e), e.description, e[field], e.url].join(' ')).includes(q));
+
+        // Liste dans l'ordre du site (glisser-déposer désactivé pendant une recherche)
+        st.sortable.option('disabled', filtering);
+        const rows = panel.querySelector('[data-role="rows"]');
+        rows.classList.toggle('no-drag', filtering);
+        const byUrl = new Map(st.list.map(e => [e.url, e]));
+        const ordered = st.pendingOrder ? st.pendingOrder.map(u => byUrl.get(u)).filter(Boolean) : st.list;
+        rows.innerHTML = !st.loaded ? '<p class="lib-empty">Chargement…</p>'
+            : ordered.filter(matches).map(e => collectionRowHtml(id, e)).join('')
+                || `<p class="lib-empty">${filtering ? 'Aucun élément ne correspond.' : 'La liste est vide.'}</p>`;
+        panel.querySelector('[data-role="order-bar"]').classList.toggle('hidden', !st.pendingOrder);
+        panel.querySelector('[data-role="drafts"]').innerHTML = collectionDraftsHtml(id);
+        renderDashboard();
+    }
+
+    function collectionRowHtml(id, e) {
+        const c = COLLECTIONS[id];
+        const yt = youtubeInfo.get(e.url);
+        const meta = c.meta(e).filter(Boolean).join(' · ');
+        const thumb = e.image || youtubeThumb(e.url);
+        const badges = [
+            e.featured ? '<span class="badge badge-une">À la une</span>' : '',
+            e.hidden ? `<span class="badge badge-hidden">${c.hiddenLabel}</span>` : '',
+            yt === null ? '<span class="badge badge-error">Introuvable sur YouTube</span>' : ''
+        ].join('');
+        const star = c.featured
+            ? `<button type="button" class="btn-mini btn-star${e.featured ? ' on' : ''}" data-act="feature" ${e.hidden ? `disabled title="${c.hiddenLabel} : ne peut pas être à la une"` : `title="${e.featured ? 'Retirer de la une' : 'Mettre à la une'}"`}>${e.featured ? '★' : '☆'}</button>`
+            : '';
+        const menu = [['view', 'Voir sur YouTube ↗'], ['hide', e.hidden ? 'Afficher sur le site' : 'Masquer du site'], ['delete', 'Supprimer…', 'danger']];
+        return `<div class="lib-row${e.hidden ? ' is-hidden' : ''}" data-url="${escapeHtml(e.url)}">
+            <span class="lib-handle" title="Glisser pour changer l’ordre">⠿</span>
+            <div class="lib-thumb">${thumb ? `<img src="${escapeHtml(thumb)}" alt="" loading="lazy">` : ''}</div>
+            <div class="lib-main">
+                <div class="lib-title">${escapeHtml(entryTitle(id, e))}</div>
+                <div class="lib-meta">${escapeHtml(meta || e.url)}</div>
+                ${badges ? `<div>${badges}</div>` : ''}
+            </div>
+            <div class="lib-actions">
+                <button type="button" class="btn-mini" data-act="edit">Modifier</button>
+                ${star}
+                <details class="lib-menu"><summary class="btn-mini" title="Autres actions">⋯</summary><div class="lib-menu-list">${menu.map(([act, label, cls]) => `<button type="button" data-act="${act}"${cls ? ` class="${cls}"` : ''}>${label}</button>`).join('')}</div></details>
+            </div>
+        </div>`;
+    }
+
+    function collectionDraftsHtml(id) {
+        const items = [...collectionState[id].drafts].sort((a, b) => String(b.savedAt).localeCompare(String(a.savedAt)));
+        return `<div class="drafts-head"><h2>Brouillons</h2><span class="lib-hint">${items.length || ''}</span></div>`
+            + (items.map(d => `<div class="draft-item" data-draft-id="${escapeHtml(d.id)}">
+                <button type="button" class="draft-open" data-act="open-draft" title="Ouvrir le brouillon">
+                    <span class="draft-title">${escapeHtml(entryTitle(id, d))}</span>
+                    <span class="draft-meta">${escapeHtml([formatDate(d.savedAt), ...COLLECTIONS[id].meta(d)].filter(Boolean).join(' · '))}</span>
+                </button>
+                <button type="button" class="draft-del" data-act="drop-draft" title="Supprimer le brouillon">×</button>
+            </div>`).join('')
+            || '<p class="drafts-empty">Aucun brouillon. Dans le formulaire, « Enregistrer le brouillon » range l’entrée ici sans la publier.</p>');
+    }
+
+    /** Une action à la fois dans le panneau ; une erreur s'affiche en haut du panneau */
+    async function withBusy(fn) {
+        libraryBusy = true;
+        document.body.classList.add('is-busy');
+        try {
+            await fn();
+        } catch (err) {
+            setAdminStatus('❌ ' + escapeHtml(err.message), 'error');
+        } finally {
+            libraryBusy = false;
+            document.body.classList.remove('is-busy');
+        }
+    }
+
+    function onCollectionClick(id, e) {
+        const btn = e.target.closest('button[data-act]');
+        if (!btn || libraryBusy) return;
+        const menu = btn.closest('details');
+        if (menu) menu.removeAttribute('open');
+        const st = collectionState[id];
+        const row = btn.closest('[data-url], [data-draft-id]');
+        const entry = row && row.dataset.url !== undefined ? st.list.find(x => x.url === row.dataset.url) : null;
+        const draft = row && row.dataset.draftId !== undefined ? st.drafts.find(x => x.id === row.dataset.draftId) : null;
+        const actions = {
+            reload: () => loadCollection(id),
+            new: () => openEntryEditor(id, 'new'),
+            'save-order': () => saveCollectionOrder(id),
+            'cancel-order': () => { st.pendingOrder = null; renderCollection(id); },
+            edit: () => openEntryEditor(id, 'edit', entry),
+            view: () => window.open(entry.url, '_blank', 'noopener'),
+            feature: () => toggleCollectionFeatured(id, entry),
+            hide: () => toggleCollectionHidden(id, entry),
+            delete: () => deleteCollectionEntry(id, entry),
+            'open-draft': () => openEntryEditor(id, 'draft', draft),
+            'drop-draft': () => dropCollectionDraft(id, draft)
+        };
+        if (actions[btn.dataset.act]) withBusy(actions[btn.dataset.act]);
+    }
+
+    function collectionDone(id, message) {
+        renderCollection(id);
+        setAdminStatus(escapeHtml(message), 'ok');
+    }
+
+    async function saveCollectionOrder(id) {
+        const c = COLLECTIONS[id], st = collectionState[id];
+        if (!st.pendingOrder) return;
+        const order = st.pendingOrder;
+        setAdminStatus('Enregistrement de l’ordre…');
+        const { list } = await updateJsonList(c.path, list => {
+            const pos = new Map(order.map((u, i) => [u, i]));
+            const before = list.map(e => e.url).join('\n');
+            list.sort((a, b) => (pos.has(a.url) ? pos.get(a.url) : 1e9) - (pos.has(b.url) ? pos.get(b.url) : 1e9));
+            return list.map(e => e.url).join('\n') !== before && c.words.order;
+        });
+        st.list = list;
+        st.pendingOrder = null;
+        collectionDone(id, '✅ Ordre enregistré. Le site est mis à jour en 1 à 2 minutes.');
+    }
+
+    async function toggleCollectionFeatured(id, entry) {
+        const c = COLLECTIONS[id], st = collectionState[id];
+        const on = !entry.featured;
+        const title = entryTitle(id, entry);
+        setAdminStatus('Mise à jour de la une…');
+        const { list } = await updateJsonList(c.path, list => {
+            const target = list.find(e => e.url === entry.url);
+            if (!target || (on && target.hidden)) return false;
+            list.forEach(e => { e.featured = false; });
+            target.featured = on;
+            return `${title} ${on ? 'à la une' : 'retirée de la une'}`;
+        });
+        st.list = list;
+        collectionDone(id, on ? `✅ « ${title} » est à la une.` : `✅ « ${title} » n’est plus à la une.`);
+    }
+
+    async function toggleCollectionHidden(id, entry) {
+        const c = COLLECTIONS[id], st = collectionState[id];
+        const hide = !entry.hidden;
+        const title = entryTitle(id, entry);
+        setAdminStatus(hide ? 'Masquage…' : 'Réaffichage…');
+        const { list } = await updateJsonList(c.path, list => {
+            const target = list.find(e => e.url === entry.url);
+            if (!target || !!target.hidden === hide) return false;
+            if (hide) { target.hidden = true; if (c.featured) target.featured = false; } else delete target.hidden;
+            return `${hide ? c.words.hide : c.words.show} : ${title}`;
+        });
+        st.list = list;
+        collectionDone(id, hide ? `✅ « ${title} » est ${c.hiddenLabel.toLowerCase()} du site (toujours dans la liste du panneau).` : `✅ « ${title} » est de nouveau visible sur le site.`);
+    }
+
+    async function deleteCollectionEntry(id, entry) {
+        const c = COLLECTIONS[id], st = collectionState[id];
+        const title = entryTitle(id, entry);
+        const ok = await askDialog({
+            title: `Supprimer ${c.the}`,
+            html: `<p>« ${escapeHtml(title)} » sera retiré de la page ${escapeHtml(c.label)} et de l’accueil.</p>
+                <p class="gh-hint">La vidéo reste sur YouTube. Pour seulement la cacher du site, utilise plutôt « Masquer du site ».</p>`,
+            buttons: [{ label: 'Annuler', value: false }, { label: 'Supprimer', value: true, kind: 'danger' }]
+        });
+        if (!ok) return;
+        setAdminStatus('Suppression…');
+        const { list } = await updateJsonList(c.path, list => {
+            const i = list.findIndex(e => e.url === entry.url);
+            if (i < 0) return false;
+            list.splice(i, 1);
+            return `${c.words.del} : ${title}`;
+        });
+        st.list = list;
+        collectionDone(id, `✅ « ${title} » supprimé du site. Le site est mis à jour en 1 à 2 minutes.`);
+    }
+
+    async function dropCollectionDraft(id, draft) {
+        const c = COLLECTIONS[id], st = collectionState[id];
+        const title = entryTitle(id, draft);
+        const ok = await askDialog({
+            title: 'Supprimer le brouillon',
+            html: `<p>Le brouillon « ${escapeHtml(title)} » sera supprimé. Rien ne change sur le site.</p>`,
+            buttons: [{ label: 'Annuler', value: false }, { label: 'Supprimer le brouillon', value: true, kind: 'danger' }]
+        });
+        if (!ok) return;
+        setAdminStatus('Suppression du brouillon…');
+        const { list } = await updateJsonList(c.draftsPath, list => {
+            const i = list.findIndex(d => d.id === draft.id);
+            if (i < 0) return false;
+            list.splice(i, 1);
+            return `Suppression du brouillon : ${title}`;
+        });
+        st.drafts = list;
+        collectionDone(id, `✅ Brouillon « ${title} » supprimé.`);
+    }
+
+    // --- FORMULAIRE D'UNE ENTRÉE (tiroir latéral) ---
+    // mode : « new » (nouvelle entrée), « draft » (brouillon), « edit » (entrée publiée : enregistrée directement).
+    let entryEdit = null; // { id, mode, original, snapshot }
+
+    function openEntryEditor(id, mode, original) {
+        const c = COLLECTIONS[id];
+        entryEdit = { id, mode, original: original ? JSON.parse(JSON.stringify(original)) : null };
+        const values = original || {};
+        document.getElementById('drawer-title').textContent = mode === 'edit' ? `Modifier ${c.the}` : mode === 'draft' ? `Brouillon : ${entryTitle(id, values)}` : `Ajouter ${c.one}`;
+        const form = document.getElementById('drawer-form');
+        form.innerHTML = c.fields.filter(f => f.type !== 'featured').map(f => entryFieldHtml(id, f, values[f.name])).join('');
+        const buttons = mode === 'edit'
+            ? [['cancel', 'Annuler', 'btn-light'], ['save', 'Enregistrer', 'btn-primary']]
+            : [['cancel', 'Annuler', 'btn-light'], ['draft', 'Enregistrer le brouillon', 'btn-light'], ['publish', 'Publier', 'btn-primary']];
+        document.getElementById('drawer-buttons').innerHTML = buttons.map(([act, label, cls]) => `<button type="button" class="btn ${cls}" data-drawer-act="${act}">${label}</button>`).join('');
+        const the = c.the.charAt(0).toUpperCase() + c.the.slice(1);
+        setStatusIn('drawer-status', mode === 'edit' && values.hidden ? `${escapeHtml(the)} est ${c.hiddenLabel.toLowerCase()} du site.` : '');
+        wireEntryForm(id);
+        document.getElementById('entry-drawer').classList.remove('hidden');
+        entryEdit.snapshot = JSON.stringify(readEntryForm());
+        updateEntryPreview();
+        if (values.url) checkYoutubeField();
+        const first = form.querySelector('input, textarea, select');
+        if (first) first.focus();
+    }
+
+    function entryFieldHtml(id, f, value) {
+        const v = value == null ? '' : value;
+        const label = `<label for="f-${f.name}">${escapeHtml(f.label)}</label>`;
+        const hint = `<p class="field-hint" data-hint="${f.name}">${escapeHtml(f.hint || '')}</p>`;
+        if (f.type === 'youtube') {
+            return `${label}<input id="f-${f.name}" name="${f.name}" type="url" placeholder="https://youtu.be/…" value="${escapeHtml(v)}" autocomplete="off" spellcheck="false">${hint}`;
+        }
+        if (f.type === 'text') return `${label}<textarea id="f-${f.name}" name="${f.name}" rows="4">${escapeHtml(v)}</textarea>${hint}`;
+        if (f.type === 'episode') return `${label}<input id="f-${f.name}" name="${f.name}" type="number" min="0" step="1" value="${escapeHtml(v)}">${hint}`;
+        if (f.type === 'tags') return `${label}<input id="f-${f.name}" name="${f.name}" value="${escapeHtml(Array.isArray(v) ? v.join(', ') : v)}">${hint}`;
+        if (f.type === 'date') {
+            return `${label}<div class="field-inline"><input type="date" data-date-for="${f.name}" value="${isoFromFrenchDate(v)}" title="Choisir une date">
+                <input id="f-${f.name}" name="${f.name}" placeholder="17 février 2026" value="${escapeHtml(v)}"></div>${hint || ''}`;
+        }
+        if (f.type === 'category') {
+            // Menu des valeurs déjà utilisées ; celles écrites de plusieurs façons sont signalées
+            const values = collectionValues(id, f.name);
+            const dup = duplicateKeys(values);
+            const options = values.map(x => `<option value="${escapeHtml(x)}"${x === v ? ' selected' : ''}>${escapeHtml(x)}${dup.has(categoryKey(x)) ? ' ⚠ doublon' : ''}</option>`).join('');
+            return `${label}<select id="f-${f.name}" name="${f.name}"><option value=""${v ? '' : ' selected'}>—</option>${options}<option value="__new__">${escapeHtml(f.newLabel)}</option></select>
+                <input name="${f.name}__new" class="hidden" style="margin-top:5px" placeholder="${escapeHtml(f.newLabel.replace('…', ''))}" autocomplete="off">${hint}`;
+        }
+        if (f.type === 'image') {
+            return `${label}<div class="field-inline"><input id="f-${f.name}" name="${f.name}" placeholder="assets/images/photo.jpg ou https://…" value="${escapeHtml(v)}">
+                <button type="button" class="btn btn-light" data-upload="${f.name}">Envoyer…</button></div>
+                <input type="file" accept="image/*" class="hidden" data-upload-input="${f.name}">${hint}`;
+        }
+        return `${label}<input id="f-${f.name}" name="${f.name}" placeholder="${escapeHtml(f.placeholder || '')}" value="${escapeHtml(v)}">${hint}`;
+    }
+
+    function wireEntryForm(id) {
+        const form = document.getElementById('drawer-form');
+        let ytTimer = null;
+        form.oninput = (e) => {
+            const t = e.target;
+            if (t.name === 'url') { clearTimeout(ytTimer); ytTimer = setTimeout(checkYoutubeField, 400); }
+            if (t.name === 'episode') delete t.dataset.auto; // numéro choisi à la main
+            if (t.name && t.name.endsWith('__new')) checkNewCategory(id, t.name.slice(0, -5));
+            updateEntryPreview();
+        };
+        form.onchange = (e) => {
+            const t = e.target;
+            if (t.dataset.dateFor) form.elements[t.dataset.dateFor].value = frenchDateFromIso(t.value);
+            if (t.tagName === 'SELECT') {
+                const typed = form.elements[t.name + '__new'];
+                if (typed) { typed.classList.toggle('hidden', t.value !== '__new__'); if (t.value === '__new__') typed.focus(); }
+                if (t.name === 'series') suggestEpisode(id);
+            }
+            if (t.dataset.uploadInput) uploadEntryImage(t);
+            updateEntryPreview();
+        };
+        form.onclick = (e) => {
+            const b = e.target.closest('[data-upload]');
+            if (b) form.querySelector(`[data-upload-input="${b.dataset.upload}"]`).click();
+        };
+        if (entryEdit.mode === 'new') suggestEpisode(id);
+    }
+
+    /** Valeur d'un champ catégorie : choisie dans le menu, ou tapée (remplacée par l'orthographe existante) */
+    function selectedCategory(form, name, values) {
+        const select = form.elements[name];
+        if (!select) return '';
+        if (select.value !== '__new__') return select.value;
+        const typed = form.elements[name + '__new'].value.trim();
+        return existingCategory(typed, values) || typed;
+    }
+
+    function checkNewCategory(id, name) {
+        const form = document.getElementById('drawer-form');
+        const typed = form.elements[name + '__new'].value.trim();
+        const existing = existingCategory(typed, collectionValues(id, name));
+        const hint = form.querySelector(`[data-hint="${name}"]`);
+        hint.textContent = existing ? `Existe déjà sous la forme « ${existing} » : c’est elle qui sera utilisée.` : '';
+    }
+
+    /** Podcasts : propose le numéro suivant de la série choisie (sauf si le numéro a été tapé à la main) */
+    function suggestEpisode(id) {
+        const form = document.getElementById('drawer-form');
+        const input = form.elements.episode;
+        if (!input || (input.value !== '' && !input.dataset.auto)) return;
+        const series = selectedCategory(form, 'series', collectionValues(id, 'series'));
+        const hint = form.querySelector('[data-hint="episode"]');
+        if (!series) { if (input.dataset.auto) input.value = ''; hint.textContent = ''; return; }
+        const st = collectionState[id];
+        const numbers = [...st.list, ...st.drafts].filter(e => e.series === series).map(e => Number(e.episode)).filter(n => Number.isFinite(n));
+        input.value = numbers.length ? Math.max(...numbers) + 1 : 1;
+        input.dataset.auto = '1';
+        hint.textContent = `Proposé : épisode suivant de « ${series} ».`;
+    }
+
+    /** Entrée telle qu'elle sera écrite dans le fichier, dans l'ordre des champs ; les champs vides sont omis */
+    function readEntryForm() {
+        const { id, original } = entryEdit;
+        const c = COLLECTIONS[id];
+        const form = document.getElementById('drawer-form');
+        const text = (name) => (form.elements[name] ? form.elements[name].value.trim() : '');
+        const entry = {};
+        for (const f of c.fields) {
+            if (f.type === 'featured') { entry.featured = !!(original && original.featured); continue; }
+            let v;
+            if (f.type === 'category') v = selectedCategory(form, f.name, collectionValues(id, f.name));
+            else if (f.type === 'tags') v = text(f.name).split(',').map(t => t.trim()).filter(Boolean);
+            else if (f.type === 'episode') v = text(f.name) === '' ? '' : Number(text(f.name));
+            else v = text(f.name);
+            if (Array.isArray(v) ? v.length : v !== '') entry[f.name] = v;
+        }
+        // Champs ajoutés à la main dans le fichier, et « hidden », gardés tels quels
+        if (original) Object.entries(original).forEach(([k, v]) => {
+            if (!c.fields.some(f => f.name === k) && k !== 'id' && k !== 'savedAt') entry[k] = v;
+        });
+        return entry;
+    }
+
+    function updateEntryPreview() {
+        if (!entryEdit) return;
+        const c = COLLECTIONS[entryEdit.id];
+        const e = readEntryForm();
+        const thumb = e.image || youtubeThumb(e.url);
+        const group = e[c.group.field];
+        document.getElementById('drawer-preview').innerHTML = `<div class="preview-card">
+            <div class="preview-thumb">${thumb ? `<img src="${escapeHtml(thumb)}" alt="">` : ''}</div>
+            <div>
+                ${group ? `<span class="preview-cat">${escapeHtml(group)}</span>` : ''}
+                <div class="preview-title">${escapeHtml(entryTitle(entryEdit.id, e))}</div>
+                <div class="preview-meta">${escapeHtml(c.meta(e).filter(Boolean).join(' · '))}</div>
+                ${e.description ? `<p class="preview-desc">${escapeHtml(e.description)}</p>` : ''}
+            </div>
+        </div>`;
+    }
+
+    /** Message si la vidéo est déjà dans la liste ou dans un brouillon (hors entrée en cours) */
+    function duplicateUrl(id, url) {
+        const { mode, original } = entryEdit;
+        const vid = youtubeVideoId(url);
+        const st = collectionState[id];
+        const same = (e) => e.url && youtubeVideoId(e.url) === vid;
+        if (st.list.some(e => same(e) && !(mode === 'edit' && original && e.url === original.url))) return 'Cette vidéo est déjà dans la liste.';
+        if (st.drafts.some(d => same(d) && !(mode === 'draft' && original && d.id === original.id))) return 'Cette vidéo est déjà dans un brouillon.';
+        return '';
+    }
+
+    async function checkYoutubeField() {
+        if (!entryEdit) return;
+        const form = document.getElementById('drawer-form');
+        const url = form.elements.url.value.trim();
+        const hint = form.querySelector('[data-hint="url"]');
+        const setHint = (text, kind) => { hint.textContent = text; hint.className = 'field-hint' + (kind ? ' ' + kind : ''); };
+        if (!url) return setHint('');
+        if (!youtubeVideoId(url)) return setHint('Ce n’est pas un lien de vidéo YouTube.', 'error');
+        const dup = duplicateUrl(entryEdit.id, url);
+        if (dup) return setHint(dup, 'error');
+        setHint('Recherche de la vidéo sur YouTube…');
+        const info = await fetchYoutubeInfo(url);
+        if (!entryEdit || form.elements.url.value.trim() !== url) return; // le lien a changé entre-temps
+        if (info) setHint(`✓ ${info.title}`, 'ok');
+        else if (info === null) setHint('Vidéo introuvable sur YouTube (privée ou supprimée ?). Tu peux quand même l’enregistrer, en remplissant le titre.', 'error');
+        else setHint('YouTube ne répond pas : le titre sera récupéré plus tard.');
+        updateEntryPreview();
+    }
+
+    async function uploadEntryImage(input) {
+        const file = input.files && input.files[0];
+        input.value = '';
+        if (!file) return;
+        const name = await uploadImage(file, (html, kind) => setStatusIn('drawer-status', html, kind));
+        if (!name) return;
+        // Les pages Vidéos et Podcasts sont à la racine du site : chemin depuis la racine
+        document.getElementById('drawer-form').elements[input.dataset.uploadInput].value = GH_IMAGES_DIR + name;
+        setStatusIn('drawer-status', `✅ Image envoyée : <code>${escapeHtml(GH_IMAGES_DIR + name)}</code>`, 'ok');
+        updateEntryPreview();
+    }
+
+    function validateEntry(entry, action) {
+        if (action === 'draft' && !entry.url) {
+            return entry.title || entry.description || entry.series || entry.category ? '' : 'Le brouillon est vide.';
+        }
+        if (!entry.url) return 'Le lien YouTube est obligatoire pour publier.';
+        if (!youtubeVideoId(entry.url)) return 'Ce n’est pas un lien de vidéo YouTube.';
+        return duplicateUrl(entryEdit.id, entry.url);
+    }
+
+    /** Boutons du formulaire : « save » (entrée publiée), « publish » (nouvelle entrée ou brouillon), « draft » */
+    async function saveEntry(action) {
+        const { id, mode, original } = entryEdit;
+        const c = COLLECTIONS[id], st = collectionState[id];
+        const entry = readEntryForm();
+        const error = validateEntry(entry, action);
+        if (error) { setStatusIn('drawer-status', '❌ ' + escapeHtml(error), 'error'); return; }
+        const buttons = [...document.querySelectorAll('#drawer-buttons button')];
+        buttons.forEach(b => { b.disabled = true; });
+        const title = entryTitle(id, entry);
+        try {
+            let message;
+            if (action === 'save') {
+                setStatusIn('drawer-status', 'Enregistrement…');
+                const { list } = await updateJsonList(c.path, list => {
+                    const i = list.findIndex(e => e.url === original.url);
+                    if (i < 0) throw new Error('Cette entrée n’est plus dans la liste (modifiée ailleurs ?) : actualise l’onglet.');
+                    if (JSON.stringify(list[i]) === JSON.stringify(entry)) return false;
+                    list[i] = entry;
+                    return `${c.words.edit} : ${title}`;
+                });
+                st.list = list;
+                message = `✅ « ${title} » enregistré. Le site est mis à jour en 1 à 2 minutes.`;
+            } else if (action === 'publish') {
+                setStatusIn('drawer-status', 'Publication…');
+                const { list } = await updateJsonList(c.path, list => {
+                    if (list.some(e => youtubeVideoId(e.url) === youtubeVideoId(entry.url))) throw new Error('Cette vidéo est déjà dans la liste.');
+                    list.unshift(entry);
+                    return `${c.words.add} : ${title}`;
+                });
+                st.list = list;
+                // Un brouillon publié n'a plus lieu d'être
+                if (mode === 'draft') {
+                    const res = await updateJsonList(c.draftsPath, drafts => {
+                        const i = drafts.findIndex(d => d.id === original.id);
+                        if (i < 0) return false;
+                        drafts.splice(i, 1);
+                        return `Suppression du brouillon publié : ${title}`;
+                    });
+                    st.drafts = res.list;
+                }
+                message = `✅ « ${title} » publié en tête de la page ${c.label}. Le site est mis à jour en 1 à 2 minutes.`;
+            } else {
+                setStatusIn('drawer-status', 'Enregistrement du brouillon…');
+                const draft = { id: (mode === 'draft' && original.id) || 'b-' + Date.now(), ...entry, savedAt: new Date().toISOString() };
+                const { list } = await updateJsonList(c.draftsPath, drafts => {
+                    const i = drafts.findIndex(d => d.id === draft.id);
+                    if (i < 0) drafts.unshift(draft); else drafts[i] = draft;
+                    return `${c.words.draft} : ${title}`;
+                });
+                st.drafts = list;
+                message = `✅ Brouillon « ${title} » enregistré, sans être publié.`;
+            }
+            closeEntryEditor(true);
+            collectionDone(id, message);
+        } catch (err) {
+            setStatusIn('drawer-status', '❌ ' + escapeHtml(err.message), 'error');
+        } finally {
+            buttons.forEach(b => { b.disabled = false; });
+        }
+    }
+
+    /** Ferme le formulaire ; demande confirmation s'il a été modifié (sauf force) */
+    async function closeEntryEditor(force) {
+        if (!entryEdit) return;
+        if (force !== true && JSON.stringify(readEntryForm()) !== entryEdit.snapshot) {
+            const ok = await askDialog({
+                title: 'Modifications non enregistrées',
+                html: '<p>Fermer le formulaire sans enregistrer ?</p>',
+                buttons: [{ label: 'Continuer la saisie', value: false }, { label: 'Fermer sans enregistrer', value: true, kind: 'danger' }]
+            });
+            if (!ok) return;
+        }
+        document.getElementById('entry-drawer').classList.add('hidden');
+        entryEdit = null;
+    }
+
+    document.getElementById('drawer-buttons').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-drawer-act]');
+        if (!b || !entryEdit) return;
+        if (b.dataset.drawerAct === 'cancel') closeEntryEditor();
+        else saveEntry(b.dataset.drawerAct);
+    });
+
+    // --- TABLEAU DE BORD ---
+    // Vue d'ensemble à l'ouverture du panneau ; recalculée après chaque action, sans relire GitHub.
+    function renderDashboard() {
+        if (!ghConnected) return;
+        const panel = document.getElementById('tab-tableau-de-bord');
+        const item = (attrs, title, meta) => `<li><button type="button" class="dash-link" ${attrs}><span class="dash-item-title">${escapeHtml(title)}</span>${meta ? `<span class="dash-item-meta">${escapeHtml(meta)}</span>` : ''}</button></li>`;
+        const listOf = (items, empty) => items.length ? `<ul class="dash-list">${items.join('')}</ul>` : `<p class="dash-empty">${empty}</p>`;
+        const card = (title, count, body) => `<section class="dash-card"><h2>${title}${count != null ? `<span class="dash-count">${count}</span>` : ''}</h2>${body}</section>`;
+        const articleAttrs = (file) => `data-dash="article" data-id="${escapeHtml(file)}"`;
+        const entryAttrs = (id, e) => `data-dash="coll" data-coll="${id}" data-id="${escapeHtml(e.url)}"`;
+        const ids = Object.keys(COLLECTIONS);
+        const loading = ids.some(id => !collectionState[id].loaded);
+        const visibleArticles = library.list.filter(e => !e.hidden && library.files.some(f => f.name === e.file));
+
+        // Brouillons : articles (GitHub et ce navigateur), vidéos, podcasts
+        const drafts = [
+            ...library.drafts.map(d => ({ attrs: `data-dash="article-draft" data-id="${escapeHtml(d.name)}"`, title: d.title || 'Sans titre', meta: `Article · ${formatDate(d.savedAt)}`, date: d.savedAt })),
+            ...localOnlyDrafts().map(([key, d]) => ({ attrs: `data-dash="local" data-id="${escapeHtml(key)}"`, title: (d.data && d.data.meta && d.data.meta.title) || 'Sans titre', meta: `Article · ce navigateur · ${formatDate(d.savedAt)}`, date: d.savedAt })),
+            ...ids.flatMap(id => collectionState[id].drafts.map(d => ({ attrs: `data-dash="coll-draft" data-coll="${id}" data-id="${escapeHtml(d.id)}"`, title: entryTitle(id, d), meta: `${COLLECTIONS[id].noun} · ${formatDate(d.savedAt)}`, date: d.savedAt })))
+        ].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+        // À la une : l'article et la vidéo
+        const featuredArticle = library.list.find(e => e.featured);
+        const featuredVideo = collectionState.videos.list.find(e => e.featured);
+        const featured = [
+            featuredArticle ? item(articleAttrs(featuredArticle.file), articleTitle(featuredArticle.file), 'Article') : '',
+            featuredVideo ? item(entryAttrs('videos', featuredVideo), entryTitle('videos', featuredVideo), 'Vidéo') : ''
+        ].filter(Boolean);
+
+        // Derniers ajouts : le haut de chaque liste (l'ordre du site)
+        const latest = [
+            ...visibleArticles.slice(0, 3).map(e => item(articleAttrs(e.file), articleTitle(e.file), ['Article', (library.infos[e.file] || {}).date].filter(Boolean).join(' · '))),
+            ...ids.flatMap(id => collectionState[id].list.filter(e => !e.hidden).slice(0, 3).map(e => item(entryAttrs(id, e), entryTitle(id, e), [COLLECTIONS[id].noun, e.date].filter(Boolean).join(' · '))))
+        ];
+
+        // Masqués : présents dans les listes, invisibles sur le site
+        const hidden = [
+            ...library.list.filter(e => e.hidden).map(e => item(articleAttrs(e.file), articleTitle(e.file), 'Article')),
+            ...ids.flatMap(id => collectionState[id].list.filter(e => e.hidden).map(e => item(entryAttrs(id, e), entryTitle(id, e), COLLECTIONS[id].noun)))
+        ];
+
+        // [nombre, libellé] ; « … » tant que la rubrique n'est pas lue
+        const stats = [
+            [visibleArticles.length, 'articles'],
+            ...ids.map(id => [collectionState[id].loaded ? collectionState[id].list.filter(e => !e.hidden).length : '…', COLLECTIONS[id].label.toLowerCase()]),
+            [drafts.length, 'brouillons']
+        ];
+        panel.innerHTML = `
+            <div class="dash-shortcuts">
+                <button type="button" class="btn btn-primary" data-dash="new" data-coll="article">+ Nouvel article</button>
+                <button type="button" class="btn btn-light" data-dash="new" data-coll="videos">+ Vidéo</button>
+                <button type="button" class="btn btn-light" data-dash="new" data-coll="podcasts">+ Podcast</button>
+            </div>
+            <div class="dash-grid">
+                ${card('Sur le site', null, `<div class="dash-stats">${stats.map(([n, label]) => `<span><strong>${n}</strong>${escapeHtml(label)}</span>`).join('')}</div>`)}
+                ${card('Brouillons en cours', drafts.length, listOf(drafts.map(d => item(d.attrs, d.title, d.meta)), 'Aucun brouillon en cours.'))}
+                ${card('À la une', null, listOf(featured, 'Rien n’est à la une.'))}
+                ${card('Derniers ajouts', null, listOf(latest, loading ? 'Chargement…' : 'Rien pour l’instant.'))}
+                ${card('Masqués du site', hidden.length, listOf(hidden, 'Rien n’est masqué.'))}
+            </div>`;
+    }
+
+    document.getElementById('tab-tableau-de-bord').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-dash]');
+        if (!b || libraryBusy) return;
+        const { dash, coll, id } = b.dataset;
+        if (dash === 'new' && coll === 'article') return newArticle();
+        if (dash === 'article') return withBusy(() => openArticle(id));
+        if (dash === 'article-draft') return withBusy(() => openGitHubDraft(id));
+        if (dash === 'local') return openLocalDraft(id);
+        // Vidéos et podcasts : on passe dans leur onglet, puis on ouvre le formulaire
+        showTab(coll);
+        const st = collectionState[coll];
+        if (dash === 'new') openEntryEditor(coll, 'new');
+        else if (dash === 'coll') { const entry = st.list.find(x => x.url === id); if (entry) openEntryEditor(coll, 'edit', entry); }
+        else if (dash === 'coll-draft') { const draft = st.drafts.find(x => x.id === id); if (draft) openEntryEditor(coll, 'draft', draft); }
+    });
 
     // --- DÉMARRAGE ---
     // Avertit avant de quitter la page avec des modifications non publiées (le brouillon reste enregistré)

@@ -2,7 +2,8 @@
 // Utilisé par photos.html (page Photos) et index.html (section « Photographies »).
 //
 // La galerie est dans assets/photos/photos.json, les photos de l'accueil dans
-// assets/photos/accueil.json (tous deux modifiables avec Pages CMS).
+// assets/photos/accueil.json (tous deux modifiables avec le panneau articlecreator.html, onglet Photos).
+// « hidden: true » masque une photo du site ; les brouillons (drafts.json) ne sont jamais lus ici.
 //
 // Galerie :
 // « file » est le nom exact du fichier dans assets/images/, majuscules comprises
@@ -22,7 +23,8 @@ const PHOTOS_ACCUEIL_DATA = 'assets/photos/accueil.json';
 
 // Nom affiché sur le bouton de filtre de chaque catégorie, dans l'ordre des boutons.
 // Une catégorie absente d'ici s'affiche avec son nom, après les autres.
-// (Pour en ajouter une, l'ajouter aussi aux choix du champ « category » dans .pages.yml.)
+// (Pour en ajouter une, l'ajouter aussi à PHOTO_CATEGORIES dans articlecreator.html
+// et aux choix du champ « category » dans .pages.yml.)
 const CATEGORIES_PHOTOS = {
   politique: "Politique",
   societe: "Société",
@@ -47,7 +49,7 @@ async function loadJson(path) {
 
 async function loadJsonList(path, what) {
   try {
-    return await loadJson(path);
+    return (await loadJson(path)).filter(entry => !entry.hidden);
   } catch (e) {
     console.warn(`Liste ${what} non chargée —`, e);
     return [];

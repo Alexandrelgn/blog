@@ -126,6 +126,10 @@ content:
         label: Image hébergée ailleurs (facultatif)
         type: string
         description: Adresse complète (ex. Cloudinary) qui remplace la photo envoyée.
+      - name: hidden
+        label: Masquée du site
+        type: boolean
+        description: La photo reste dans la liste mais n'apparaît plus sur le site.
 
   - name: photos-accueil
     label: Photos de l'accueil
@@ -149,6 +153,9 @@ content:
         type: string
       - name: faded
         label: Photo atténuée
+        type: boolean
+      - name: hidden
+        label: Masquée du site
         type: boolean
 
   - name: podcasts

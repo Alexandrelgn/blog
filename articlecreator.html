@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Outil d'administration : ne pas l'afficher dans les moteurs de recherche -->
+    <meta name="robots" content="noindex">
     <title>CMS Alexandre Ligneul - Éditeur</title>
     <link rel="stylesheet" href="assets/fonts/fonts.css" />
     <link rel="icon" href="assets/site/admin-favicon.ico">
@@ -155,7 +157,100 @@
         .body .encadre-dark { color: #fff; }
         .body .encadre-dark a { color: inherit; }
 
+        .body h3 { font-family: var(--serif); font-size: 1.15rem; font-style: italic; font-weight: 400; margin: 2rem 0 0.75rem; color: #444; }
+        .body blockquote { font-family: var(--serif); font-style: italic; font-size: 1.2rem; border-left: 3px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; line-height: 1.6; }
+        .body blockquote cite { display: block; font-size: 0.78rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.75rem; }
+
         .hidden { display: none !important; }
+
+        /* --- BOUTONS ET CHAMPS COMMUNS (panneau, dialogues) --- */
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-light { background: #fff; border: 1px solid var(--border); color: var(--ink); font-size: 0.8rem; }
+        .btn-light:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: #1d4a7e; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .link-btn { background: none; border: none; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
+        .code-field { font-family: Consolas, 'Courier New', monospace; font-size: 0.78rem; min-height: 120px; white-space: pre; overflow-wrap: normal; }
+        .advanced-card summary { cursor: pointer; font-family: var(--serif); font-size: 1rem; font-weight: 600; }
+        .advanced-card[open] summary { border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 4px; }
+
+        /* --- BANDEAU DE L'ÉDITEUR --- */
+        .editor-bar { display: flex; align-items: center; gap: 10px; }
+        .editor-bar .btn { padding: 8px 12px; white-space: nowrap; }
+        .editor-bar-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+        .editor-file { font-size: 0.78rem; font-weight: 600; overflow-wrap: anywhere; }
+        .editor-dirty { font-size: 0.7rem; color: #8a5a00; }
+        .import-report { border-left: 4px solid #e0a800; font-size: 0.8rem; line-height: 1.5; }
+        .import-report p { margin: 6px 0; }
+        .import-report ul { margin: 6px 0; padding-left: 18px; }
+
+        /* --- FENÊTRE DE DIALOGUE --- */
+        .dialog-box { text-align: left; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+        .dialog-body p { font-size: 0.85rem; line-height: 1.55; color: #333; margin: 0.5rem 0; }
+        .dialog-body code, .lib-meta code { font-size: 0.85em; overflow-wrap: anywhere; }
+        .dialog-buttons { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+        .dialog-buttons .btn { padding: 9px 14px; font-size: 0.82rem; }
+        .dialog-warn { color: #8a5a00; }
+        .dialog-error { color: var(--danger); }
+
+        /* --- PANNEAU DE GESTION DES ARTICLES --- */
+        .admin-view { display: none; position: fixed; inset: 0; z-index: 1500; background: var(--soft); overflow-y: auto; }
+        body.view-admin .admin-view { display: block; }
+        .admin-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 24px; background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+        .admin-brand { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; flex: 1; }
+        .admin-repo { font-size: 0.75rem; color: var(--muted); }
+        .admin-top .btn { padding: 8px 12px; }
+        .admin-main { max-width: 920px; margin: 0 auto; padding: 24px 16px 60px; }
+        body.is-busy .admin-main { pointer-events: none; opacity: 0.6; cursor: wait; }
+        .login-card { max-width: 420px; margin: 40px auto; }
+        .login-card .btn { width: 100%; }
+        .lib-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+        .lib-toolbar input { flex: 1 1 220px; width: auto; }
+        .lib-toolbar select { flex: 0 1 210px; width: auto; }
+        .lib-toolbar .btn { width: auto; margin: 0; white-space: nowrap; padding: 8px 12px; }
+        .lib-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin: 22px 0 10px; }
+        .lib-hint { font-family: var(--sans); font-size: 0.7rem; color: var(--muted); font-weight: 400; }
+        .order-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: var(--accent-light); border: 1px solid #c9d9ee; padding: 10px 12px; border-radius: 4px; font-size: 0.85rem; margin-bottom: 10px; }
+        .order-bar span { flex: 1; }
+        .order-bar .btn { width: auto; margin: 0; padding: 7px 12px; font-size: 0.8rem; }
+        .lib-row { display: grid; grid-template-columns: 18px 72px minmax(0, 1fr) auto; gap: 12px; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 10px 12px; margin-bottom: 8px; }
+        .lib-handle { cursor: grab; color: var(--muted); user-select: none; text-align: center; font-size: 1rem; }
+        .lib-rows.no-drag .lib-handle { visibility: hidden; }
+        .lib-thumb { width: 72px; height: 48px; background: var(--soft); overflow: hidden; border-radius: 2px; }
+        .lib-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .lib-title { font-family: var(--serif); font-weight: 600; font-size: 0.98rem; line-height: 1.3; }
+        .lib-meta { font-size: 0.72rem; color: var(--muted); margin-top: 3px; overflow-wrap: anywhere; }
+        .badge { display: inline-block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 2px; background: var(--soft); color: var(--muted); margin: 5px 4px 0 0; font-weight: 600; }
+        .badge-une { background: var(--accent-light); color: var(--accent); }
+        .badge-draft { background: #fdf3e1; color: #8a5a00; }
+        .badge-error { background: #fbe9eb; color: var(--danger); }
+        .lib-actions { display: flex; gap: 6px; align-items: center; }
+        .btn-mini { padding: 6px 10px; border: 1px solid var(--border); background: #fff; border-radius: 3px; cursor: pointer; font-family: var(--sans); font-size: 0.75rem; color: var(--ink); line-height: 1.2; }
+        .btn-mini:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-star { font-size: 0.9rem; padding: 4px 9px; }
+        .btn-star.on { color: #b07800; border-color: #e8c66a; background: #fff8e6; }
+        .lib-menu { position: relative; }
+        .lib-menu summary { list-style: none; }
+        .lib-menu summary::-webkit-details-marker { display: none; }
+        .lib-menu-list { position: absolute; right: 0; top: calc(100% + 4px); background: #fff; border: 1px solid var(--border); box-shadow: 0 6px 18px rgba(0,0,0,0.08); z-index: 10; min-width: 210px; display: flex; flex-direction: column; }
+        .lib-menu-list button { text-align: left; padding: 9px 12px; border: none; background: none; font-family: var(--sans); font-size: 0.8rem; cursor: pointer; border-bottom: 1px solid var(--soft); color: var(--ink); }
+        .lib-menu-list button:hover { background: var(--soft); }
+        .lib-menu-list .danger { color: var(--danger); }
+        .lib-empty { font-size: 0.85rem; color: var(--muted); padding: 6px 0 12px; margin: 0; }
+        .sortable-ghost { opacity: 0.4; }
+
+        @media (max-width: 800px) {
+            body { grid-template-columns: 1fr; height: auto; overflow: auto; }
+            .editor-panel { overflow: visible; border-right: none; }
+            .preview-panel { padding: 16px; }
+            .post-content { padding: 24px 16px; }
+            .admin-top { padding: 10px 16px; }
+            .lib-row { grid-template-columns: 18px minmax(0, 1fr); }
+            .lib-thumb { display: none; }
+            .lib-actions { grid-column: 2; flex-wrap: wrap; }
+            .lib-menu-list { right: auto; left: 0; }
+        }
 
 
         @media (max-width: 680px) { .prod-pdf-wrap { flex-wrap: wrap; } .prod-pdf-btn { width: 100%; justify-content: center; } .prod-audio-wrap { flex-wrap: wrap; } .prod-audio-wrap audio { width: 100%; flex-basis: 100%; } }
@@ -179,7 +274,77 @@
     </div>
 </div>
 
+<!-- Fenêtre de dialogue commune (confirmations, choix, saisie d'un nom) -->
+<div id="dialog" class="modal-overlay hidden" onclick="if (event.target === this) closeDialog(null)">
+    <div class="modal-content dialog-box" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+        <h3 id="dialog-title"></h3>
+        <div id="dialog-body" class="dialog-body"></div>
+        <div id="dialog-buttons" class="dialog-buttons"></div>
+    </div>
+</div>
+
+<!-- Panneau de gestion des articles : connexion, puis liste des écrits -->
+<div id="admin-view" class="admin-view">
+    <header class="admin-top">
+        <span class="admin-brand">Gestion des écrits</span>
+        <span class="admin-repo" id="admin-repo"></span>
+        <button type="button" class="btn btn-light" onclick="backToEditor()">Éditeur →</button>
+        <button type="button" class="btn btn-light hidden" id="admin-logout" onclick="logout()">Se déconnecter</button>
+    </header>
+    <main class="admin-main">
+        <section id="login-screen" class="hidden">
+            <form class="section-card login-card" onsubmit="event.preventDefault(); connectGitHub()">
+                <h2>Connexion</h2>
+                <p class="gh-hint">Connecte-toi avec ton jeton d'accès GitHub pour voir, modifier et organiser les articles du site.</p>
+                <label for="gh-token">Jeton d'accès GitHub</label>
+                <input type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off">
+                <p class="gh-hint">Jeton « fine-grained » limité à ce dépôt, avec l'autorisation <em>Contents : Read and write</em>. Il reste enregistré dans ce navigateur uniquement.</p>
+                <details id="gh-settings" style="margin-top:10px;font-size:0.8rem;">
+                    <summary style="cursor:pointer;color:var(--muted);">Dépôt</summary>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div><label>Compte</label><input type="text" id="gh-owner" placeholder="Alexandrelgn"></div>
+                        <div><label>Dépôt</label><input type="text" id="gh-repo" placeholder="blog"></div>
+                    </div>
+                    <label>Branche</label>
+                    <input type="text" id="gh-branch" placeholder="main">
+                </details>
+                <button type="submit" class="btn btn-add" id="login-btn">Se connecter</button>
+                <p class="gh-status" id="login-status"></p>
+                <button type="button" class="btn btn-light" style="margin-top:10px" onclick="backToEditor()">Utiliser l'éditeur sans connexion</button>
+            </form>
+        </section>
+
+        <section id="library" class="hidden">
+            <div class="lib-toolbar">
+                <input type="search" id="lib-search" placeholder="Rechercher un article…" oninput="renderLibrary()">
+                <select id="lib-cat" onchange="renderLibrary()"><option value="">Toutes les catégories</option></select>
+                <button type="button" class="btn btn-light" onclick="loadLibrary()">↻ Actualiser</button>
+                <button type="button" class="btn btn-primary" onclick="newArticle()">+ Nouvel article</button>
+            </div>
+            <p class="gh-status" id="admin-status"></p>
+            <div id="lib-drafts"></div>
+            <h2 class="lib-heading">Liste des écrits <span class="lib-hint">dans l'ordre d'affichage du site : glisse ⠿ pour le changer</span></h2>
+            <div id="order-bar" class="order-bar hidden">
+                <span>L'ordre a changé.</span>
+                <button type="button" class="btn btn-primary" onclick="saveOrder()">Enregistrer l'ordre</button>
+                <button type="button" class="btn btn-light" onclick="cancelOrder()">Annuler</button>
+            </div>
+            <div id="lib-rows" class="lib-rows"></div>
+            <div id="lib-offlist"></div>
+        </section>
+    </main>
+</div>
+
 <div class="editor-panel">
+    <div class="editor-bar">
+        <button type="button" class="btn btn-light" id="editor-back" onclick="showView('admin')">← Articles</button>
+        <div class="editor-bar-info">
+            <span class="editor-file" id="editor-file"></span>
+            <span class="editor-dirty hidden" id="editor-dirty">● Modifications non publiées</span>
+        </div>
+    </div>
+    <div class="section-card import-report hidden" id="import-report"></div>
+
     <div class="section-card">
         <h2>Fichiers & Projets</h2>
         <div class="file-ops">
@@ -233,6 +398,7 @@
         <select id="block-type">
             <option value="p">Paragraphe</option>
             <option value="h2">Sous-titre (H2)</option>
+            <option value="h3">Intertitre (H3)</option>
             <option value="quote">Citation</option>
             <option value="img">Image Simple</option>
             <option value="slider">Duo d'images</option>
@@ -241,6 +407,7 @@
             <option value="video">Vidéo intégrée</option>
             <option value="pdf">Lecteur PDF</option>
             <option value="audio">Lecteur audio</option>
+            <option value="raw">HTML brut</option>
         </select>
         <button class="btn btn-add" onclick="addBlock()">+ Insérer</button>
     </div>
@@ -255,6 +422,15 @@
         <option value="#1a1a1a"></option>
     </datalist>
 
+    <details class="section-card advanced-card" id="advanced-card">
+        <summary>Avancé : code propre à l'article</summary>
+        <label>Code ajouté dans &lt;head&gt; (styles)</label>
+        <textarea id="extra-head" class="code-field" spellcheck="false" placeholder="<style>…</style>" oninput="render()"></textarea>
+        <label>Code ajouté en fin de page (scripts)</label>
+        <textarea id="extra-body" class="code-field" spellcheck="false" placeholder="<script>…</script>" oninput="render()"></textarea>
+        <p class="gh-hint">Recopié tel quel dans la page publiée, pour un style ou un script réservé à cet article (ex. visionneuse d'images). Non visible dans l'aperçu.</p>
+    </details>
+
     <div class="file-ops" style="margin-top: 8px;">
         <button class="btn btn-copy" style="margin-top: 0; grid-column: span 2;" onclick="copyFullHTML()">COPIER HTML (page article complète)</button>
         <button class="btn btn-sec main-export-btn" style="grid-column: span 2;" onclick="downloadArticleHTML()">Télécharger .html</button>
@@ -263,8 +439,10 @@
     <div class="section-card" id="gh-card">
         <h2>Publier sur le site</h2>
         <p class="gh-hint">Envoie l'article directement sur GitHub et l'ajoute à la liste des écrits. Le site en ligne est mis à jour en 1 à 2 minutes.</p>
+        <p class="gh-hint" id="gh-connection"></p>
         <label>Nom du fichier</label>
         <input type="text" id="gh-filename" readonly>
+        <p class="gh-hint" id="gh-filename-hint"></p>
         <label class="gh-check"><input type="checkbox" id="gh-featured"> Mettre « À la une »</label>
         <button class="btn btn-add" id="gh-publish-btn" onclick="publishToGitHub()">🚀 Publier sur GitHub</button>
 
@@ -273,23 +451,6 @@
         <p class="gh-hint">L'image est rangée dans assets/images/ ; son chemin pour l'article (../images/…) est copié dans le presse-papiers.</p>
 
         <p class="gh-status" id="gh-status"></p>
-
-        <details id="gh-settings">
-            <summary>Réglages GitHub</summary>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <div><label>Compte</label><input type="text" id="gh-owner" placeholder="Alexandrelgn"></div>
-                <div><label>Dépôt</label><input type="text" id="gh-repo" placeholder="blog"></div>
-            </div>
-            <label>Branche</label>
-            <input type="text" id="gh-branch" placeholder="main">
-            <label>Jeton d'accès GitHub</label>
-            <input type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off">
-            <p class="gh-hint">Jeton « fine-grained » limité à ce dépôt, avec l'autorisation <em>Contents : Read and write</em>. Il reste enregistré dans ce navigateur uniquement.</p>
-            <div class="file-ops" style="margin-top:6px">
-                <button class="btn btn-sec main-export-btn" onclick="saveGitHubSettings()">Enregistrer</button>
-                <button class="btn btn-sec main-export-btn" onclick="forgetGitHubToken()">Oublier le jeton</button>
-            </div>
-        </details>
     </div>
 
     <div class="credits">
@@ -323,6 +484,8 @@
     let authors = [{ name: "Alexandre Ligneul" }];
     let articleBlocks = [];
     const blocksContainer = document.getElementById('active-blocks');
+    // Modèle d'un nouvel article : les valeurs par défaut des champs de l'éditeur
+    const BLANK_DATA = JSON.parse(JSON.stringify(readEditorData()));
 
     // --- LOGIQUE MODAL ---
     function toggleDevModal() { document.getElementById('devModal').classList.toggle('hidden'); }
@@ -352,9 +515,7 @@
     window.addEventListener('click', (e) => { if (!e.target.matches('.main-export-btn')) document.getElementById('export-options').classList.add('hidden'); });
 
     function exportJSON() {
-        saveToLocal();
-        const data = localStorage.getItem('cms_draft');
-        if(!data) return;
+        const data = JSON.stringify(readEditorData());
         const d = new Date();
         const pad = (n) => String(n).padStart(2, '0');
         const name = `article-${pad(d.getDate())}-${pad(d.getMonth() + 1)}-${pad(d.getFullYear() % 100)}-${pad(d.getHours())}h${pad(d.getMinutes())}.json`;
@@ -374,11 +535,12 @@
         reader.readAsText(file);
     }
 
-    function resetProject() { if(confirm("Vider l'éditeur ?")) { localStorage.removeItem('cms_draft'); location.reload(); } }
+    function resetProject() { if(confirm("Vider l'éditeur ?\nL'article en ligne ne change pas tant que tu ne publies pas.")) applyData(BLANK_DATA); }
 
     // --- CORE ---
-    function saveToLocal() {
-        const data = {
+    /** Données de l'article affiché dans l'éditeur */
+    function readEditorData() {
+        return {
             meta: {
                 short: document.getElementById('nav-short').value,
                 cat: document.getElementById('meta-cat').value,
@@ -392,12 +554,130 @@
                 heroAlt: document.getElementById('hero-alt').value,
                 heroCap: document.getElementById('hero-cap').value
             },
-            authors, articleBlocks
+            authors, articleBlocks,
+            extraHead: document.getElementById('extra-head').value,
+            extraBody: document.getElementById('extra-body').value
         };
-        localStorage.setItem('cms_draft', JSON.stringify(data));
+    }
+
+    /** Source de l'article rangée dans la page publiée : les données de l'éditeur, sans l'état d'affichage des blocs */
+    function buildArticleSource(data) {
+        data = data || readEditorData();
+        return {
+            version: 1,
+            meta: data.meta || {},
+            authors: (data.authors || []).map(a => ({ name: (a && a.name) || '' })),
+            articleBlocks: (data.articleBlocks || []).map(({ collapsed, ...block }) => block),
+            extraHead: data.extraHead || '',
+            extraBody: data.extraBody || ''
+        };
+    }
+
+    /** Balise invisible qui permet de rouvrir l'article dans l'éditeur ; « < » est échappé pour ne jamais fermer la balise */
+    function buildArticleSourceTag() {
+        const json = JSON.stringify(buildArticleSource()).replace(/</g, '\\u003c');
+        return `<!-- Source de l'article pour l'éditeur (articlecreator.html) : ne pas modifier à la main -->
+  <script type="application/json" id="article-source">${json}<\/script>`;
+    }
+
+    // --- ARTICLE OUVERT ET BROUILLONS ---
+    // Chaque article a son propre brouillon dans ce navigateur (cms_drafts), tant qu'il a des
+    // modifications non publiées. currentKey : clé du brouillon (nom du fichier, ou « nouveau-… »
+    // pour un article jamais publié). currentFile : nom du fichier figé (null tant qu'un nouvel
+    // article n'est pas publié : il suit alors le Nom court). currentSha : version GitHub du
+    // fichier ouvert (null s'il n'existe pas encore). baseSnapshot : état de l'article à
+    // l'ouverture ou à la dernière publication, pour savoir s'il a été modifié depuis.
+    let currentKey = null, currentFile = null, currentSha = null, baseSnapshot = null;
+
+    function readDrafts() { try { return JSON.parse(readStore('cms_drafts') || '{}') || {}; } catch (e) { return {}; } }
+    function writeDrafts(drafts) { writeStore('cms_drafts', JSON.stringify(drafts)); }
+    function readSession(key) { try { return sessionStorage.getItem(key); } catch (e) { return null; } }
+    function writeSession(key, value) { try { sessionStorage.setItem(key, value); } catch (e) {} }
+
+    function articleSnapshot() { return JSON.stringify(buildArticleSource()); }
+    function isDirty() { return baseSnapshot === null || articleSnapshot() !== baseSnapshot; }
+
+    /** Enregistre le brouillon de l'article ouvert s'il a été modifié, le supprime sinon */
+    function saveToLocal() {
+        if (!currentKey) return; // article en cours de chargement
+        const dirty = isDirty();
+        const drafts = readDrafts();
+        if (dirty) drafts[currentKey] = { data: readEditorData(), file: currentFile, baseSha: currentSha, base: baseSnapshot, savedAt: new Date().toISOString() };
+        else delete drafts[currentKey];
+        writeDrafts(drafts);
+        updateEditorBar(dirty);
+    }
+
+    /** Charge un article dans l'éditeur ; base = état de référence (par défaut, l'état chargé : aucune modification) */
+    function loadIntoEditor({ key, file, sha, data, base, show = true }) {
+        currentKey = null; // rien n'est enregistré pendant le chargement
+        applyData(data);
+        baseSnapshot = base !== undefined ? base : articleSnapshot();
+        currentKey = key;
+        currentFile = file || null;
+        currentSha = sha || null;
+        writeSession('cms_current', key);
+        document.getElementById('gh-featured').checked = false;
+        render();
+        if (show) showView('editor');
+    }
+
+    /** État de l'éditeur, pour y revenir si l'ouverture d'un autre article est annulée */
+    function captureEditor() {
+        return { key: currentKey, file: currentFile, sha: currentSha, base: baseSnapshot, data: readEditorData() };
+    }
+
+    function newArticle() {
+        loadIntoEditor({ key: 'nouveau-' + Date.now(), data: BLANK_DATA });
+        showImportReport(null);
+        setGhStatus('');
+    }
+
+    function openDraft(key) {
+        const d = readDrafts()[key];
+        if (!d) return;
+        loadIntoEditor({ key, file: d.file, sha: d.baseSha, data: d.data, base: d.base });
+        showImportReport(null);
+        setGhStatus('');
+    }
+
+    /** Retour à l'éditeur ; sans article en cours, reprend le dernier brouillon de ce navigateur */
+    function backToEditor() {
+        if (!currentFile && !isDirty()) {
+            const recent = Object.entries(readDrafts()).sort((a, b) => String(b[1].savedAt).localeCompare(String(a[1].savedAt)))[0];
+            if (recent) return openDraft(recent[0]);
+        }
+        showView('editor');
+    }
+
+    /** L'ancien brouillon unique (cms_draft) devient un brouillon parmi les autres */
+    function migrateOldDraft() {
+        const old = readStore('cms_draft');
+        if (!old) return;
+        try {
+            const data = JSON.parse(old);
+            if (JSON.stringify(buildArticleSource(data)) !== JSON.stringify(buildArticleSource(BLANK_DATA))) {
+                const drafts = readDrafts();
+                drafts['nouveau-' + Date.now()] = { data, file: null, baseSha: null, base: null, savedAt: new Date().toISOString() };
+                writeDrafts(drafts);
+            }
+        } catch (e) {}
+        writeStore('cms_draft', null);
+    }
+
+    /** Bandeau en haut de l'éditeur : fichier ouvert et modifications non publiées */
+    function updateEditorBar(dirty) {
+        if (dirty === undefined) dirty = !!currentKey && isDirty();
+        document.getElementById('editor-file').textContent = currentFile || `Nouvel article · ${articleFileName()}`;
+        document.getElementById('editor-dirty').classList.toggle('hidden', !dirty);
+        document.getElementById('gh-filename').value = publishFileName();
+        document.getElementById('gh-filename-hint').textContent = currentFile
+            ? 'Nom figé : pour le changer, utilise « Renommer » dans la liste des articles.'
+            : 'Calculé à partir du Nom court, puis figé à la première publication.';
     }
 
     function applyData(data) {
+        data = JSON.parse(JSON.stringify(data || {})); // copie : le modèle vide ou le brouillon d'origine ne doivent pas changer
         const m = data.meta || {};
         document.getElementById('nav-short').value = m.short || '';
         document.getElementById('meta-cat').value = m.cat || '';
@@ -410,8 +690,12 @@
         document.getElementById('hero-url').value = m.heroUrl || '';
         document.getElementById('hero-alt').value = m.heroAlt || '';
         document.getElementById('hero-cap').value = m.heroCap || '';
+        document.getElementById('extra-head').value = data.extraHead || '';
+        document.getElementById('extra-body').value = data.extraBody || '';
+        document.getElementById('advanced-card').open = !!(data.extraHead || data.extraBody);
         authors = data.authors && data.authors.length ? data.authors : [{ name: '' }];
-        articleBlocks = data.articleBlocks || [];
+        // Les identifiants de blocs sont repris dans les attributs onclick : on n'accepte que lettres, chiffres et tirets
+        articleBlocks = (data.articleBlocks || []).map((b, i) => /^[\w-]+$/.test(b.id || '') ? b : { ...b, id: `block-${Date.now()}-${i}` });
         renderAuthorsEditor(); renderEditor(); render();
     }
 
@@ -420,7 +704,7 @@
         const list = document.getElementById('authors-list'); list.innerHTML = '';
         authors.forEach((auth, i) => {
             const div = document.createElement('div'); div.style.display = 'flex'; div.style.marginBottom = '5px';
-            div.innerHTML = `<input type="text" value="${auth.name}" oninput="authors[${i}].name=this.value; render()"><button class="btn-remove" onclick="authors.splice(${i},1);renderAuthorsEditor();render()">×</button>`;
+            div.innerHTML = `<input type="text" value="${escapeHtml(auth.name)}" oninput="authors[${i}].name=this.value; render()"><button class="btn-remove" onclick="authors.splice(${i},1);renderAuthorsEditor();render()">×</button>`;
             list.appendChild(div);
         });
     }
@@ -474,6 +758,9 @@
             });
         }
 
+        if (type === 'link') Object.assign(block, { linkLabel: LINK_DEFAULT_LABEL, newTab: false });
+        if (type === 'slider') Object.assign(block, { alt1: '', alt2: '' });
+
         articleBlocks.push(block);
         renderEditor(); render();
     }
@@ -495,6 +782,7 @@
             const typeLabel = {
                 p: 'Paragraphe',
                 h2: 'Sous-titre (H2)',
+                h3: 'Intertitre (H3)',
                 quote: 'Citation',
                 img: 'Image simple',
                 slider: 'Duo d\'images',
@@ -502,7 +790,8 @@
                 box: 'Encadré',
                 video: 'Vidéo intégrée',
                 pdf: 'Lecteur PDF',
-                audio: 'Lecteur audio'
+                audio: 'Lecteur audio',
+                raw: 'HTML brut'
             }[block.type] || block.type;
 
             const v = (value) => escapeHtml(value || '');
@@ -608,13 +897,25 @@
                             <label style="display:block;margin:0;text-transform:none;font-size:0.75rem;color:#444;"><input type="checkbox" style="width:auto;" ${block.allowFullscreen !== false ? 'checked' : ''} onchange="updateBlock('${block.id}','allowFullscreen',this.checked)"> Plein écran</label>
                         </div></div>
                     </div>`;
-            } else if(block.type === 'slider' || block.type === 'link') {
-                fields += `<input placeholder="Image 1 / Texte" value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">`;
-                fields += `<input placeholder="Image 2 / URL" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
-                if(block.type === 'slider') {
-                    fields += `<input placeholder="Légende" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
-                    fields += scaleSliderField(block);
-                }
+            } else if (block.type === 'link') {
+                fields += `
+                    <label>Étiquette</label>
+                    <input placeholder="${v(LINK_DEFAULT_LABEL)}" value="${v(linkLabel(block))}" oninput="updateBlock('${block.id}','linkLabel',this.value)">
+                    <label>Texte</label>
+                    <input placeholder="Titre de l'article ou du lien" value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">
+                    <label>Adresse (URL)</label>
+                    <input placeholder="https://..." value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)">
+                    <label class="gh-check"><input type="checkbox" ${block.newTab ? 'checked' : ''} onchange="updateBlock('${block.id}','newTab',this.checked)"> Ouvrir dans un nouvel onglet</label>`;
+            } else if (block.type === 'slider') {
+                fields += `<input placeholder="Image 1 (URL)" value="${v(block.content)}" oninput="updateBlock('${block.id}','content',this.value)">`;
+                fields += `<input placeholder="Image 1 — texte alternatif (alt)" value="${v(block.alt1)}" oninput="updateBlock('${block.id}','alt1',this.value)" style="margin-top:5px">`;
+                fields += `<input placeholder="Image 2 (URL)" value="${v(block.extra)}" oninput="updateBlock('${block.id}','extra',this.value)" style="margin-top:5px">`;
+                fields += `<input placeholder="Image 2 — texte alternatif (alt)" value="${v(block.alt2)}" oninput="updateBlock('${block.id}','alt2',this.value)" style="margin-top:5px">`;
+                fields += `<input placeholder="Légende" value="${v(block.third)}" oninput="updateBlock('${block.id}','third',this.value)" style="margin-top:5px">`;
+                fields += scaleSliderField(block);
+            } else if (block.type === 'raw') {
+                fields += `<p class="gh-hint" style="margin:0 0 6px">Réservé au HTML que l'éditeur ne sait pas produire : il est recopié tel quel dans l'article.</p>`;
+                fields += `<textarea class="code-field" spellcheck="false" oninput="updateBlock('${block.id}','content',this.value)">${v(block.content)}</textarea>`;
             } else {
                 fields += `<textarea oninput="updateBlock('${block.id}','content',this.value)">${v(block.content)}</textarea>`;
                 if (block.type === 'img') {
@@ -670,6 +971,12 @@
     }
 
     function updateBlock(id, field, val) { articleBlocks.find(b => b.id === id)[field] = val; render(); }
+
+    // --- LIEN DE RAPPEL ---
+    const LINK_DEFAULT_LABEL = 'À lire aussi';
+
+    /** Étiquette du lien ; les anciens blocs n'en ont pas et gardent « À lire aussi » */
+    function linkLabel(block) { return block.linkLabel != null ? block.linkLabel : LINK_DEFAULT_LABEL; }
 
     // --- ENCADRÉ (texte enrichi) ---
     const BOX_DEFAULT_BG = '#e8f0f9';
@@ -1063,6 +1370,8 @@
             const t = b.third || '';
             if (b.type === 'p') bodyHtml += richParagraphs(paragraphHtml(b));
             if (b.type === 'h2') bodyHtml += `<h2>${escapeHtml(c)}</h2>`;
+            if (b.type === 'h3') bodyHtml += `<h3>${escapeHtml(c)}</h3>`;
+            if (b.type === 'raw') bodyHtml += c;
             if (b.type === 'quote') {
                 bodyHtml += `<blockquote>« <em>${escapeHtml(c)}</em> »<cite>— ${escapeHtml(e)}</cite></blockquote>`;
             }
@@ -1070,10 +1379,12 @@
                 bodyHtml += `<img src="${escapeHtml(c)}" alt="${escapeHtml(t)}" class="cover-ph"${scaleStyle(b)} /><p class="cover-cap"${scaleStyle(b)}>${escapeHtml(e)}</p>`;
             }
             if (b.type === 'link') {
-                bodyHtml += `<a href="${escapeHtml(e)}" class="rel-link"><span>À lire aussi</span> ${escapeHtml(c)}</a>`;
+                const label = linkLabel(b);
+                const target = b.newTab ? ' target="_blank" rel="noopener"' : '';
+                bodyHtml += `<a href="${escapeHtml(e)}" class="rel-link"${target}>${label ? `<span>${escapeHtml(label)}</span> ` : ''}${escapeHtml(c)}</a>`;
             }
             if (b.type === 'slider') {
-                bodyHtml += `<div class="img-grid"${scaleStyle(b)}><img src="${escapeHtml(c)}" alt="" class="cover-ph" /><img src="${escapeHtml(e)}" alt="" class="cover-ph" /></div><p class="cover-cap"${scaleStyle(b)}>${escapeHtml(t)}</p>`;
+                bodyHtml += `<div class="img-grid"${scaleStyle(b)}><img src="${escapeHtml(c)}" alt="${escapeHtml(b.alt1)}" class="cover-ph" /><img src="${escapeHtml(e)}" alt="${escapeHtml(b.alt2)}" class="cover-ph" /></div><p class="cover-cap"${scaleStyle(b)}>${escapeHtml(t)}</p>`;
             }
             if (b.type === 'box') {
                 bodyHtml += buildBoxBlockHtml(b);
@@ -1110,6 +1421,9 @@
         const readTime = document.getElementById('readTime').value;
         const pageTitle = `Alexandre Ligneul - ${title}`;
         const bylineMeta = `${escapeHtml(loc)} · ${escapeHtml(date)} · ${escapeHtml(readTime)}`;
+        // Code propre à l'article (section « Avancé »), recopié tel quel
+        const extraHead = document.getElementById('extra-head').value.trim();
+        const extraBody = document.getElementById('extra-body').value.trim();
 
         return `<!DOCTYPE html>
 <html lang="fr">
@@ -1119,7 +1433,7 @@
   <title>${escapeHtml(pageTitle)}</title>
   <link rel="icon" href="../site/favicon.ico"/>
   <link rel="stylesheet" href="../fonts/fonts.css" />
-  <link rel="stylesheet" href="${ARTICLE_STYLESHEET}" />
+  <link rel="stylesheet" href="${ARTICLE_STYLESHEET}" />${extraHead ? '\n  ' + extraHead : ''}
 </head>
 <body>
   <nav>
@@ -1158,7 +1472,8 @@ ${buildArticleBodyHtml()}
     </footer>
   </article>
 
-  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="../../mentions-legales" style="color:inherit;">Mentions légales</a></span></footer>
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="../../mentions-legales" style="color:inherit;">Mentions légales</a></span></footer>${extraBody ? '\n  ' + extraBody : ''}
+  ${buildArticleSourceTag()}
 </body>
 </html>`;
     }
@@ -1176,7 +1491,8 @@ ${buildArticleBodyHtml()}
 
         const bylineMeta = `${escapeHtml(document.getElementById('pub-loc').value)} · ${escapeHtml(document.getElementById('pub-date').value)} · ${escapeHtml(document.getElementById('readTime').value)}`;
 
-        document.getElementById('final-preview').innerHTML = `
+        const preview = document.createElement('template');
+        preview.innerHTML = `
             ${bread}
             <article class="post-content" style="max-width:720px;margin:0 auto;">
                 <header class="article-header">
@@ -1193,8 +1509,11 @@ ${buildArticleBodyHtml()}
                     <a href="#" class="back">← Retour aux écrits</a>
                 </footer>
             </article>`;
-        document.getElementById('gh-filename').value = articleFileName();
-        saveToLocal();
+        // Dans l'article, les images sont relatives à assets/articles/ (ex. ../images/photo.jpg) :
+        // on corrige leurs chemins pour l'aperçu, avant l'affichage (un modèle ne charge pas ses images)
+        preview.content.querySelectorAll('img[src]').forEach(img => img.setAttribute('src', articleAssetUrl(img.getAttribute('src'))));
+        document.getElementById('final-preview').replaceChildren(preview.content);
+        if (currentKey) saveToLocal(); else updateEditorBar(false);
     }
 
     async function copyFullHTML() {
@@ -1209,11 +1528,19 @@ ${buildArticleBodyHtml()}
 
     /** Nom du fichier de l'article, tir\u00e9 du \u00ab Nom court \u00bb : sans accents ni espaces (ex. Petite-Ceinture.html) */
     function articleFileName() {
-        const base = (document.getElementById('nav-short').value.trim() || 'article')
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^\w\-]+/g, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '');
+        const base = fileBaseFromText(document.getElementById('nav-short').value.trim() || 'article');
         return `${base || 'article'}.html`;
     }
+
+    /** Texte \u2192 nom de fichier sans extension : sans accents ni espaces, mots s\u00e9par\u00e9s par des tirets */
+    function fileBaseFromText(text) {
+        return String(text || '').trim().replace(/\.html$/i, '')
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^\w\-]+/g, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '');
+    }
+
+    /** Nom du fichier publi\u00e9 : fig\u00e9 pour un article existant, sinon tir\u00e9 du Nom court */
+    function publishFileName() { return currentFile || articleFileName(); }
 
     function downloadArticleHTML() {
         const blob = new Blob([buildFullArticleHTML()], { type: 'text/html;charset=utf-8' });
@@ -1252,44 +1579,107 @@ ${buildArticleBodyHtml()}
         document.getElementById('gh-repo').value = saved.repo || GH_DEFAULTS.repo;
         document.getElementById('gh-branch').value = saved.branch || GH_DEFAULTS.branch;
         document.getElementById('gh-token').value = readStore('gh_token') || '';
-        // R\u00e9glages ouverts tant qu'aucun jeton n'est enregistr\u00e9
-        document.getElementById('gh-settings').open = !readStore('gh_token');
     }
 
-    function saveGitHubSettings() {
+    // --- CONNEXION ---
+    // Le jeton n'est enregistr\u00e9 qu'apr\u00e8s avoir \u00e9t\u00e9 v\u00e9rifi\u00e9 aupr\u00e8s de GitHub.
+    let ghConnected = false;
+
+    async function connectGitHub(silent) {
         const s = ghSettings();
-        writeStore('gh_settings', JSON.stringify({ owner: s.owner, repo: s.repo, branch: s.branch }));
-        writeStore('gh_token', s.token || null);
-        setGhStatus(s.token ? 'R\u00e9glages enregistr\u00e9s dans ce navigateur.' : 'R\u00e9glages enregistr\u00e9s (aucun jeton).', 'ok');
+        if (!s.token) {
+            if (!silent) setStatusIn('login-status', 'Renseigne ton jeton d\u2019acc\u00e8s GitHub.', 'error');
+            return;
+        }
+        const btn = document.getElementById('login-btn');
+        btn.disabled = true;
+        setStatusIn('login-status', 'V\u00e9rification du jeton\u2026');
+        try {
+            await ghCheckAccess(s);
+            writeStore('gh_settings', JSON.stringify({ owner: s.owner, repo: s.repo, branch: s.branch }));
+            writeStore('gh_token', s.token);
+            ghConnected = true;
+            setStatusIn('login-status', '');
+            updateConnectionUi();
+            if (isAdminView()) showView('admin');
+            loadLibrary();
+        } catch (err) {
+            ghConnected = false;
+            updateConnectionUi();
+            setStatusIn('login-status', '\u274c ' + escapeHtml(err.message), 'error');
+            if (isAdminView()) showView('admin');
+        } finally {
+            btn.disabled = false;
+        }
     }
 
-    function forgetGitHubToken() {
+    function logout() {
         writeStore('gh_token', null);
         document.getElementById('gh-token').value = '';
-        setGhStatus('Jeton supprim\u00e9 de ce navigateur.', 'ok');
+        ghConnected = false;
+        library = { list: [], files: [], infos: {} };
+        pendingOrder = null;
+        updateConnectionUi();
+        setStatusIn('login-status', 'D\u00e9connect\u00e9 : le jeton a \u00e9t\u00e9 supprim\u00e9 de ce navigateur.', 'ok');
+        showView('admin');
     }
 
-    function setGhStatus(html, kind) {
-        const el = document.getElementById('gh-status');
+    /** Affiche l'\u00e9tat de connexion dans le panneau et dans l'\u00e9diteur */
+    function updateConnectionUi() {
+        const s = ghSettings();
+        const repo = `${s.owner}/${s.repo} (${s.branch})`;
+        document.getElementById('admin-repo').textContent = ghConnected ? `Connect\u00e9 \u00e0 ${repo}` : '';
+        document.getElementById('admin-logout').classList.toggle('hidden', !ghConnected);
+        document.getElementById('editor-back').textContent = ghConnected ? '\u2190 Articles' : 'Se connecter';
+        document.getElementById('gh-connection').innerHTML = ghConnected
+            ? `Connect\u00e9 \u00e0 <strong>${escapeHtml(repo)}</strong> \u00b7 <button type="button" class="link-btn" onclick="logout()">Se d\u00e9connecter</button>`
+            : `Non connect\u00e9 \u00b7 <button type="button" class="link-btn" onclick="showView('admin')">Se connecter</button>`;
+    }
+
+    // --- VUES ET MESSAGES ---
+    function isAdminView() { return document.body.classList.contains('view-admin'); }
+
+    /** Bascule entre le panneau (\u00ab admin \u00bb) et l'\u00e9diteur (\u00ab editor \u00bb) */
+    function showView(view) {
+        document.body.classList.toggle('view-admin', view === 'admin');
+        writeSession('cms_view', view);
+        if (view === 'admin') {
+            document.getElementById('login-screen').classList.toggle('hidden', ghConnected);
+            document.getElementById('library').classList.toggle('hidden', !ghConnected);
+            if (ghConnected && libraryStale) loadLibrary();
+            else if (ghConnected) renderLibrary(); // brouillons \u00e0 jour
+        }
+    }
+
+    function setStatusIn(id, html, kind) {
+        const el = document.getElementById(id);
         el.className = 'gh-status' + (kind ? ' ' + kind : '');
         el.innerHTML = html;
     }
 
-    /** Appel \u00e0 l'API GitHub ; renvoie null pour un fichier inexistant (404) quand allow404 est vrai */
-    async function ghRequest(s, method, path, body, allow404) {
-        const url = `https://api.github.com/repos/${encodeURIComponent(s.owner)}/${encodeURIComponent(s.repo)}/contents/${path.split('/').map(encodeURIComponent).join('/')}`
-            + (method === 'GET' ? `?ref=${encodeURIComponent(s.branch)}` : '');
-        const res = await fetch(url, {
-            method,
-            cache: 'no-store',
-            headers: {
-                'Accept': 'application/vnd.github+json',
-                'Authorization': `Bearer ${s.token}`,
-                'X-GitHub-Api-Version': '2022-11-28',
-                ...(body ? { 'Content-Type': 'application/json' } : {})
-            },
-            body: body ? JSON.stringify(body) : undefined
-        });
+    function setGhStatus(html, kind) { setStatusIn('gh-status', html, kind); }
+    function setAdminStatus(html, kind) { setStatusIn('admin-status', html, kind); }
+    /** Message dans la vue affich\u00e9e (panneau ou \u00e9diteur) */
+    function setStatus(html, kind) { (isAdminView() ? setAdminStatus : setGhStatus)(html, kind); }
+
+    /** Appel \u00e0 l'API GitHub (apiPath commence par /) ; renvoie null pour une ressource inexistante (404) quand allow404 est vrai */
+    async function ghApi(s, method, apiPath, body, allow404) {
+        let res;
+        try {
+            res = await fetch('https://api.github.com' + apiPath, {
+                method,
+                cache: 'no-store',
+                headers: {
+                    'Accept': 'application/vnd.github+json',
+                    'Authorization': `Bearer ${s.token}`,
+                    'X-GitHub-Api-Version': '2022-11-28',
+                    ...(body ? { 'Content-Type': 'application/json' } : {})
+                },
+                body: body ? JSON.stringify(body) : undefined
+            });
+        } catch (e) {
+            throw new Error('Impossible de joindre GitHub : v\u00e9rifie ta connexion internet.');
+        }
         if (res.status === 404 && allow404) return null;
         if (!res.ok) {
             let detail = '';
@@ -1301,9 +1691,36 @@ ${buildArticleBodyHtml()}
                 409: 'Conflit : le fichier a chang\u00e9 entre-temps, r\u00e9essaie.',
                 422: 'GitHub a refus\u00e9 l\u2019envoi.'
             };
-            throw new Error(`${hints[res.status] || 'Erreur GitHub.'} (${res.status}${detail ? ' \u2014 ' + detail : ''})`);
+            const error = new Error(`${hints[res.status] || 'Erreur GitHub.'} (${res.status}${detail ? ' \u2014 ' + detail : ''})`);
+            error.status = res.status;
+            error.detail = detail;
+            throw error;
         }
-        return res.json();
+        return res.status === 204 ? null : res.json();
+    }
+
+    function ghRepoPath(s) { return `/repos/${encodeURIComponent(s.owner)}/${encodeURIComponent(s.repo)}`; }
+
+    /** Fichier ou dossier du d\u00e9p\u00f4t (API \u00ab contents \u00bb) ; renvoie null pour un fichier inexistant (404) quand allow404 est vrai */
+    function ghRequest(s, method, path, body, allow404) {
+        return ghApi(s, method, `${ghRepoPath(s)}/contents/${path.split('/').map(encodeURIComponent).join('/')}`
+            + (method === 'GET' ? `?ref=${encodeURIComponent(s.branch)}` : ''), body, allow404);
+    }
+
+    /** Vrai si GitHub a refus\u00e9 l'envoi parce que le fichier a chang\u00e9 depuis sa lecture */
+    function isShaConflict(err) {
+        return err.status === 409 || (err.status === 422 && /sha/i.test(err.detail || ''));
+    }
+
+    /** V\u00e9rifie le jeton : acc\u00e8s au d\u00e9p\u00f4t, droit d'\u00e9criture et branche.
+        Pour un jeton \u00ab fine-grained \u00bb, GitHub indique les droits du compte et non ceux du jeton :
+        un jeton en lecture seule n'est alors d\u00e9tect\u00e9 qu'au premier envoi (erreur 403). */
+    async function ghCheckAccess(s) {
+        const repo = await ghApi(s, 'GET', ghRepoPath(s));
+        if (repo && repo.permissions && !repo.permissions.push) {
+            throw new Error('Ce jeton ne donne pas le droit d\u2019\u00e9crire dans ce d\u00e9p\u00f4t.');
+        }
+        await ghApi(s, 'GET', `${ghRepoPath(s)}/branches/${encodeURIComponent(s.branch)}`);
     }
 
     function utf8ToBase64(text) {
@@ -1323,6 +1740,31 @@ ${buildArticleBodyHtml()}
         return ghRequest(s, 'PUT', path, { message, content: base64, branch: s.branch, ...(sha ? { sha } : {}) });
     }
 
+    function ghDeleteFile(s, path, message, sha) {
+        return ghRequest(s, 'DELETE', path, { message, sha, branch: s.branch });
+    }
+
+    /** Modifie articles.json : relit la version en ligne, applique mutate(list) puis l'envoie.
+        mutate renvoie le message du commit, ou false s'il n'y a rien à changer.
+        Si la liste a changé entre la lecture et l'envoi, on recommence une fois. */
+    async function updateArticlesList(mutate) {
+        const s = ghSettings();
+        for (let attempt = 0; ; attempt++) {
+            const listFile = await ghRequest(s, 'GET', GH_ARTICLES_LIST, null, true);
+            const list = listFile ? JSON.parse(base64ToUtf8(listFile.content)) : [];
+            const message = mutate(list);
+            if (!message) return false;
+            try {
+                await ghPutFile(s, GH_ARTICLES_LIST, utf8ToBase64(JSON.stringify(list, null, 2) + '\n'), message, listFile && listFile.sha);
+                libraryStale = true;
+                return true;
+            } catch (err) {
+                if (attempt === 0 && isShaConflict(err)) continue;
+                throw err;
+            }
+        }
+    }
+
     /** Adresse publique probable du site sur GitHub Pages */
     function ghPagesUrl(s, path) {
         const userSite = s.repo.toLowerCase() === `${s.owner.toLowerCase()}.github.io`;
@@ -1331,49 +1773,93 @@ ${buildArticleBodyHtml()}
 
     function requireToken(s) {
         if (s.token) return true;
-        document.getElementById('gh-settings').open = true;
-        setGhStatus('Renseigne d\u2019abord ton jeton d\u2019acc\u00e8s GitHub dans les r\u00e9glages ci-dessous.', 'error');
+        setGhStatus('Connecte-toi d\u2019abord avec ton jeton GitHub : bouton \u00ab Se connecter \u00bb en haut de l\u2019\u00e9diteur.', 'error');
         return false;
     }
 
     async function publishToGitHub() {
         const s = ghSettings();
         if (!requireToken(s)) return;
-        const file = articleFileName();
+        const file = publishFileName();
         const featured = document.getElementById('gh-featured').checked;
         const path = GH_ARTICLES_DIR + file;
         const btn = document.getElementById('gh-publish-btn');
         btn.disabled = true;
         try {
-            setGhStatus('V\u00e9rification du d\u00e9p\u00f4t\u2026');
-            const existing = await ghRequest(s, 'GET', path, null, true);
-            const action = existing ? 'remplacer l\u2019article existant' : 'publier un nouvel article';
-            if (!confirm(`Tu vas ${action} \u00ab ${file} \u00bb sur ${s.owner}/${s.repo} (${s.branch}).\nContinuer ?`)) {
-                setGhStatus('Publication annul\u00e9e.');
-                return;
+            // Version du fichier sur GitHub : celle lue \u00e0 l'ouverture. Pour un article jamais publi\u00e9,
+            // on v\u00e9rifie que le nom n'est pas d\u00e9j\u00e0 pris.
+            let sha = currentSha;
+            if (!sha) {
+                setGhStatus('V\u00e9rification du d\u00e9p\u00f4t\u2026');
+                const existing = await ghRequest(s, 'GET', path, null, true);
+                if (existing) {
+                    const replace = await askDialog({
+                        title: 'Ce nom de fichier existe d\u00e9j\u00e0',
+                        html: `<p>Un article \u00ab ${escapeHtml(file)} \u00bb existe d\u00e9j\u00e0 sur le site. Le remplacer par celui-ci ?</p>
+                            <p class="gh-hint">Pour garder les deux, annule et change le Nom court. Pour modifier l\u2019article existant, ouvre-le plut\u00f4t depuis la liste des articles.</p>`,
+                        buttons: [{ label: 'Annuler', value: false }, { label: 'Remplacer', value: true, kind: 'danger' }]
+                    });
+                    if (!replace) { setGhStatus('Publication annul\u00e9e.'); return; }
+                    sha = existing.sha;
+                }
             }
+            const go = await askDialog({
+                title: 'Publier sur le site',
+                html: `<p>Tu vas ${sha ? 'mettre \u00e0 jour' : 'publier'} \u00ab ${escapeHtml(file)} \u00bb sur ${escapeHtml(s.owner)}/${escapeHtml(s.repo)} (${escapeHtml(s.branch)}).</p>`,
+                buttons: [{ label: 'Annuler', value: false }, { label: sha ? 'Mettre \u00e0 jour' : 'Publier', value: true, kind: 'primary' }]
+            });
+            if (!go) { setGhStatus('Publication annul\u00e9e.'); return; }
 
             setGhStatus('Envoi de l\u2019article\u2026');
             const title = document.getElementById('meta-title').value.trim() || file;
-            await ghPutFile(s, path, utf8ToBase64(buildFullArticleHTML()),
-                `${existing ? 'Mise \u00e0 jour' : 'Publication'} de l\u2019article : ${title}`, existing && existing.sha);
+            const content = utf8ToBase64(buildFullArticleHTML());
+            const message = `${sha ? 'Mise \u00e0 jour' : 'Publication'} de l\u2019article : ${title}`;
+            let res;
+            try {
+                res = await ghPutFile(s, path, content, message, sha);
+            } catch (err) {
+                if (!isShaConflict(err)) throw err;
+                const choice = await askDialog({
+                    title: 'L\u2019article a chang\u00e9 sur GitHub',
+                    html: `<p>\u00ab ${escapeHtml(file)} \u00bb a \u00e9t\u00e9 modifi\u00e9 sur GitHub depuis que tu l\u2019as ouvert (Pages CMS, un autre navigateur\u2026).</p>
+                        <p>Tu peux \u00e9craser cette version avec la tienne, ou recharger la version en ligne : tes modifications non publi\u00e9es seraient alors perdues.</p>`,
+                    buttons: [{ label: 'Annuler', value: null }, { label: 'Recharger la version en ligne', value: 'reload' }, { label: '\u00c9craser quand m\u00eame', value: 'overwrite', kind: 'danger' }]
+                });
+                if (choice === 'reload') { setGhStatus(''); await openArticle(file, { online: true }); return; }
+                if (choice !== 'overwrite') { setGhStatus('Publication annul\u00e9e.'); return; }
+                const latest = await ghRequest(s, 'GET', path, null, true);
+                res = await ghPutFile(s, path, content, message, latest && latest.sha);
+            }
+
+            // L'article est en ligne sous ce nom : le nom est fig\u00e9 et le brouillon local n'a plus lieu d'\u00eatre
+            const drafts = readDrafts();
+            delete drafts[currentKey];
+            writeDrafts(drafts);
+            currentKey = file;
+            currentFile = file;
+            currentSha = res.content.sha;
+            writeSession('cms_current', file);
+            baseSnapshot = articleSnapshot();
+            saveToLocal();
+            showImportReport(null);
+            libraryStale = true;
 
             // Ajout \u00e0 la liste des \u00e9crits (en t\u00eate), et \u00ab \u00C0 la une \u00bb si demand\u00e9
             setGhStatus('Mise \u00e0 jour de la liste des \u00e9crits\u2026');
-            const listFile = await ghRequest(s, 'GET', GH_ARTICLES_LIST, null, true);
-            const list = listFile ? JSON.parse(base64ToUtf8(listFile.content)) : [];
-            let entry = list.find(a => a.file === file);
-            const added = !entry;
-            if (added) { entry = { file }; list.unshift(entry); }
-            const featuredChanged = featured && !entry.featured;
-            if (featured) list.forEach(a => { if (a === entry) a.featured = true; else delete a.featured; });
-            if (added || featuredChanged) {
-                await ghPutFile(s, GH_ARTICLES_LIST, utf8ToBase64(JSON.stringify(list, null, 2) + '\n'),
-                    added ? `Ajout de ${file} \u00e0 la liste des \u00e9crits` : `${file} \u00e0 la une`, listFile && listFile.sha);
-            }
+            let added = false;
+            await updateArticlesList(list => {
+                let entry = list.find(a => a.file === file);
+                added = !entry;
+                if (added) { entry = { file }; list.unshift(entry); }
+                const featuredChanged = featured && !entry.featured;
+                if (featured) list.forEach(a => { if (a === entry) a.featured = true; else delete a.featured; });
+                if (!added && !featuredChanged) return false;
+                return added ? `Ajout de ${file} \u00e0 la liste des \u00e9crits` : `${file} \u00e0 la une`;
+            });
+            document.getElementById('gh-featured').checked = false;
 
             const url = ghPagesUrl(s, path.replace(/\.html$/, ''));
-            setGhStatus(`\u2705 Article ${existing ? 'mis \u00e0 jour' : 'publi\u00e9'}${added ? ' et ajout\u00e9 \u00e0 la liste des \u00e9crits' : ''}. `
+            setGhStatus(`\u2705 Article ${sha ? 'mis \u00e0 jour' : 'publi\u00e9'}${added ? ' et ajout\u00e9 \u00e0 la liste des \u00e9crits' : ''}. `
                 + `Il sera en ligne dans 1 \u00e0 2 minutes : <a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`, 'ok');
         } catch (err) {
             setGhStatus('\u274c ' + escapeHtml(err.message), 'error');
@@ -1419,10 +1905,875 @@ ${buildArticleBodyHtml()}
         }
     }
 
+    // --- FENÊTRE DE DIALOGUE ---
+    let dialogResolve = null;
+
+    /** Ouvre la fenêtre de dialogue ; renvoie une promesse avec la valeur du bouton choisi (null si fermée).
+        setup(body, buttons) branche les champs du dialogue (ex. n'activer un bouton que si un champ est valide). */
+    function askDialog({ title, html, buttons, setup }) {
+        closeDialog(null);
+        document.getElementById('dialog-title').textContent = title;
+        const body = document.getElementById('dialog-body');
+        body.innerHTML = html || '';
+        const bar = document.getElementById('dialog-buttons');
+        bar.innerHTML = '';
+        const els = buttons.map(b => {
+            const el = document.createElement('button');
+            el.type = 'button';
+            el.className = 'btn ' + ({ primary: 'btn-primary', danger: 'btn-danger' }[b.kind] || 'btn-light');
+            el.textContent = b.label;
+            el.onclick = () => closeDialog(b.value);
+            bar.appendChild(el);
+            return el;
+        });
+        // Entrée dans un champ = bouton principal (jamais un bouton de suppression ou d'écrasement)
+        const main = els.find((el, i) => buttons[i].kind === 'primary');
+        body.onkeydown = (e) => {
+            if (e.key !== 'Enter' || e.target.tagName === 'TEXTAREA' || !main || main.disabled) return;
+            e.preventDefault();
+            main.click();
+        };
+        document.getElementById('dialog').classList.remove('hidden');
+        if (setup) setup(body, els);
+        const focus = body.querySelector('input, textarea') || main || els[0];
+        if (focus) focus.focus();
+        return new Promise(resolve => { dialogResolve = resolve; });
+    }
+
+    function closeDialog(value) {
+        document.getElementById('dialog').classList.add('hidden');
+        const resolve = dialogResolve;
+        dialogResolve = null;
+        if (resolve) resolve(value);
+    }
+
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && dialogResolve) closeDialog(null); });
+
+    // --- PANNEAU : LISTE DES ARTICLES ---
+    // library.list : contenu de articles.json ; library.files : fichiers .html du dossier des articles ;
+    // library.infos : titre, catégorie, date et image lus dans chaque article.
+    let library = { list: [], files: [], infos: {} };
+    let libraryStale = false;   // la liste doit être relue (après une publication)
+    let pendingOrder = null;    // nouvel ordre pas encore enregistré
+    const articleInfoCache = new Map(); // version (sha) d'un fichier → infos lues dedans
+    const librarySortable = new Sortable(document.getElementById('lib-rows'), {
+        handle: '.lib-handle',
+        draggable: '.lib-row',
+        animation: 150,
+        onEnd: () => {
+            const order = [...document.querySelectorAll('#lib-rows .lib-row')].map(row => row.dataset.file);
+            pendingOrder = order.join('|') === library.list.map(e => e.file).join('|') ? null : order;
+            document.getElementById('order-bar').classList.toggle('hidden', !pendingOrder);
+        }
+    });
+
+    async function loadLibrary() {
+        const s = ghSettings();
+        setAdminStatus('Chargement des articles…');
+        try {
+            const [listFile, dir] = await Promise.all([
+                ghRequest(s, 'GET', GH_ARTICLES_LIST, null, true),
+                ghRequest(s, 'GET', GH_ARTICLES_DIR.replace(/\/$/, ''), null, true)
+            ]);
+            const list = listFile ? JSON.parse(base64ToUtf8(listFile.content)) : [];
+            const files = (Array.isArray(dir) ? dir : []).filter(f => f.type === 'file' && /\.html$/i.test(f.name)).map(f => ({ name: f.name, sha: f.sha }));
+            const infos = {};
+            await runLimited(files, 4, async f => { infos[f.name] = await readArticleInfo(s, f); });
+            library = { list, files, infos };
+            libraryStale = false;
+            pendingOrder = null;
+            renderLibrary();
+            setAdminStatus('');
+        } catch (err) {
+            setAdminStatus('❌ ' + escapeHtml(err.message), 'error');
+        }
+    }
+
+    /** Exécute fn sur chaque élément, au plus « limit » à la fois */
+    async function runLimited(items, limit, fn) {
+        const queue = [...items];
+        await Promise.all(Array.from({ length: Math.min(limit, queue.length) }, async () => {
+            while (queue.length) await fn(queue.shift());
+        }));
+    }
+
+    async function readArticleInfo(s, f) {
+        if (articleInfoCache.has(f.sha)) return articleInfoCache.get(f.sha);
+        const file = await ghRequest(s, 'GET', GH_ARTICLES_DIR + f.name);
+        const info = parseArticleInfo(base64ToUtf8(file.content));
+        articleInfoCache.set(f.sha, info);
+        return info;
+    }
+
+    /** Infos affichées dans la liste (même lecture que liste-articles.js) ; redirect = ancienne adresse d'un article renommé */
+    function parseArticleInfo(html) {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const text = (sel) => (doc.querySelector(sel)?.textContent || '').replace(/\s+/g, ' ').trim();
+        const metaParts = text('.byline-meta').split('·').map(x => x.trim());
+        const img = doc.querySelector('img.cover-ph');
+        return {
+            redirect: !!doc.querySelector('meta[http-equiv="refresh" i]'),
+            title: text('.art-title') || doc.title.trim(),
+            cat: text('.art-cat'),
+            intro: text('.art-intro'),
+            date: metaParts[1] || '',
+            image: img ? img.getAttribute('src') || '' : ''
+        };
+    }
+
+    /** Chemin d'une image d'article (relatif au dossier des articles) vu depuis cette page */
+    function articleAssetUrl(src) {
+        return /^(?:[a-z][\w+.-]*:|\/)/i.test(src) ? src : GH_ARTICLES_DIR + src;
+    }
+
+    function normalizeSearch(s) {
+        return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    }
+
+    function formatDate(iso) {
+        const d = new Date(iso);
+        return isNaN(d) ? '' : d.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
+    }
+
+    function renderLibrary() {
+        const drafts = readDrafts();
+        const entries = new Map(library.list.map(e => [e.file, e]));
+        const fileNames = new Set(library.files.map(f => f.name));
+        const info = (file) => library.infos[file] || {};
+        const category = (file) => (entries.get(file) || {}).category || info(file).cat || '';
+
+        // Filtre par catégorie (liste reconstruite à chaque fois, en gardant le choix)
+        const catSelect = document.getElementById('lib-cat');
+        const cats = [...new Set([...library.list.map(e => category(e.file)), ...library.files.map(f => category(f.name))].filter(Boolean))].sort((a, b) => a.localeCompare(b, 'fr'));
+        const chosen = catSelect.value;
+        catSelect.innerHTML = '<option value="">Toutes les catégories</option>' + cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+        catSelect.value = cats.includes(chosen) ? chosen : '';
+
+        const q = normalizeSearch(document.getElementById('lib-search').value.trim());
+        const cat = catSelect.value;
+        const filtering = !!(q || cat);
+        const matches = (file) => (!cat || category(file) === cat) && (!q || normalizeSearch(`${info(file).title} ${file}`).includes(q));
+
+        // Articles de la liste, dans l'ordre du site (glisser-déposer désactivé pendant une recherche)
+        librarySortable.option('disabled', filtering);
+        const rows = document.getElementById('lib-rows');
+        rows.classList.toggle('no-drag', filtering);
+        const order = pendingOrder || library.list.map(e => e.file);
+        rows.innerHTML = order.filter(matches).map(file => libraryRowHtml(file, entries.get(file), drafts[file], !fileNames.has(file))).join('')
+            || `<p class="lib-empty">${filtering ? 'Aucun article ne correspond.' : 'La liste des écrits est vide.'}</p>`;
+        document.getElementById('order-bar').classList.toggle('hidden', !pendingOrder);
+
+        // Fichiers présents dans le dépôt mais absents de la page Écrits (hors anciennes adresses)
+        const offList = library.files.filter(f => !entries.has(f.name) && !info(f.name).redirect && matches(f.name));
+        document.getElementById('lib-offlist').innerHTML = offList.length
+            ? `<h2 class="lib-heading">Hors liste <span class="lib-hint">dans le dépôt, mais pas affichés sur le site</span></h2>`
+                + offList.map(f => libraryRowHtml(f.name, null, drafts[f.name], false)).join('')
+            : '';
+
+        // Brouillons d'articles qui ne sont pas encore sur GitHub (nouveaux articles, copies)
+        const newDrafts = Object.entries(drafts).filter(([, d]) => !d.file || !fileNames.has(d.file))
+            .sort((a, b) => String(b[1].savedAt).localeCompare(String(a[1].savedAt)));
+        document.getElementById('lib-drafts').innerHTML = newDrafts.length
+            ? `<h2 class="lib-heading">Brouillons non publiés <span class="lib-hint">enregistrés dans ce navigateur</span></h2>`
+                + newDrafts.map(([key, d]) => draftRowHtml(key, d)).join('')
+            : '';
+    }
+
+    function libraryRowHtml(file, entry, draft, missing) {
+        const info = library.infos[file] || {};
+        const meta = [(entry && entry.category) || info.cat, info.date].filter(Boolean).join(' · ');
+        const image = (entry && entry.image) || info.image;
+        const badges = [
+            entry && entry.featured ? '<span class="badge badge-une">À la une</span>' : '',
+            !entry ? '<span class="badge">Hors liste</span>' : '',
+            draft ? '<span class="badge badge-draft">Brouillon local</span>' : '',
+            missing ? '<span class="badge badge-error">Fichier introuvable</span>' : ''
+        ].join('');
+        const menu = missing ? [['unlist', 'Retirer de la liste']] : [
+            ['view', 'Voir en ligne ↗'],
+            entry ? ['meta', 'Infos de la liste…'] : ['list', 'Ajouter à la liste'],
+            ['duplicate', 'Dupliquer…'],
+            ['rename', 'Renommer…'],
+            entry ? ['unlist', 'Retirer de la liste'] : null,
+            ['delete', 'Supprimer…', 'danger']
+        ].filter(Boolean);
+        const star = entry && !missing
+            ? `<button type="button" class="btn-mini btn-star${entry.featured ? ' on' : ''}" data-act="feature" title="${entry.featured ? 'Retirer de la une' : 'Mettre à la une'}">${entry.featured ? '★' : '☆'}</button>`
+            : '';
+        return `<div class="lib-row" data-file="${escapeHtml(file)}">
+            <span class="lib-handle" title="Glisser pour changer l’ordre">${entry ? '⠿' : ''}</span>
+            <div class="lib-thumb">${image ? `<img src="${escapeHtml(articleAssetUrl(image))}" alt="" loading="lazy">` : ''}</div>
+            <div class="lib-main">
+                <div class="lib-title">${escapeHtml(info.title || file)}</div>
+                <div class="lib-meta">${meta ? escapeHtml(meta) + ' · ' : ''}<code>${escapeHtml(file)}</code></div>
+                ${badges ? `<div>${badges}</div>` : ''}
+            </div>
+            <div class="lib-actions">
+                ${missing ? '' : '<button type="button" class="btn-mini" data-act="edit">Modifier</button>'}
+                ${star}
+                <details class="lib-menu"><summary class="btn-mini" title="Autres actions">⋯</summary><div class="lib-menu-list">${menu.map(([act, label, cls]) => `<button type="button" data-act="${act}"${cls ? ` class="${cls}"` : ''}>${label}</button>`).join('')}</div></details>
+            </div>
+        </div>`;
+    }
+
+    function draftRowHtml(key, d) {
+        const m = (d.data && d.data.meta) || {};
+        return `<div class="lib-row" data-draft="${escapeHtml(key)}">
+            <span class="lib-handle"></span>
+            <div class="lib-thumb">${m.heroUrl ? `<img src="${escapeHtml(articleAssetUrl(m.heroUrl))}" alt="" loading="lazy">` : ''}</div>
+            <div class="lib-main">
+                <div class="lib-title">${escapeHtml(m.title || 'Sans titre')}</div>
+                <div class="lib-meta">Enregistré le ${escapeHtml(formatDate(d.savedAt))} · <code>${escapeHtml(d.file || 'nom choisi à la publication')}</code></div>
+                <div><span class="badge badge-draft">Non publié</span></div>
+            </div>
+            <div class="lib-actions">
+                <button type="button" class="btn-mini" data-act="open-draft">Ouvrir</button>
+                <button type="button" class="btn-mini" data-act="drop-draft">Supprimer</button>
+            </div>
+        </div>`;
+    }
+
+    // Un seul menu « ⋯ » ouvert à la fois
+    document.addEventListener('click', (e) => {
+        document.querySelectorAll('details.lib-menu[open]').forEach(d => { if (!d.contains(e.target)) d.removeAttribute('open'); });
+    });
+
+    // Boutons des lignes de la liste
+    let libraryBusy = false;
+    document.getElementById('library').addEventListener('click', async (e) => {
+        const btn = e.target.closest('button[data-act]');
+        const row = btn && btn.closest('.lib-row');
+        if (!row || libraryBusy) return;
+        const menu = btn.closest('details');
+        if (menu) menu.removeAttribute('open');
+        const act = btn.dataset.act;
+        const file = row.dataset.file;
+        const key = row.dataset.draft;
+        const actions = {
+            edit: () => openArticle(file),
+            view: () => window.open(ghPagesUrl(ghSettings(), GH_ARTICLES_DIR + file.replace(/\.html$/i, '')), '_blank', 'noopener'),
+            feature: () => toggleFeatured(file),
+            meta: () => editListInfo(file),
+            list: () => addToList(file),
+            duplicate: () => duplicateArticle(file),
+            rename: () => renameArticle(file),
+            unlist: () => removeFromList(file),
+            delete: () => deleteArticle(file),
+            'open-draft': () => openDraft(key),
+            'drop-draft': () => dropDraft(key)
+        };
+        if (!actions[act]) return;
+        libraryBusy = true;
+        document.body.classList.add('is-busy');
+        try {
+            await actions[act]();
+        } catch (err) {
+            setAdminStatus('❌ ' + escapeHtml(err.message), 'error');
+        } finally {
+            libraryBusy = false;
+            document.body.classList.remove('is-busy');
+        }
+    });
+
+    /** Relit la liste depuis GitHub, puis affiche un message */
+    async function reloadLibrary(message) {
+        await loadLibrary();
+        setAdminStatus(message + ' Le site est mis à jour en 1 à 2 minutes.', 'ok');
+    }
+
+    function articleTitle(file) { return (library.infos[file] || {}).title || file; }
+
+    // --- PANNEAU : ACTIONS SUR LA LISTE DES ÉCRITS ---
+    async function saveOrder() {
+        if (!pendingOrder || libraryBusy) return;
+        const order = pendingOrder;
+        setAdminStatus('Enregistrement de l’ordre…');
+        try {
+            await updateArticlesList(list => {
+                const pos = new Map(order.map((f, i) => [f, i]));
+                const before = list.map(e => e.file).join('|');
+                list.sort((a, b) => (pos.has(a.file) ? pos.get(a.file) : 1e9) - (pos.has(b.file) ? pos.get(b.file) : 1e9));
+                return list.map(e => e.file).join('|') !== before && 'Ordre des écrits modifié';
+            });
+            await reloadLibrary('✅ Ordre enregistré.');
+        } catch (err) {
+            setAdminStatus('❌ ' + escapeHtml(err.message), 'error');
+        }
+    }
+
+    function cancelOrder() {
+        pendingOrder = null;
+        renderLibrary();
+    }
+
+    async function toggleFeatured(file) {
+        const on = !((library.list.find(e => e.file === file) || {}).featured);
+        setAdminStatus('Mise à jour de la une…');
+        await updateArticlesList(list => {
+            const entry = list.find(a => a.file === file);
+            if (!entry) return false;
+            list.forEach(a => delete a.featured);
+            if (on) entry.featured = true;
+            return on ? `${file} à la une` : `${file} retiré de la une`;
+        });
+        await reloadLibrary(on ? `✅ « ${articleTitle(file)} » est à la une.` : `✅ « ${articleTitle(file)} » n’est plus à la une.`);
+    }
+
+    async function addToList(file) {
+        setAdminStatus('Ajout à la liste des écrits…');
+        await updateArticlesList(list => {
+            if (list.some(a => a.file === file)) return false;
+            list.unshift({ file });
+            return `Ajout de ${file} à la liste des écrits`;
+        });
+        await reloadLibrary(`✅ « ${articleTitle(file)} » ajouté en tête de la liste des écrits.`);
+    }
+
+    async function removeFromList(file) {
+        const ok = await askDialog({
+            title: 'Retirer de la liste',
+            html: `<p>« ${escapeHtml(articleTitle(file))} » n’apparaîtra plus sur la page Écrits ni sur l’accueil.</p>
+                <p class="gh-hint">Le fichier reste dans le dépôt : tu pourras le remettre dans la liste depuis la partie « Hors liste ».</p>`,
+            buttons: [{ label: 'Annuler', value: false }, { label: 'Retirer', value: true, kind: 'primary' }]
+        });
+        if (!ok) return;
+        setAdminStatus('Retrait de la liste…');
+        await updateArticlesList(list => {
+            const i = list.findIndex(a => a.file === file);
+            if (i < 0) return false;
+            list.splice(i, 1);
+            return `Retrait de ${file} de la liste des écrits`;
+        });
+        await reloadLibrary(`✅ « ${articleTitle(file)} » retiré de la liste.`);
+    }
+
+    /** Champs facultatifs de articles.json, qui remplacent ce qui est lu dans l'article sur les pages Écrits et Accueil */
+    async function editListInfo(file) {
+        const entry = library.list.find(e => e.file === file) || {};
+        const info = library.infos[file] || {};
+        const ok = await askDialog({
+            title: 'Infos de la liste des écrits',
+            html: `<p class="gh-hint">Facultatif : remplace ce qui est lu dans l’article, seulement sur les pages Écrits et Accueil. Laisse vide pour garder la valeur de l’article (affichée en gris).</p>
+                <label for="dlg-excerpt">Résumé</label>
+                <textarea id="dlg-excerpt" placeholder="${escapeHtml(info.intro)}">${escapeHtml(entry.excerpt)}</textarea>
+                <label for="dlg-category">Catégorie</label>
+                <input id="dlg-category" placeholder="${escapeHtml(info.cat)}" value="${escapeHtml(entry.category)}">
+                <label for="dlg-image">Image (chemin comme dans l’article, ex. ../images/photo.jpg)</label>
+                <input id="dlg-image" placeholder="${escapeHtml(info.image)}" value="${escapeHtml(entry.image)}">`,
+            buttons: [{ label: 'Annuler', value: false }, { label: 'Enregistrer', value: true, kind: 'primary' }]
+        });
+        if (!ok) return;
+        const values = {
+            excerpt: document.getElementById('dlg-excerpt').value.trim(),
+            category: document.getElementById('dlg-category').value.trim(),
+            image: document.getElementById('dlg-image').value.trim()
+        };
+        setAdminStatus('Enregistrement…');
+        await updateArticlesList(list => {
+            const e = list.find(a => a.file === file);
+            if (!e) return false;
+            const before = JSON.stringify(e);
+            Object.entries(values).forEach(([k, v]) => { if (v) e[k] = v; else delete e[k]; });
+            return JSON.stringify(e) !== before && `Infos de ${file} modifiées dans la liste des écrits`;
+        });
+        await reloadLibrary('✅ Infos enregistrées.');
+    }
+
+    // --- PANNEAU : ACTIONS SUR LES FICHIERS ---
+    /** Demande un nom de fichier libre ; renvoie « nom.html » ou null si annulé */
+    async function askFileName({ title, intro, initial, confirmLabel }) {
+        const drafts = readDrafts();
+        const taken = new Set([...library.files.map(f => f.name), ...Object.keys(drafts), ...Object.values(drafts).map(d => d.file || '')]
+            .map(n => n.toLowerCase()));
+        let name = null;
+        const ok = await askDialog({
+            title,
+            html: `${intro || ''}<label for="dlg-name">Nouveau nom</label>
+                <input id="dlg-name" value="${escapeHtml(initial)}" autocomplete="off" spellcheck="false">
+                <p class="gh-hint" id="dlg-name-preview"></p>`,
+            buttons: [{ label: 'Annuler', value: false }, { label: confirmLabel, value: true, kind: 'primary' }],
+            setup: (body, buttons) => {
+                const input = body.querySelector('#dlg-name');
+                const preview = body.querySelector('#dlg-name-preview');
+                const check = () => {
+                    const base = fileBaseFromText(input.value);
+                    name = base ? base + '.html' : null;
+                    const error = !name ? 'Choisis un nom.' : taken.has(name.toLowerCase()) ? `« ${name} » est déjà utilisé.` : '';
+                    preview.innerHTML = error ? `<span class="dialog-error">${escapeHtml(error)}</span>` : `Nom du fichier : <code>${escapeHtml(name)}</code>`;
+                    buttons[1].disabled = !!error;
+                };
+                input.addEventListener('input', check);
+                check();
+                setTimeout(() => input.select());
+            }
+        });
+        return ok ? name : null;
+    }
+
+    async function duplicateArticle(file) {
+        const name = await askFileName({
+            title: 'Dupliquer l’article',
+            intro: `<p>Une copie de « ${escapeHtml(articleTitle(file))} » va s’ouvrir dans l’éditeur, sous un nouveau nom. Elle ne sera en ligne qu’après publication.</p>`,
+            initial: file.replace(/\.html$/i, '') + '-copie',
+            confirmLabel: 'Dupliquer'
+        });
+        if (!name) return;
+        setAdminStatus('Lecture de l’article…');
+        const remote = await ghRequest(ghSettings(), 'GET', GH_ARTICLES_DIR + file);
+        const doc = new DOMParser().parseFromString(base64ToUtf8(remote.content), 'text/html');
+        const previous = captureEditor();
+        currentKey = null; // rien n'est enregistré pendant la lecture
+        try {
+            const read = await readPublishedArticle(doc);
+            if (!read) { loadIntoEditor({ ...previous, show: false }); setAdminStatus(''); return; }
+            loadIntoEditor({ key: name, file: name, sha: null, data: read.data, base: null });
+            showImportReport(read.report);
+            setAdminStatus('');
+            setGhStatus(`Copie de « ${escapeHtml(file)} » : elle sera en ligne sous le nom <code>${escapeHtml(name)}</code> après publication.`, 'ok');
+        } catch (err) {
+            if (!currentKey) loadIntoEditor({ ...previous, show: false });
+            throw err;
+        }
+    }
+
+    /** Page laissée à l'ancienne adresse d'un article renommé (même modèle que 1.html) */
+    function buildRedirectHtml(newFile, title) {
+        const target = newFile.replace(/\.html$/i, '');
+        return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Ancienne adresse de l'article : redirige vers son nouveau nom, pour que les liens déjà partagés fonctionnent -->
+  <title>${escapeHtml(title)} — Alexandre Ligneul</title>
+  <meta name="robots" content="noindex" />
+  <link rel="canonical" href="${escapeHtml(target)}" />
+  <meta http-equiv="refresh" content="0; url=${escapeHtml(target)}" />
+  <script>location.replace(${JSON.stringify(target)} + location.hash);<\/script>
+</head>
+<body>
+  <p>Cet article a changé d'adresse : <a href="${escapeHtml(target)}">${escapeHtml(title)}</a>.</p>
+</body>
+</html>
+`;
+    }
+
+    async function renameArticle(file) {
+        const title = articleTitle(file);
+        const name = await askFileName({
+            title: 'Renommer l’article',
+            intro: `<p>« ${escapeHtml(title)} » prendra une nouvelle adresse. L’ancienne adresse redirigera vers la nouvelle, pour que les liens déjà partagés continuent de fonctionner.</p>`,
+            initial: file.replace(/\.html$/i, ''),
+            confirmLabel: 'Renommer'
+        });
+        if (!name) return;
+        const s = ghSettings();
+        setAdminStatus('Renommage : copie de l’article…');
+        const old = await ghRequest(s, 'GET', GH_ARTICLES_DIR + file);
+        if (await ghRequest(s, 'GET', GH_ARTICLES_DIR + name, null, true)) throw new Error(`Un fichier « ${name} » existe déjà.`);
+        const created = await ghPutFile(s, GH_ARTICLES_DIR + name, old.content.replace(/\s/g, ''), `Renommage de l’article ${file} en ${name}`);
+        setAdminStatus('Renommage : redirection de l’ancienne adresse…');
+        await ghPutFile(s, GH_ARTICLES_DIR + file, utf8ToBase64(buildRedirectHtml(name, title)), `Redirection de ${file} vers ${name}`, old.sha);
+        setAdminStatus('Renommage : mise à jour de la liste des écrits…');
+        await updateArticlesList(list => {
+            const e = list.find(a => a.file === file);
+            if (!e) return false;
+            e.file = name;
+            return `${file} renommé en ${name} dans la liste des écrits`;
+        });
+        // Le brouillon local et l'article ouvert dans l'éditeur suivent le nouveau nom
+        const newSha = created.content.sha;
+        const drafts = readDrafts();
+        if (drafts[file]) {
+            drafts[name] = { ...drafts[file], file: name, baseSha: drafts[file].baseSha === old.sha ? newSha : drafts[file].baseSha };
+            delete drafts[file];
+            writeDrafts(drafts);
+        }
+        if (currentKey === file) {
+            currentKey = name;
+            currentFile = name;
+            if (currentSha === old.sha) currentSha = newSha;
+            writeSession('cms_current', name);
+            updateEditorBar();
+        }
+        await reloadLibrary(`✅ « ${file} » renommé en « ${name} ». L’ancienne adresse redirige vers la nouvelle.`);
+    }
+
+    async function deleteArticle(file) {
+        const listed = library.list.some(e => e.file === file);
+        const ok = await askDialog({
+            title: 'Supprimer l’article',
+            html: `<p>Le fichier <code>${escapeHtml(file)}</code> sera supprimé du dépôt${listed ? ' et retiré de la liste des écrits' : ''}. Les liens vers cet article ne fonctionneront plus.</p>
+                <p class="gh-hint">L’historique Git du dépôt en garde une copie. Pour seulement masquer l’article, utilise plutôt « Retirer de la liste ».</p>
+                <label for="dlg-confirm">Retape le nom du fichier pour confirmer</label>
+                <input id="dlg-confirm" autocomplete="off" spellcheck="false" placeholder="${escapeHtml(file)}">`,
+            buttons: [{ label: 'Annuler', value: false }, { label: 'Supprimer définitivement', value: true, kind: 'danger' }],
+            setup: (body, buttons) => {
+                const input = body.querySelector('#dlg-confirm');
+                const check = () => { buttons[1].disabled = input.value.trim() !== file; };
+                input.addEventListener('input', check);
+                check();
+            }
+        });
+        if (!ok) return;
+        const s = ghSettings();
+        // D'abord la liste : le site ne pointe jamais vers un fichier absent
+        setAdminStatus('Suppression : retrait de la liste des écrits…');
+        await updateArticlesList(list => {
+            const i = list.findIndex(a => a.file === file);
+            if (i < 0) return false;
+            list.splice(i, 1);
+            return `Retrait de ${file} de la liste des écrits`;
+        });
+        setAdminStatus('Suppression du fichier…');
+        const current = await ghRequest(s, 'GET', GH_ARTICLES_DIR + file, null, true);
+        if (current) await ghDeleteFile(s, GH_ARTICLES_DIR + file, `Suppression de l’article : ${articleTitle(file)}`, current.sha);
+        const drafts = readDrafts();
+        delete drafts[file];
+        writeDrafts(drafts);
+        // L'article ouvert dans l'éditeur n'existe plus : l'éditeur repart d'un article vierge
+        if (currentKey === file) loadIntoEditor({ key: 'nouveau-' + Date.now(), data: BLANK_DATA, show: false });
+        await reloadLibrary(`✅ « ${file} » supprimé.`);
+    }
+
+    async function dropDraft(key) {
+        const d = readDrafts()[key];
+        if (!d) return;
+        const ok = await askDialog({
+            title: 'Supprimer le brouillon',
+            html: `<p>Le brouillon « ${escapeHtml((d.data && d.data.meta && d.data.meta.title) || 'Sans titre')} » sera effacé de ce navigateur. Rien n’est modifié sur le site.</p>`,
+            buttons: [{ label: 'Annuler', value: false }, { label: 'Supprimer', value: true, kind: 'danger' }]
+        });
+        if (!ok) return;
+        const drafts = readDrafts();
+        delete drafts[key];
+        writeDrafts(drafts);
+        if (currentKey === key) {
+            newArticle();
+            showView('admin');
+        }
+        renderLibrary();
+    }
+
+    // --- OUVRIR UN ARTICLE PUBLIÉ ---
+    /** Texte visible de l'article, sans espaces : sert à repérer un article retouché hors de l'éditeur */
+    function articleText(doc) {
+        const article = doc.querySelector('article');
+        return (article ? article.textContent : '').replace(/\s+/g, '');
+    }
+
+    /** Données de l'éditeur pour un article publié, appliquées dans l'éditeur (currentKey doit être null).
+        Si l'article contient sa source, on la reprend ; si son texte ne correspond plus à cette source
+        (retouche faite directement sur GitHub), on demande quoi faire. Renvoie { data, report } ou null si annulé. */
+    async function readPublishedArticle(doc) {
+        const source = doc.getElementById('article-source');
+        let data = null;
+        if (source) { try { data = JSON.parse(source.textContent); } catch (e) { /* source illisible : on reconstruit */ } }
+        if (!data) {
+            const imported = importArticleHtml(doc);
+            applyData(imported.data);
+            return imported;
+        }
+        applyData(data);
+        const regenerated = new DOMParser().parseFromString(buildFullArticleHTML(), 'text/html');
+        if (articleText(regenerated) === articleText(doc)) return { data, report: null };
+        const choice = await askDialog({
+            title: 'Article retouché hors de l’éditeur',
+            html: `<p>Le texte de l’article publié ne correspond plus à la source enregistrée par l’éditeur : il a sans doute été modifié directement sur GitHub.</p>
+                <p>Tu peux le reconstruire depuis la page publiée (les retouches sont gardées), ou repartir de la source de l’éditeur (les retouches seront perdues à la prochaine publication).</p>`,
+            buttons: [{ label: 'Annuler', value: null }, { label: 'Utiliser la source', value: 'source' }, { label: 'Reconstruire depuis la page', value: 'html', kind: 'primary' }]
+        });
+        if (!choice) return null;
+        if (choice === 'source') return { data, report: null };
+        const imported = importArticleHtml(doc);
+        applyData(imported.data);
+        return imported;
+    }
+
+    /** Ouvre un article publié dans l'éditeur ; options.online : ignorer le brouillon local */
+    async function openArticle(file, options = {}) {
+        const s = ghSettings();
+        setStatus(`Ouverture de « ${escapeHtml(file)} »…`);
+        let previous = null;
+        try {
+            const remote = await ghRequest(s, 'GET', GH_ARTICLES_DIR + file);
+            const doc = new DOMParser().parseFromString(base64ToUtf8(remote.content), 'text/html');
+            const draft = !options.online && readDrafts()[file];
+            let useDraft = false;
+            if (draft) {
+                const changed = draft.baseSha && draft.baseSha !== remote.sha;
+                const choice = await askDialog({
+                    title: 'Modifications non publiées',
+                    html: `<p>Tu as un brouillon non publié pour cet article, enregistré le ${escapeHtml(formatDate(draft.savedAt))}.</p>
+                        ${changed ? '<p class="dialog-warn">La version en ligne a changé depuis ce brouillon : si tu le reprends, la publication te demandera quelle version garder.</p>' : ''}`,
+                    buttons: [{ label: 'Annuler', value: null }, { label: 'Repartir de la version en ligne', value: 'online' }, { label: 'Reprendre mon brouillon', value: 'draft', kind: 'primary' }]
+                });
+                if (!choice) { setStatus(''); return; }
+                useDraft = choice === 'draft';
+            }
+            previous = captureEditor();
+            currentKey = null; // rien n'est enregistré pendant la lecture
+            const read = await readPublishedArticle(doc);
+            if (!read) { loadIntoEditor({ ...previous, show: false }); setStatus(''); return; }
+            const base = articleSnapshot(); // la version en ligne sert de référence
+            setAdminStatus('');
+            loadIntoEditor(useDraft
+                ? { key: file, file, sha: draft.baseSha || remote.sha, data: draft.data, base }
+                : { key: file, file, sha: remote.sha, data: read.data, base });
+            showImportReport(useDraft ? null : read.report);
+            setGhStatus('');
+        } catch (err) {
+            if (previous && !currentKey) loadIntoEditor({ ...previous, show: false });
+            setStatus('❌ ' + escapeHtml(err.message), 'error');
+        }
+    }
+
+    /** Bilan affiché en haut de l'éditeur après la reconstruction d'un article depuis son HTML */
+    function showImportReport(report) {
+        const el = document.getElementById('import-report');
+        el.classList.toggle('hidden', !report);
+        if (!report) { el.innerHTML = ''; return; }
+        el.innerHTML = `<button type="button" class="btn-remove" title="Fermer" onclick="showImportReport(null)">×</button>
+            <strong>Article reconstruit depuis sa page publiée</strong>
+            <p>${report.blocks} bloc${report.blocks > 1 ? 's' : ''} reconnu${report.blocks > 1 ? 's' : ''}${report.raw ? `, ${report.raw} en HTML brut (recopié${report.raw > 1 ? 's' : ''} tel${report.raw > 1 ? 's' : ''} quel${report.raw > 1 ? 's' : ''})` : ''}.</p>
+            ${report.warnings.length ? `<ul>${report.warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul>` : ''}
+            <p class="gh-hint">Vérifie l’aperçu avant de publier. À la prochaine publication, la source de l’article sera enregistrée dans la page et il se rouvrira à l’identique.</p>`;
+    }
+
+    // --- IMPORT D'UN ARTICLE PUBLIÉ ---
+    // Pour un article publié sans sa source (avant le panneau, ou écrit à la main), les données de
+    // l'éditeur sont reconstruites à partir de son HTML. Ce que l'éditeur ne sait pas représenter
+    // devient un bloc « HTML brut », recopié tel quel à la publication : rien n'est perdu.
+    const RICH_TAGS = ['B', 'STRONG', 'I', 'EM', 'U', 'A', 'BR'];
+
+    /** HTML d'un nœud : élément, commentaire ou texte */
+    function nodeHtml(n) {
+        if (n.nodeType === Node.ELEMENT_NODE) return n.outerHTML;
+        if (n.nodeType === Node.COMMENT_NODE) return `<!--${n.data}-->`;
+        return n.textContent.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    /** Vrai si l'élément ne contient que du texte enrichi que l'éditeur sait garder (gras, italique, souligné, liens) */
+    function isRichOnly(el) { return [...el.querySelectorAll('*')].every(c => RICH_TAGS.includes(c.tagName)); }
+
+    function hasComment(el) { return [...el.childNodes].some(n => n.nodeType === Node.COMMENT_NODE); }
+
+    /** Échelle (en %) d'un bloc image d'après son style (« width:60% » ou « width:min(120%, …) ») */
+    function scaleFromStyle(el) {
+        const m = /width:\s*(?:min\(\s*)?(\d+)%/.exec(el.getAttribute('style') || '');
+        return m ? parseInt(m[1], 10) : 100;
+    }
+
+    /** Citation simple : « <em>texte</em> » puis <cite>— source</cite>, sans autre élément */
+    function isSimpleQuote(el) {
+        const [em, cite] = el.children;
+        if (el.children.length !== 2 || em.tagName !== 'EM' || cite.tagName !== 'CITE' || em.children.length || hasComment(el)) return false;
+        const loose = [...el.childNodes].filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('');
+        return /^[\s«»]*$/.test(loose);
+    }
+
+    /** En-tête standard des articles, régénéré par l'éditeur (le reste va dans « Avancé ») */
+    function isStandardHeadNode(n) {
+        if (n.nodeType === Node.TEXT_NODE) return !n.textContent.trim();
+        if (n.nodeType !== Node.ELEMENT_NODE) return false;
+        const tag = n.tagName;
+        if (tag === 'TITLE') return true;
+        if (tag === 'META') return n.hasAttribute('charset') || n.getAttribute('name') === 'viewport';
+        if (tag === 'LINK') return /(?:favicon\.ico|fonts\.css)$/.test(n.getAttribute('href') || '') || n.getAttribute('href') === ARTICLE_STYLESHEET;
+        return false;
+    }
+
+    /** Remplit un bloc vidéo à partir de l'adresse du lecteur intégré (YouTube, Dailymotion, Vimeo ou autre) */
+    function videoBlockFromEmbed(src, block) {
+        let u;
+        try { u = new URL(src); } catch (e) { block.platform = 'iframe'; block.content = src; return; }
+        const host = u.hostname.replace(/^www\./, '');
+        const p = u.searchParams;
+        block.controls = p.get('controls') !== '0';
+        block.muted = p.get('mute') === '1' || p.get('muted') === '1';
+        block.loop = p.get('loop') === '1';
+        block.start = p.get('start') || (/t=(\d+)s/.exec(u.hash) || [])[1] || '';
+        const platform = /(^|\.)youtube(-nocookie)?\.com$/.test(host) ? 'youtube' : normalizeVideoPlatform(src, 'auto');
+        const id = getVideoId(src, platform);
+        if (platform === 'youtube' && id) Object.assign(block, { platform, privacy: host.includes('nocookie'), content: `https://www.youtube.com/watch?v=${id}` });
+        else if (platform === 'dailymotion' && id) Object.assign(block, { platform, content: `https://www.dailymotion.com/video/${id}` });
+        else if (platform === 'vimeo' && id) Object.assign(block, { platform, content: `https://vimeo.com/${id}` });
+        else Object.assign(block, { platform: 'iframe', content: src });
+    }
+
+    /** Reconstruit les données de l'éditeur à partir du HTML d'un article ; renvoie { data, report } */
+    function importArticleHtml(doc) {
+        const warnings = [];
+        const clean = (s) => String(s || '').replace(/\s+/g, ' ').trim();
+        const text = (sel) => clean(doc.querySelector(sel)?.textContent);
+        let count = 0;
+        const newId = () => `block-${Date.now()}-${count++}`;
+
+        // En-tête : fil d'Ariane, catégorie, titre, chapeau, auteurs, « Lieu · Date · Durée », tags
+        const crumb = doc.querySelector('.breadcrumb');
+        const crumbLast = crumb && crumb.lastChild;
+        const short = crumbLast && crumbLast.nodeType === Node.TEXT_NODE ? clean(crumbLast.textContent) : clean((crumb?.textContent || '').split('/').pop());
+        const metaParts = text('.byline-meta').split('·').map(clean);
+        const metaOk = metaParts.length === 3;
+        if (!metaOk) warnings.push('La ligne « Lieu · Date · Durée » n’a pas la forme habituelle : vérifie ces trois champs.');
+        const article = doc.querySelector('article') || doc.body;
+        const children = [...article.children];
+        const hero = children.find(el => el.matches('img.cover-ph'));
+        const heroCap = hero && hero.nextElementSibling && hero.nextElementSibling.matches('p.cover-cap') ? hero.nextElementSibling : null;
+        const meta = {
+            short,
+            cat: text('.art-cat'),
+            tags: [...doc.querySelectorAll('.tags .tag')].map(t => clean(t.textContent)).join(', '),
+            title: text('.art-title'),
+            intro: text('.art-intro'),
+            loc: metaParts[0] || '',
+            date: metaOk ? metaParts[1] : metaParts.slice(1).join(' · '),
+            readTime: metaOk ? metaParts[2] : '',
+            heroUrl: hero ? hero.getAttribute('src') || '' : '',
+            heroAlt: hero ? hero.getAttribute('alt') || '' : '',
+            heroCap: heroCap ? clean(heroCap.textContent) : ''
+        };
+        const articleAuthors = [...doc.querySelectorAll('.byline-name')].map(el => ({ name: clean(el.textContent) }));
+
+        // Corps : chaque élément devient un bloc ; les paragraphes qui se suivent forment un seul bloc
+        const blocks = [];
+        let raw = 0;
+        let paragraphs = [];
+        const flushParagraphs = () => {
+            if (paragraphs.length) blocks.push({ id: newId(), type: 'p', content: '', extra: '', third: '', html: paragraphs.join('<br><br>') });
+            paragraphs = [];
+        };
+        const pushRaw = (html) => {
+            flushParagraphs();
+            blocks.push({ id: newId(), type: 'raw', content: html.trim(), extra: '', third: '' });
+            raw++;
+        };
+
+        // Éléments placés entre l'en-tête et le corps, autres que l'image de couverture
+        const stray = children.filter(el => el !== hero && el !== heroCap && !el.matches('header, .body, footer'));
+        if (stray.length) {
+            stray.forEach(el => pushRaw(el.outerHTML));
+            warnings.push('Des éléments placés hors du corps de l’article ont été mis au début, en HTML brut.');
+        }
+
+        const body = article.querySelector('.body');
+        const nodes = body ? [...body.childNodes].filter(n => !(n.nodeType === Node.TEXT_NODE && !n.textContent.trim())) : [];
+        const isCaption = (n) => n && n.nodeType === Node.ELEMENT_NODE && n.matches('p.cover-cap');
+        for (let i = 0; i < nodes.length; i++) {
+            const el = nodes[i];
+            // Légende placée juste après une image, une vidéo, un PDF ou un audio
+            const caption = () => {
+                const next = nodes[i + 1];
+                if (!isCaption(next)) return '';
+                i++;
+                if (next.children.length) warnings.push(`La mise en forme d’une légende a été retirée : « ${clean(next.textContent)} ».`);
+                return clean(next.textContent);
+            };
+            if (el.nodeType !== Node.ELEMENT_NODE) { pushRaw(nodeHtml(el)); continue; }
+            const tag = el.tagName;
+            if (tag === 'P' && !el.attributes.length && isRichOnly(el)) {
+                const html = el.innerHTML.trim();
+                if (html) paragraphs.push(html);
+                continue;
+            }
+            flushParagraphs();
+            const block = { id: newId(), type: '', content: '', extra: '', third: '' };
+            if ((tag === 'H2' || tag === 'H3') && !el.attributes.length && !el.children.length) {
+                Object.assign(block, { type: tag.toLowerCase(), content: clean(el.textContent) });
+            } else if (tag === 'BLOCKQUOTE' && isSimpleQuote(el)) {
+                Object.assign(block, { type: 'quote', content: el.children[0].textContent.trim(), extra: clean(el.children[1].textContent).replace(/^—\s*/, '') });
+            } else if (tag === 'IMG' && el.matches('.cover-ph')) {
+                Object.assign(block, { type: 'img', content: el.getAttribute('src') || '', third: el.getAttribute('alt') || '', scale: scaleFromStyle(el) });
+                block.extra = caption();
+            } else if (el.matches('div.img-grid') && el.children.length === 2 && [...el.children].every(c => c.tagName === 'IMG')) {
+                const [a, b] = el.children;
+                Object.assign(block, { type: 'slider', content: a.getAttribute('src') || '', extra: b.getAttribute('src') || '', alt1: a.getAttribute('alt') || '', alt2: b.getAttribute('alt') || '', scale: scaleFromStyle(el) });
+                block.third = caption();
+            } else if (el.matches('a.rel-link') && [...el.children].every((c, k) => k === 0 && c.tagName === 'SPAN' && !c.children.length) && !hasComment(el)) {
+                const span = el.querySelector(':scope > span');
+                const copy = el.cloneNode(true);
+                const copySpan = copy.querySelector(':scope > span');
+                if (copySpan) copySpan.remove();
+                Object.assign(block, { type: 'link', linkLabel: span ? clean(span.textContent) : '', content: clean(copy.textContent), extra: el.getAttribute('href') || '', newTab: el.getAttribute('target') === '_blank' });
+            } else if (el.matches('aside.encadre') && [...el.children].every((c, k) => (c.tagName === 'P' && isRichOnly(c)) || (k === 0 && c.matches('h3.encadre-title')))) {
+                const bg = /background:\s*(#[0-9a-f]{6})/i.exec(el.getAttribute('style') || '');
+                const title = el.querySelector(':scope > h3.encadre-title');
+                Object.assign(block, { type: 'box', boxTitle: title ? clean(title.textContent) : '', boxBg: bg ? bg[1].toLowerCase() : BOX_DEFAULT_BG, boxHtml: [...el.querySelectorAll(':scope > p')].map(p => p.innerHTML.trim()).join('<br><br>') });
+            } else if (el.matches('div.video-embed') && el.querySelector('.video-consent[data-src], iframe[src]')) {
+                const btn = el.querySelector('.video-consent[data-src]');
+                const frame = el.querySelector('iframe[src]');
+                Object.assign(block, {
+                    type: 'video', autoplay: false, privacy: true,
+                    allowFullscreen: btn ? /allowfullscreen/i.test(btn.getAttribute('onclick') || '') : frame.hasAttribute('allowfullscreen'),
+                    third: btn ? btn.dataset.title || '' : frame.getAttribute('title') || ''
+                });
+                videoBlockFromEmbed(btn ? btn.dataset.src : frame.getAttribute('src'), block);
+                block.extra = caption();
+            } else if (el.matches('div.prod-pdf-wrap') && el.querySelector('a.prod-pdf-btn')) {
+                const a = el.querySelector('a.prod-pdf-btn');
+                Object.assign(block, { type: 'pdf', pdfMode: 'card', content: a.getAttribute('href') || '', extra: clean(el.querySelector('.prod-pdf-name')?.textContent), third: clean(el.querySelector('.prod-pdf-size')?.textContent), pdfTitle: '', pdfButton: clean(a.textContent) || 'Ouvrir ↗' });
+                block.pdfCaption = caption();
+            } else if (el.matches('iframe.pdf-embed-frame')) {
+                Object.assign(block, { type: 'pdf', pdfMode: 'embed', content: el.getAttribute('src') || '', pdfTitle: el.getAttribute('title') || '', pdfButton: 'Ouvrir ↗' });
+                block.pdfCaption = caption();
+            } else if (el.matches('div.prod-audio-wrap') && el.querySelector('audio source')) {
+                const audio = el.querySelector('audio');
+                const source = audio.querySelector('source');
+                const src = source.getAttribute('src') || '';
+                const mime = source.getAttribute('type') || '';
+                const title = el.getAttribute('aria-label') || '';
+                Object.assign(block, {
+                    type: 'audio', content: src, audioSourceType: 'auto',
+                    audioMime: !mime || mime === guessAudioMime(src) ? 'auto' : mime,
+                    audioTitle: title === filenameFromUrl(src) ? '' : title,
+                    audioPreload: audio.getAttribute('preload') || 'metadata',
+                    controls: audio.hasAttribute('controls'), autoplay: audio.hasAttribute('autoplay'),
+                    muted: audio.hasAttribute('muted'), loop: audio.hasAttribute('loop')
+                });
+                block.audioCaption = caption();
+            } else {
+                pushRaw(el.outerHTML);
+                continue;
+            }
+            blocks.push(block);
+        }
+        flushParagraphs();
+
+        // Code propre à l'article : styles ajoutés dans <head>, éléments et scripts après le pied de page
+        const extraHead = [...doc.head.childNodes].filter(n => !isStandardHeadNode(n)).map(n => nodeHtml(n).trim()).filter(Boolean).join('\n  ');
+        const pageFooter = [...doc.body.children].filter(c => c.tagName === 'FOOTER').pop();
+        const after = [];
+        for (let n = pageFooter ? pageFooter.nextSibling : null; n; n = n.nextSibling) {
+            if (n.nodeType === Node.ELEMENT_NODE && n.id === 'article-source') continue;
+            if (n.nodeType === Node.COMMENT_NODE && /Source de l'article/.test(n.data)) continue;
+            after.push(nodeHtml(n));
+        }
+        const extraBody = after.join('').trim();
+        if (extraHead) warnings.push('Des styles propres à cet article ont été repris dans la section « Avancé ».');
+        if (extraBody) warnings.push('Des éléments ou scripts propres à cet article (après le pied de page) ont été repris dans la section « Avancé ».');
+
+        return {
+            data: { meta, authors: articleAuthors.length ? articleAuthors : [{ name: '' }], articleBlocks: blocks, extraHead, extraBody },
+            report: { blocks: blocks.length - raw, raw, warnings }
+        };
+    }
+
+    // --- DÉMARRAGE ---
+    // Avertit avant de quitter la page avec des modifications non publiées (le brouillon reste enregistré)
+    window.addEventListener('beforeunload', (e) => {
+        if (currentKey && isDirty()) { e.preventDefault(); e.returnValue = ''; }
+    });
+
     window.onload = () => {
         loadGitHubSettings();
-        const saved = localStorage.getItem('cms_draft');
-        if (saved) applyData(JSON.parse(saved)); else { renderAuthorsEditor(); render(); }
+        migrateOldDraft();
+        // Après un rechargement de la page, on reprend l'article en cours s'il a des modifications non publiées
+        const key = readSession('cms_current');
+        const draft = key && readDrafts()[key];
+        if (draft) loadIntoEditor({ key, file: draft.file, sha: draft.baseSha, data: draft.data, base: draft.base, show: false });
+        else loadIntoEditor({ key: 'nouveau-' + Date.now(), data: BLANK_DATA, show: false });
+        showView(draft && readSession('cms_view') === 'editor' ? 'editor' : 'admin');
+        updateConnectionUi();
+        if (readStore('gh_token')) connectGitHub(true);
     };
 </script>
 </body>

@@ -32,7 +32,8 @@
     "title": "Ouverture du QG de campagne de Rachida Dati",
     "meta": "Paris 12ème · 16 octobre 2025",
     "category": "politique",
-    "alt": "Ouverture du QG de campagne municipale de Paris 2026, de nombreux partisans y sont conviés."
+    "alt": "Ouverture du QG de campagne municipale de Paris 2026, de nombreux partisans y sont conviés.",
+    "featured": true
   },
   {
     "file": "assets/images/IMG_0178.JPEG",
@@ -67,7 +68,8 @@
     "title": "200 ans du Figaro",
     "meta": "Grand Palais, Paris · 15 janvier 2026",
     "category": "culture",
-    "alt": "Le Figaro a organisé une exposition au Grand Palais réservée à leurs abonnés."
+    "alt": "Le Figaro a organisé une exposition au Grand Palais réservée à leurs abonnés.",
+    "top": 2
   },
   {
     "file": "assets/images/IMG_0829.JPG",
@@ -186,7 +188,8 @@
     "title": "Studio EFJ",
     "meta": "Paris · 4 février 2026",
     "category": "efj",
-    "alt": "Console de régisseur d'émission dans le studio EFJ à Raspail 1."
+    "alt": "Console de régisseur d'émission dans le studio EFJ à Raspail 1.",
+    "top": 3
   },
   {
     "file": "assets/images/P1032031.JPG",

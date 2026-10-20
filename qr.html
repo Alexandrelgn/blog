@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR code — Alexandre Ligneul</title>
+  <meta name="description" content="Scannez le QR code pour retrouver tous les liens d'Alexandre Ligneul, journaliste reporter d'images." />
+  <link rel="icon" href="assets/site/favicon.ico"/>
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
+    body { background: var(--soft); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.6; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+    main { flex: 1; width: 100%; max-width: 440px; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .avatar { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg); box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 0.9rem; }
+    .name { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; line-height: 1.2; }
+    .role { font-family: var(--serif); font-style: italic; color: var(--muted); margin-top: 0.2rem; }
+    .tag { display: inline-block; margin-top: 0.75rem; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); background: var(--accent-light); padding: 0.3rem 0.75rem; border-radius: 999px; }
+    .qr-card { margin-top: 1.75rem; width: 100%; max-width: 300px; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+    .qr { display: block; width: 100%; aspect-ratio: 1; }
+    .qr svg { display: block; width: 100%; height: 100%; }
+    .qr-caption { margin-top: 0.85rem; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    footer a { color: inherit; }
+    @media (max-width: 768px) {
+      footer { padding: 1rem 1.25rem; flex-direction: column; gap: 0.25rem; }
+    }
+    @media print {
+      body { background: #fff; }
+      footer { display: none; }
+      .qr-card { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <img
+      src="https://res.cloudinary.com/dpggjkaj4/image/upload/c_fill,g_face,w_300,h_300,q_auto,f_auto/v1773091073/FullSizeRender_VSCO_hq8zwb.jpg"
+      alt="Alexandre Ligneul"
+      class="avatar"
+      onerror="this.style.display='none'"
+    />
+    <h1 class="name">Alexandre Ligneul</h1>
+    <p class="role">Journaliste reporter d'images</p>
+    <span class="tag">EFJ Paris · Journaliste en formation</span>
+
+    <div class="qr-card">
+      <div class="qr" id="qr" role="img" aria-label="QR code vers la page de liens d'Alexandre Ligneul"></div>
+      <p class="qr-caption">Scannez pour retrouver mes liens</p>    </div>
+  </main>
+
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="mentions-legales">Mentions légales</a></span></footer>
+
+  <script>
+    // ── PAGE VISÉE PAR LE QR CODE ──
+    const CIBLE = 'https://alexandrelgn.github.io/blog/liens';
+
+    // ── GÉNÉRATEUR DE QR CODE (mode octet, correction M, versions 1 à 10) ──
+    // Écrit ici pour ne dépendre d'aucun service tiers.
+    const QR = (() => {
+      // Corps de Galois GF(256), polynôme 0x11d
+      const EXP = new Array(512), LOG = new Array(256);
+      for (let i = 0, x = 1; i < 255; i++) {
+        EXP[i] = x; LOG[x] = i;
+        x <<= 1; if (x & 0x100) x ^= 0x11d;
+      }
+      for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+      const mul = (a, b) => (a && b ? EXP[LOG[a] + LOG[b]] : 0);
+
+      // Par version : [codes de correction par bloc, [nombre de blocs, octets de données par bloc]…]
+      const BLOCS = [null,
+        [10, [1, 16]], [16, [1, 28]], [26, [1, 44]], [18, [2, 32]], [24, [2, 43]],
+        [16, [4, 27]], [18, [4, 31]], [22, [2, 38], [2, 39]], [22, [3, 36], [2, 37]], [26, [4, 43], [1, 44]]];
+      const ALIGNEMENTS = [null, [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34],
+        [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50]];
+
+      // Reste de la division de Reed-Solomon
+      function correction(data, n) {
+        let gen = [1];
+        for (let i = 0; i < n; i++) {
+          const suiv = new Array(gen.length + 1).fill(0);
+          for (let j = 0; j < gen.length; j++) { suiv[j] ^= gen[j]; suiv[j + 1] ^= mul(gen[j], EXP[i]); }
+          gen = suiv;
+        }
+        const res = data.concat(new Array(n).fill(0));
+        for (let i = 0; i < data.length; i++) {
+          const c = res[i];
+          if (c) for (let j = 0; j < gen.length; j++) res[i + j] ^= mul(gen[j], c);
+        }
+        return res.slice(data.length);
+      }
+
+      function encoder(texte) {
+        const octets = Array.from(new TextEncoder().encode(texte));
+
+        // Plus petite version qui contient le texte
+        let version = 0, capacite = 0;
+        for (let v = 1; v <= 10; v++) {
+          capacite = BLOCS[v].slice(1).reduce((s, [nb, taille]) => s + nb * taille, 0);
+          const bitsCompteur = v < 10 ? 8 : 16;
+          if (4 + bitsCompteur + octets.length * 8 <= capacite * 8) { version = v; break; }
+        }
+        if (!version) throw new Error('Texte trop long pour le QR code');
+
+        // Flux de bits : mode octet, longueur, données, terminaison, bourrage
+        const bits = [];
+        const ajouter = (val, n) => { for (let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+        ajouter(4, 4);
+        ajouter(octets.length, version < 10 ? 8 : 16);
+        octets.forEach(o => ajouter(o, 8));
+        ajouter(0, Math.min(4, capacite * 8 - bits.length));
+        while (bits.length % 8) bits.push(0);
+        const donnees = [];
+        for (let i = 0; i < bits.length; i += 8) donnees.push(bits.slice(i, i + 8).reduce((a, b) => (a << 1) | b, 0));
+        for (let pad = 0xec; donnees.length < capacite; pad ^= 0xec ^ 0x11) donnees.push(pad);
+
+        // Découpage en blocs, correction, entrelacement
+        const [nbCorr, ...groupes] = BLOCS[version];
+        const blocs = [];
+        let pos = 0;
+        groupes.forEach(([nb, taille]) => {
+          for (let i = 0; i < nb; i++) { const d = donnees.slice(pos, pos += taille); blocs.push({ d, c: correction(d, nbCorr) }); }
+        });
+        const final = [];
+        const maxD = Math.max(...blocs.map(b => b.d.length));
+        for (let i = 0; i < maxD; i++) blocs.forEach(b => { if (i < b.d.length) final.push(b.d[i]); });
+        for (let i = 0; i < nbCorr; i++) blocs.forEach(b => final.push(b.c[i]));
+
+        // Matrice : motifs fixes
+        const taille = version * 4 + 17;
+        const mod = Array.from({ length: taille }, () => new Array(taille).fill(false));
+        const fixe = Array.from({ length: taille }, () => new Array(taille).fill(false));
+        const poser = (l, c, noir) => { mod[l][c] = noir; fixe[l][c] = true; };
+
+        const reperer = (l0, c0) => {
+          for (let dl = -1; dl <= 7; dl++) for (let dc = -1; dc <= 7; dc++) {
+            const l = l0 + dl, c = c0 + dc;
+            if (l < 0 || c < 0 || l >= taille || c >= taille) continue;
+            const d = Math.max(Math.abs(dl - 3), Math.abs(dc - 3));
+            poser(l, c, d !== 2 && d !== 4);
+          }
+        };
+        reperer(0, 0); reperer(0, taille - 7); reperer(taille - 7, 0);
+        for (let i = 8; i < taille - 8; i++) { poser(6, i, i % 2 === 0); poser(i, 6, i % 2 === 0); }
+
+        const al = ALIGNEMENTS[version], dernier = al.length - 1;
+        al.forEach((l, i) => al.forEach((c, j) => {
+          if ((i === 0 && j === 0) || (i === 0 && j === dernier) || (i === dernier && j === 0)) return;
+          for (let dl = -2; dl <= 2; dl++) for (let dc = -2; dc <= 2; dc++)
+            poser(l + dl, c + dc, Math.max(Math.abs(dl), Math.abs(dc)) !== 1);
+        }));
+
+        const format = masque => {
+          const data = masque; // niveau M = 00
+          let r = data;
+          for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+          const f = ((data << 10) | r) ^ 0x5412;
+          const b = i => ((f >>> i) & 1) === 1;
+          for (let i = 0; i < 6; i++) poser(i, 8, b(i));
+          poser(7, 8, b(6)); poser(8, 8, b(7)); poser(8, 7, b(8));
+          for (let i = 9; i < 15; i++) poser(8, 14 - i, b(i));
+          for (let i = 0; i < 8; i++) poser(8, taille - 1 - i, b(i));
+          for (let i = 8; i < 15; i++) poser(taille - 15 + i, 8, b(i));
+          poser(taille - 8, 8, true);
+        };
+        format(0); // réserve les emplacements
+
+        if (version >= 7) {
+          let r = version;
+          for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1f25);
+          const v = (version << 12) | r;
+          for (let i = 0; i < 18; i++) {
+            const noir = ((v >>> i) & 1) === 1, a = taille - 11 + (i % 3), b = Math.floor(i / 3);
+            poser(b, a, noir); poser(a, b, noir);
+          }
+        }
+
+        // Placement des données en zigzag
+        let i = 0;
+        for (let droite = taille - 1; droite >= 1; droite -= 2) {
+          if (droite === 6) droite = 5;
+          const monte = ((droite + 1) & 2) === 0;
+          for (let k = 0; k < taille; k++) for (let j = 0; j < 2; j++) {
+            const c = droite - j, l = monte ? taille - 1 - k : k;
+            if (fixe[l][c]) continue;
+            if (i < final.length * 8) mod[l][c] = ((final[i >>> 3] >>> (7 - (i & 7))) & 1) === 1;
+            i++;
+          }
+        }
+
+        // Masques : on garde celui qui donne la meilleure lisibilité
+        const MASQUES = [
+          (l, c) => (l + c) % 2 === 0, (l) => l % 2 === 0, (l, c) => c % 3 === 0, (l, c) => (l + c) % 3 === 0,
+          (l, c) => (Math.floor(l / 2) + Math.floor(c / 3)) % 2 === 0, (l, c) => (l * c) % 2 + (l * c) % 3 === 0,
+          (l, c) => ((l * c) % 2 + (l * c) % 3) % 2 === 0, (l, c) => ((l + c) % 2 + (l * c) % 3) % 2 === 0];
+        const masquer = m => {
+          for (let l = 0; l < taille; l++) for (let c = 0; c < taille; c++)
+            if (!fixe[l][c] && MASQUES[m](l, c)) mod[l][c] = !mod[l][c];
+        };
+        const penalite = () => {
+          let p = 0, noirs = 0;
+          for (let a = 0; a < taille; a++) {
+            let sL = 1, sC = 1;
+            for (let b = 0; b < taille; b++) {
+              if (mod[a][b]) noirs++;
+              if (b > 0) {
+                if (mod[a][b] === mod[a][b - 1]) { sL++; if (sL === 5) p += 3; else if (sL > 5) p++; } else sL = 1;
+                if (mod[b][a] === mod[b - 1][a]) { sC++; if (sC === 5) p += 3; else if (sC > 5) p++; } else sC = 1;
+              }
+              if (a > 0 && b > 0 && mod[a][b] === mod[a - 1][b] && mod[a][b] === mod[a][b - 1] && mod[a][b] === mod[a - 1][b - 1]) p += 3;
+            }
+          }
+          return p + Math.floor(Math.abs(noirs * 20 - taille * taille * 10) / (taille * taille)) * 10;
+        };
+        let meilleur = 0, min = Infinity;
+        for (let m = 0; m < 8; m++) {
+          masquer(m); format(m);
+          const p = penalite();
+          if (p < min) { min = p; meilleur = m; }
+          masquer(m); // annule
+        }
+        masquer(meilleur); format(meilleur);
+        return mod;
+      }
+
+      // Dessin en SVG, avec une marge de 4 modules
+      function svg(texte) {
+        const mod = encoder(texte), n = mod.length, marge = 4;
+        let d = '';
+        mod.forEach((ligne, l) => ligne.forEach((noir, c) => { if (noir) d += `M${c + marge} ${l + marge}h1v1h-1z`; }));
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n + 2 * marge} ${n + 2 * marge}" shape-rendering="crispEdges">`
+          + `<rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#1a1a1a"/></svg>`;
+      }
+
+      return { svg };
+    })();
+
+    // ── AFFICHAGE ──
+    document.getElementById('qr').innerHTML = QR.svg(CIBLE);
+  </script>
+
+</body>
+</html>

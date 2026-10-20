@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liens — Alexandre Ligneul</title>
+  <meta name="description" content="Tous les liens d'Alexandre Ligneul, journaliste reporter d'images : portfolio, reportages, réseaux et contact." />
+  <link rel="icon" href="assets/site/favicon.ico"/>
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #1a1a1a; --bg: #fff; --soft: #f5f4f2; --border: #e8e6e2; --muted: #888582; --accent: #2d5a8e; --accent-light: #e8f0f9; --serif: 'Lora', Georgia, serif; --sans: 'Inter', sans-serif; }
+    body { background: var(--soft); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.6; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+    main { flex: 1; width: 100%; max-width: 480px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+    .profile { text-align: center; width: 100%; max-width: 480px; margin: 0 auto 2.25rem; padding: 3.5rem 1.25rem 0; }
+    .banner { display: none; }
+    .avatar { width: 112px; height: 112px; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg); box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 1.1rem; }
+    .name { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; line-height: 1.2; }
+    .role { font-family: var(--serif); font-style: italic; color: var(--muted); margin-top: 0.25rem; }
+    .tag { display: inline-block; margin-top: 0.85rem; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); background: var(--accent-light); padding: 0.3rem 0.75rem; border-radius: 999px; }
+    .group-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin: 1.75rem 0 0.7rem; text-align: center; }
+    .links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .link { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: var(--ink); font-size: 0.95rem; font-weight: 400; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
+    .link:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(45,90,142,0.1); }
+    .link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .email-row:hover { border-color: var(--border); transform: none; box-shadow: none; }
+    .email-row { flex-wrap: wrap; row-gap: 0.75rem; }
+    .email-row small { white-space: nowrap; }
+    .email-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+    .email-btn { font-family: inherit; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: var(--ink); background: var(--soft); border: 1px solid var(--border); border-radius: 999px; padding: 0.45rem 0.8rem; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+    .email-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .email-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .email-btn.copied { color: var(--accent); background: var(--accent-light); border-color: var(--accent); }
+    .link small { display: block; font-size: 0.75rem; color: var(--muted); font-weight: 300; }
+    .link .arrow { color: var(--muted); flex-shrink: 0; transition: color 0.2s; }
+    .link:hover .arrow { color: var(--accent); }
+    .link.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .link.primary small { color: #aaa; }
+    .link.primary .arrow { color: #aaa; }
+    .link.primary:hover { background: var(--accent); border-color: var(--accent); }
+    .link.primary:hover .arrow, .link.primary:hover small { color: #fff; }
+    footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.1em; }
+    footer a { color: inherit; }
+    /* Grand écran : la photo devient une bannière qui s'adapte à la fenêtre */
+    @media (min-width: 769px) {
+      .profile { position: relative; isolation: isolate; overflow: hidden; max-width: none; height: clamp(320px, 55vh, 620px); margin-bottom: 2.75rem; padding: 0 2.5rem 2.75rem; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; background: var(--ink); color: #fff; }
+      .banner { display: block; position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: center 12%; }
+      .profile::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(13,13,13,0.1) 0%, rgba(13,13,13,0.35) 50%, rgba(13,13,13,0.8) 100%); }
+      .avatar { display: none; }
+      .name { font-size: clamp(2.2rem, 4vw, 3.2rem); text-shadow: 0 2px 16px rgba(0,0,0,0.35); }
+      .role { color: rgba(255,255,255,0.85); font-size: 1.1rem; }
+      .tag { color: #fff; background: rgba(255,255,255,0.16); backdrop-filter: blur(6px); }
+    }
+    @media (max-width: 768px) {
+      footer { padding: 1rem 1.25rem; flex-direction: column; gap: 0.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="profile">
+    <!-- Bannière de fond : affichée seulement sur grand écran -->
+    <img
+      src="https://res.cloudinary.com/dpggjkaj4/image/upload/c_limit,w_2000,q_auto,f_auto/v1773091073/FullSizeRender_VSCO_hq8zwb.jpg"
+      alt=""
+      loading="lazy"
+      class="banner"
+      onerror="this.remove()"
+    />
+    <img
+      src="https://res.cloudinary.com/dpggjkaj4/image/upload/c_fill,g_face,w_300,h_300,q_auto,f_auto/v1773091073/FullSizeRender_VSCO_hq8zwb.jpg"
+      alt="Alexandre Ligneul"
+      class="avatar"
+      onerror="this.style.display='none'"
+    />
+    <h1 class="name">Alexandre Ligneul</h1>
+    <p class="role">Journaliste reporter d'images</p>
+    <span class="tag">EFJ Paris · Journaliste en formation</span>
+  </header>
+
+  <main>
+
+    <ul class="links">
+      <li><a class="link primary" href="./"><span>Mon portfolio<small>Photos, vidéos, écrits et podcasts</small></span><span class="arrow">→</span></a></li>
+      <li><a class="link" href="assets/pdf/CV_Alexandre.pdf" target="_blank" rel="noopener"><span>Mon CV<small>Consulter en PDF</small></span><span class="arrow">↗</span></a></li>    </ul>
+
+    <h2 class="group-title">Me contacter &amp; me suivre</h2>
+    <ul class="links">
+      <li><a class="link" href="https://www.instagram.com/alexandrelgn/" target="_blank" rel="noopener"><span>Instagram<small>@alexandrelgn</small></span><span class="arrow">↗</span></a></li>
+      <li><a class="link" href="https://www.linkedin.com/in/alexandre-ligneul/" target="_blank" rel="noopener"><span>LinkedIn<small>alexandre-ligneul</small></span><span class="arrow">↗</span></a></li>
+      <li>
+        <div class="link email-row">
+          <span>E-mail<small>alexandre.ligneul@efj.fr</small></span>
+          <span class="email-actions">
+            <a class="email-btn" href="mailto:alexandre.ligneul@efj.fr">Écrire</a>
+            <button type="button" class="email-btn" id="copy-email" data-email="alexandre.ligneul@efj.fr" aria-live="polite">Copier</button>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </main>
+
+  <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="mentions-legales">Mentions légales</a></span></footer>
+
+  <script>
+    // ── E-MAIL : le bouton « Copier » copie l'adresse dans le presse-papiers ──
+    const copyBtn = document.getElementById('copy-email');
+    let copyTimer;
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        // Repli pour les navigateurs sans accès au presse-papiers
+        const field = document.createElement('textarea');
+        field.value = text;
+        field.style.position = 'fixed';
+        field.style.opacity = '0';
+        document.body.appendChild(field);
+        field.select();
+        document.execCommand('copy');
+        field.remove();
+      }
+    }
+
+    copyBtn.addEventListener('click', async () => {
+      await copyText(copyBtn.dataset.email);
+      copyBtn.textContent = 'Copié ✓';
+      copyBtn.classList.add('copied');
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(() => {
+        copyBtn.textContent = 'Copier';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>

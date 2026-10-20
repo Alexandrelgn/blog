@@ -506,7 +506,7 @@
         <a href="podcasts" class="section-label-link">Tous les épisodes →</a>
       </div>
       <!-- Générée à partir de assets/podcasts/liste-podcasts.js : les premiers épisodes de la liste -->
-      <div class="podcasts-grid reveal" id="home-podcasts">
+      <div class="podcasts-grid reveal" id="home-podcasts"></div>
     </div>
   </div>
 
@@ -561,7 +561,7 @@
 
   <footer>
     <span>© 2026 Alexandre Ligneul</span>
-    <span>Portfolio · <a href="mentions-legales" style="color:#888582;">Mentions légales</a></span>
+    <span>Portfolio · <a href="mentions-legales" style="color:inherit;">Mentions légales</a></span>
   </footer>
 
   <script src="assets/articles/liste-articles.js"></script>
@@ -577,7 +577,7 @@
           <div class="photo-card-caption">${escapeHtml(p.caption)}</div>
         </div>`;
     }
-    loadPhotosAccueil().then(list => {
+    const homePhotosReady = loadPhotosAccueil().then(list => {
       document.getElementById('home-photos').insertAdjacentHTML('afterbegin', list.map(homePhotoHtml).join(''));
     });
   </script>
@@ -604,7 +604,7 @@
       const list = await loadAllPodcasts();
       document.getElementById('home-podcasts').innerHTML = list.slice(0, HOME_PODCASTS_COUNT).map(homePodcastHtml).join('');
     }
-    renderHomePodcasts();
+    const homePodcastsReady = renderHomePodcasts();
   </script>
   <script>
     // ── REPORTAGES VIDÉO : la vidéo « À la une » puis les suivantes de la liste ──
@@ -632,7 +632,7 @@
       const shown = [featured, ...list.filter(v => v !== featured)].filter(Boolean).slice(0, HOME_VIDEOS_COUNT);
       document.getElementById('home-videos').innerHTML = shown.map(homeVideoHtml).join('');
     }
-    renderHomeVideos();
+    const homeVideosReady = renderHomeVideos();
   </script>
   <script>
     // ── REPORTAGES ÉCRITS : l'article « À la une » + les suivants de la liste ──
@@ -661,7 +661,20 @@
       const others = loaded.filter(a => a !== featured).slice(0, HOME_ARTICLES_COUNT - 1);
       grid.innerHTML = homeCardHtml(featured, true) + others.map(a => homeCardHtml(a, false)).join('');
     }
-    renderHomeArticles();
+    const homeArticlesReady = renderHomeArticles();
+
+    // ── ANCRE (#contact…) : les sections sont générées après le saut initial du
+    // navigateur et décalent la page ; on refait défiler une fois tout chargé ──
+    if (location.hash) {
+      Promise.allSettled([homePhotosReady, homePodcastsReady, homeVideosReady, homeArticlesReady])
+        .then(() => Promise.all([...document.querySelectorAll('main img:not([loading="lazy"])')]
+          .filter(img => !img.complete)
+          .map(img => new Promise(r => { img.onload = img.onerror = r; setTimeout(r, 3000); }))))
+        .then(() => {
+          const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          if (target) target.scrollIntoView({ behavior: 'instant' });
+        });
+    }
 
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((el, i) => {

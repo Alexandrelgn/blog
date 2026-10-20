@@ -204,8 +204,9 @@ nav {
   transition: opacity 0.3s, transform 0.3s; letter-spacing: 0.04em;
 }
 .photo-card:hover .photo-card-caption { opacity: 1; transform: none; }
-.photo-card.featured { grid-column: span 2; grid-row: span 2; }
-.photo-card.featured img { aspect-ratio: auto; height: 100%; }
+.photo-card.featured { grid-column: span 2; grid-row: span 2; min-height: 240px; }
+/* La grande photo remplit la hauteur des deux petites, quel que soit son format (recadrée) */
+.photo-card.featured img { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
 
 /* ── VIDEOS (index) ── */
 .videos-list { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -486,8 +487,8 @@ footer {
   .container, .container--narrow, .container--article { padding: 0 1.25rem; }
   .section-wrap { padding: 3.5rem 0; }
   .photos-grid { grid-template-columns: 1fr 1fr; }
-  .photo-card.featured { grid-column: span 2; grid-row: auto; }
-  .photo-card.featured img { aspect-ratio: 16/9; height: auto; }
+  .photo-card.featured { grid-column: span 2; grid-row: auto; min-height: 0; }
+  .photo-card.featured img { position: static; aspect-ratio: 16/9; height: auto; }
   .video-item { grid-template-columns: 140px 1fr; gap: 1rem; padding: 1rem; }
   .articles-grid { grid-template-columns: 1fr; }
   .article-card.featured-article { grid-column: span 1; grid-template-columns: 1fr; }

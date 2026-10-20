@@ -1,25 +1,19 @@
 // ── PHOTOS ──
 // Utilisé par photos.html (page Photos) et index.html (section « Photographies »).
 //
-// La galerie est dans assets/photos/photos.json, les photos de l'accueil dans
-// assets/photos/accueil.json (tous deux modifiables avec le panneau articlecreator.html, onglet Photos).
+// La galerie est dans assets/photos/photos.json (modifiable avec le panneau articlecreator.html, onglet Photos).
 // « hidden: true » masque une photo du site ; les brouillons (drafts.json) ne sont jamais lus ici.
+// Accueil : les photos marquées « featured: true » (1re, en grand), « top: 2 » et « top: 3 », puis les
+// premières de la galerie ; la légende affichée est le titre.
 //
-// Galerie :
 // « file » est le nom exact du fichier dans assets/images/, majuscules comprises
 // (ou son chemin « assets/images/… », tel que l'écrit Pages CMS après un envoi de photo).
 // « category » est l'un des filtres de CATEGORIES_PHOTOS ci-dessous ; les boutons de filtre
 // sont créés tout seuls à partir des catégories utilisées.
 // L'ordre de la liste est l'ordre d'affichage.
-// Champ facultatif : src (adresse complète d'une image hébergée ailleurs, remplace file).
-//
-// Accueil : les 3 photos de la section « Photographies », dans l'ordre ; la première est en grand.
-// Elles peuvent être des photos de la galerie (« file ») ou des images hébergées ailleurs (« src »,
-// par exemple sur Cloudinary : plus légères à charger que les originaux de assets/images/).
-// « caption » est la légende affichée au survol, « alt » la description de l'image.
-// Champ facultatif : faded: true affiche la photo atténuée.
+// Champ facultatif : src (adresse complète d'une image hébergée ailleurs, par exemple sur Cloudinary,
+// plus légère à charger ; remplace file).
 const PHOTOS_DATA = 'assets/photos/photos.json';
-const PHOTOS_ACCUEIL_DATA = 'assets/photos/accueil.json';
 
 // Nom affiché sur le bouton de filtre de chaque catégorie, dans l'ordre des boutons.
 // Une catégorie absente d'ici s'affiche avec son nom, après les autres.
@@ -57,7 +51,6 @@ async function loadJsonList(path, what) {
 }
 
 const loadPhotos = () => loadJsonList(PHOTOS_DATA, 'des photos');
-const loadPhotosAccueil = () => loadJsonList(PHOTOS_ACCUEIL_DATA, 'des photos de l\'accueil');
 
 /** Adresse de l'image d'une entrée : « src » si présent, sinon le fichier dans assets/images/ */
 function photoSrc(p) {

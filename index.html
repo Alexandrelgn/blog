@@ -203,9 +203,10 @@
     .photo-card:hover .photo-card-caption { opacity: 1; transform: none; }
     /* featured first photo */
     .photo-card.featured {
-      grid-column: span 2; grid-row: span 2;
+      grid-column: span 2; grid-row: span 2; min-height: 240px;
     }
-    .photo-card.featured img { aspect-ratio: auto; height: 100%; }
+    /* La grande photo remplit la hauteur des deux petites, quel que soit son format (recadrée) */
+    .photo-card.featured img { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
 
     /* ── VIDEOS ── */
     a.video-item { text-decoration: none; color: inherit; display: grid; }
@@ -397,8 +398,8 @@
       .container { padding: 0 1.25rem; }
       .section-wrap { padding: 3.5rem 0; }
       .photos-grid { grid-template-columns: 1fr 1fr; }
-      .photo-card.featured { grid-column: span 2; grid-row: auto; }
-      .photo-card.featured img { aspect-ratio: 16/9; height: auto; }
+      .photo-card.featured { grid-column: span 2; grid-row: auto; min-height: 0; }
+      .photo-card.featured img { position: static; aspect-ratio: 16/9; height: auto; }
       .video-item { grid-template-columns: 140px 1fr; gap: 1rem; padding: 1rem; }
       .articles-grid { grid-template-columns: 1fr; }
       .article-card.featured-article { grid-column: span 1; grid-template-columns: 1fr; }
@@ -458,7 +459,7 @@
         <span class="section-label-line"></span>
         <a href="photos" class="section-label-link">Toute la galerie →</a>
       </div>
-      <!-- Générée à partir de assets/photos/accueil.json -->
+      <!-- Générée à partir des photos de la galerie choisies dans le panneau (assets/photos/photos.json) -->
       <div class="photos-grid reveal" id="home-photos">
         <p>©Alexandre Ligneul - Tous droits réservés</p>
       </div>
@@ -569,20 +570,35 @@
   <script src="assets/photos/liste-photos.js"></script>
   <script src="assets/podcasts/liste-podcasts.js"></script>
   <script>
-    // ── PHOTOGRAPHIES : les photos de « photosAccueil », la première en grand ──
+    // ── CHOIX DE L'ACCUEIL (commun aux rubriques) ──
+    // Dans le panneau (articlecreator.html), l'étoile (« featured: true ») met un élément 1er sur l'accueil,
+    // « top: 2 » et « top: 3 » le mettent 2e et 3e. Les places restantes suivent l'ordre de la liste.
+    function homeRank(item) {
+      return item.featured ? 1 : (item.top === 2 || item.top === 3 ? item.top : 0);
+    }
+
+    function homeSelection(list, count) {
+      const ranked = list.filter(homeRank).sort((a, b) => homeRank(a) - homeRank(b));
+      return [...ranked, ...list.filter(item => !homeRank(item))].slice(0, count);
+    }
+  </script>
+  <script>
+    // ── PHOTOGRAPHIES : les photos choisies dans la galerie, la première en grand ──
+    const HOME_PHOTOS_COUNT = 3;
+
     function homePhotoHtml(p, i) {
       return `
-        <div class="photo-card${i === 0 ? ' featured' : ''}"${p.faded ? ' style="background:#e8e4dc;"' : ''}>
-          <img src="${escapeHtml(photoSrc(p))}" alt="${escapeHtml(p.alt)}"${p.faded ? ' style="opacity:0.5;"' : ''} />
-          <div class="photo-card-caption">${escapeHtml(p.caption)}</div>
+        <div class="photo-card${i === 0 ? ' featured' : ''}">
+          <img src="${escapeHtml(photoSrc(p))}" alt="${escapeHtml(p.alt || p.title)}" />
+          <div class="photo-card-caption">${escapeHtml(p.title)}</div>
         </div>`;
     }
-    const homePhotosReady = loadPhotosAccueil().then(list => {
-      document.getElementById('home-photos').insertAdjacentHTML('afterbegin', list.map(homePhotoHtml).join(''));
+    const homePhotosReady = loadPhotos().then(list => {
+      document.getElementById('home-photos').insertAdjacentHTML('afterbegin', homeSelection(list, HOME_PHOTOS_COUNT).map(homePhotoHtml).join(''));
     });
   </script>
   <script>
-    // ── PODCASTS : les premiers épisodes de la liste ──
+    // ── PODCASTS : les épisodes choisis pour l'accueil, puis les premiers de la liste ──
     const HOME_PODCASTS_COUNT = 3;
 
     function homePodcastHtml(p) {
@@ -602,13 +618,13 @@
 
     async function renderHomePodcasts() {
       const list = await loadAllPodcasts();
-      document.getElementById('home-podcasts').innerHTML = list.slice(0, HOME_PODCASTS_COUNT).map(homePodcastHtml).join('');
+      document.getElementById('home-podcasts').innerHTML = homeSelection(list, HOME_PODCASTS_COUNT).map(homePodcastHtml).join('');
     }
     const homePodcastsReady = renderHomePodcasts();
   </script>
   <script>
-    // ── REPORTAGES VIDÉO : la vidéo « À la une » puis les suivantes de la liste ──
-    const HOME_VIDEOS_COUNT = 2;
+    // ── REPORTAGES VIDÉO : les vidéos choisies pour l'accueil (« À la une » en premier), puis les suivantes ──
+    const HOME_VIDEOS_COUNT = 3;
 
     function homeVideoHtml(v) {
       return `
@@ -628,14 +644,12 @@
 
     async function renderHomeVideos() {
       const list = await loadAllVideos();
-      const featured = list.find(v => v.featured) || list[0];
-      const shown = [featured, ...list.filter(v => v !== featured)].filter(Boolean).slice(0, HOME_VIDEOS_COUNT);
-      document.getElementById('home-videos').innerHTML = shown.map(homeVideoHtml).join('');
+      document.getElementById('home-videos').innerHTML = homeSelection(list, HOME_VIDEOS_COUNT).map(homeVideoHtml).join('');
     }
     const homeVideosReady = renderHomeVideos();
   </script>
   <script>
-    // ── REPORTAGES ÉCRITS : l'article « À la une » + les suivants de la liste ──
+    // ── REPORTAGES ÉCRITS : les articles choisis pour l'accueil (« À la une » en grand), puis les suivants ──
     const HOME_ARTICLES_COUNT = 3;
 
     function homeCardHtml(a, featured) {
@@ -657,9 +671,7 @@
       const grid = document.getElementById('home-articles');
       const loaded = await loadAllArticles();
       if (!loaded.length) { grid.innerHTML = `<p class="article-excerpt">${escapeHtml(articlesErrorMessage())}</p>`; return; }
-      const featured = loaded.find(a => a.featured) || loaded[0];
-      const others = loaded.filter(a => a !== featured).slice(0, HOME_ARTICLES_COUNT - 1);
-      grid.innerHTML = homeCardHtml(featured, true) + others.map(a => homeCardHtml(a, false)).join('');
+      grid.innerHTML = homeSelection(loaded, HOME_ARTICLES_COUNT).map((a, i) => homeCardHtml(a, i === 0)).join('');
     }
     const homeArticlesReady = renderHomeArticles();
 

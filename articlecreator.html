@@ -225,15 +225,24 @@
         .lib-title { font-family: var(--serif); font-weight: 600; font-size: 0.98rem; line-height: 1.3; }
         .lib-meta { font-size: 0.72rem; color: var(--muted); margin-top: 3px; overflow-wrap: anywhere; }
         .badge { display: inline-block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 2px; background: var(--soft); color: var(--muted); margin: 5px 4px 0 0; font-weight: 600; }
-        .badge-une { background: var(--accent-light); color: var(--accent); }
         .badge-draft { background: #fdf3e1; color: #8a5a00; }
         .badge-local { background: #fbe9eb; color: #a3333d; }
         .badge-error { background: #fbe9eb; color: var(--danger); }
         .lib-actions { display: flex; gap: 6px; align-items: center; }
         .btn-mini { padding: 6px 10px; border: 1px solid var(--border); background: #fff; border-radius: 3px; cursor: pointer; font-family: var(--sans); font-size: 0.75rem; color: var(--ink); line-height: 1.2; }
         .btn-mini:hover { border-color: var(--accent); color: var(--accent); }
-        .btn-star { font-size: 0.9rem; padding: 4px 9px; }
-        .btn-star.on { color: #b07800; border-color: #e8c66a; background: #fff8e6; }
+        /* Place sur l'accueil : ★ = 1er (or), 2 (argent), 3 (bronze) */
+        .rank-group { display: inline-flex; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; background: #fff; }
+        .rank-btn { background: #fff; border: none; padding: 5px 0; width: 26px; font-family: var(--sans); font-size: 0.75rem; font-weight: 700; color: #c2c0bd; cursor: pointer; line-height: 1.2; }
+        .rank-btn + .rank-btn { border-left: 1px solid var(--border); }
+        .rank-btn:hover:not(:disabled) { color: var(--ink); }
+        .rank-btn.on.r1 { background: #fff3cd; color: #b07800; }
+        .rank-btn.on.r2 { background: #e9edf1; color: #5f6873; }
+        .rank-btn.on.r3 { background: #f6e1cf; color: #9a5226; }
+        .rank-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .badge-r1 { background: #fff3cd; color: #8a6400; }
+        .badge-r2 { background: #e9edf1; color: #4f5862; }
+        .badge-r3 { background: #f6e1cf; color: #8a4720; }
         .lib-menu { position: relative; }
         .lib-menu summary { list-style: none; }
         .lib-menu summary::-webkit-details-marker { display: none; }
@@ -261,17 +270,12 @@
         .drafts-empty { font-size: 0.75rem; color: var(--muted); line-height: 1.5; margin: 6px 0; }
         .badge-hidden { background: #ececec; color: #555; }
         .lib-row.is-hidden .lib-thumb, .lib-row.is-hidden .lib-title { opacity: 0.55; }
-        .btn-star:disabled { opacity: 0.35; cursor: not-allowed; }
 
         /* Onglets du panneau */
         .admin-tabs { display: flex; gap: 2px; box-shadow: inset 0 -1px 0 var(--border); margin-bottom: 14px; overflow-x: auto; overflow-y: hidden; }
         .admin-tabs button { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 14px; font-family: var(--sans); font-size: 0.85rem; color: var(--muted); cursor: pointer; white-space: nowrap; }
         .admin-tabs button:hover { color: var(--ink); }
         .admin-tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
-        .subtabs { display: inline-flex; gap: 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 14px; background: #fff; }
-        .subtabs button { background: none; border: none; padding: 7px 14px; font-family: var(--sans); font-size: 0.8rem; color: var(--muted); cursor: pointer; }
-        .subtabs button + button { border-left: 1px solid var(--border); }
-        .subtabs button[aria-selected="true"] { background: var(--accent-light); color: var(--accent); font-weight: 600; }
         .lib-layout.no-drafts { grid-template-columns: minmax(0, 1fr); }
 
         /* Liste en grille (photos) */
@@ -448,19 +452,10 @@
             </div>
         </section>
 
-        <!-- Vidéos et podcasts : listes JSON gérées par le même moteur (voir COLLECTIONS dans le script) -->
+        <!-- Vidéos, podcasts et photos : listes JSON gérées par le même moteur (voir COLLECTIONS dans le script) -->
         <section id="tab-videos" class="tab-panel hidden" role="tabpanel" data-collection="videos"></section>
         <section id="tab-podcasts" class="tab-panel hidden" role="tabpanel" data-collection="podcasts"></section>
-
-        <!-- Photos : galerie (assets/photos/photos.json) et photos de l'accueil (assets/photos/accueil.json) -->
-        <section id="tab-photos" class="tab-panel hidden" role="tabpanel">
-            <div class="subtabs" role="tablist" aria-label="Photos">
-                <button type="button" role="tab" data-tab="photos">Galerie (page Photos)</button>
-                <button type="button" role="tab" data-tab="photos-accueil">Photos de l'accueil</button>
-            </div>
-            <div id="tab-galerie" data-collection="galerie"></div>
-            <div id="tab-accueil" class="hidden" data-collection="accueil"></div>
-        </section>
+        <section id="tab-galerie" class="tab-panel hidden" role="tabpanel" data-collection="galerie"></section>
         </div>
     </main>
 </div>
@@ -1916,15 +1911,13 @@ ${buildArticleBodyHtml()}
 
     // --- ONGLETS DU PANNEAU ---
     // L'onglet affich\u00e9 est dans l'adresse (#ecrits, #videos\u2026) : recharger la page le rouvre.
-    // Chaque onglet : son bloc, le bouton d'onglet allum\u00e9, et la rubrique en liste qu'il affiche.
-    // L'onglet Photos a deux sous-onglets (galerie, accueil), chacun avec son adresse.
+    // Chaque onglet : son bloc et la rubrique en liste qu'il affiche.
     const TABS = {
         'tableau-de-bord': { panel: 'tab-tableau-de-bord' },
         ecrits: { panel: 'library' },
         videos: { panel: 'tab-videos', collection: 'videos' },
         podcasts: { panel: 'tab-podcasts', collection: 'podcasts' },
-        photos: { panel: 'tab-photos', collection: 'galerie' },
-        'photos-accueil': { panel: 'tab-photos', button: 'photos', collection: 'accueil' }
+        photos: { panel: 'tab-galerie', collection: 'galerie' }
     };
 
     function currentTab() {
@@ -1936,11 +1929,8 @@ ${buildArticleBodyHtml()}
         if (!TABS[tab]) tab = 'tableau-de-bord';
         const view = TABS[tab];
         if (location.hash.slice(1) !== tab) history.replaceState(null, '', '#' + tab);
-        document.querySelectorAll('.admin-tabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === (view.button || tab))));
-        new Set(Object.values(TABS).map(v => v.panel)).forEach(id => document.getElementById(id).classList.toggle('hidden', id !== view.panel));
-        // Sous-onglets des photos
-        document.querySelectorAll('.subtabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
-        ['galerie', 'accueil'].forEach(id => document.getElementById('tab-' + id).classList.toggle('hidden', view.collection !== id));
+        document.querySelectorAll('.admin-tabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+        Object.values(TABS).forEach(v => document.getElementById(v.panel).classList.toggle('hidden', v !== view));
         // Les donn\u00e9es d\u00e9j\u00e0 lues ne sont pas relues ; seule une liste modifi\u00e9e entre-temps l'est
         const coll = view.collection;
         if (tab === 'ecrits') { if (libraryStale) loadLibrary(); else renderLibrary(); }
@@ -1949,7 +1939,7 @@ ${buildArticleBodyHtml()}
     }
 
     document.getElementById('admin-app').addEventListener('click', (e) => {
-        const btn = e.target.closest('.admin-tabs [data-tab], .subtabs [data-tab]');
+        const btn = e.target.closest('.admin-tabs [data-tab]');
         if (btn) { setAdminStatus(''); showTab(btn.dataset.tab); }
     });
     window.addEventListener('hashchange', () => { if (isAdminView() && ghConnected) showTab(currentTab()); });
@@ -2179,8 +2169,8 @@ ${buildArticleBodyHtml()}
                 let entry = list.find(a => a.file === file);
                 added = !entry;
                 if (added) { entry = { file }; list.unshift(entry); }
-                const featuredChanged = featured && !entry.featured;
-                if (featured) list.forEach(a => { if (a === entry) a.featured = true; else delete a.featured; });
+                const featuredChanged = featured && homeRank(entry) !== 1;
+                if (featuredChanged) applyHomeRank(list, entry, 1, false); // 1er sur l'accueil (l'étoile)
                 if (!added && !featuredChanged) return false;
                 return added ? `Ajout de ${file} \u00e0 la liste des \u00e9crits` : `${file} \u00e0 la une`;
             });
@@ -2490,7 +2480,7 @@ ${buildArticleBodyHtml()}
         const image = (entry && entry.image) || info.image;
         const hidden = !!(entry && entry.hidden);
         const badges = [
-            entry && entry.featured ? '<span class="badge badge-une">À la une</span>' : '',
+            entry ? rankBadgeHtml(entry) : '',
             hidden ? '<span class="badge badge-hidden">Masqué</span>' : '',
             !entry ? '<span class="badge">Hors liste</span>' : '',
             library.drafts.some(d => d.file === file) ? '<span class="badge badge-draft">Brouillon en cours</span>' : '',
@@ -2505,9 +2495,7 @@ ${buildArticleBodyHtml()}
             entry ? ['hide', hidden ? 'Afficher sur le site' : 'Masquer du site'] : null,
             ['delete', 'Supprimer…', 'danger']
         ].filter(Boolean);
-        const star = entry && !missing
-            ? `<button type="button" class="btn-mini btn-star${entry.featured ? ' on' : ''}" data-act="feature" ${hidden ? 'disabled title="Un article masqué ne peut pas être à la une"' : `title="${entry.featured ? 'Retirer de la une' : 'Mettre à la une'}"`}>${entry.featured ? '★' : '☆'}</button>`
-            : '';
+        const star = entry && !missing ? rankButtonsHtml(entry) : '';
         return `<div class="lib-row${hidden ? ' is-hidden' : ''}" data-file="${escapeHtml(file)}">
             <span class="lib-handle" title="Glisser pour changer l’ordre">${entry ? '⠿' : ''}</span>
             <div class="lib-thumb">${image ? `<img src="${escapeHtml(articleAssetUrl(image))}" alt="" loading="lazy">` : ''}</div>
@@ -2548,7 +2536,7 @@ ${buildArticleBodyHtml()}
         } : {
             edit: () => openArticle(file),
             view: () => window.open(ghPagesUrl(ghSettings(), GH_ARTICLES_DIR + file.replace(/\.html$/i, '')), '_blank', 'noopener'),
-            feature: () => toggleFeatured(file),
+            rank: () => setArticleRank(file, Number(btn.dataset.rank)),
             meta: () => editListInfo(file),
             list: () => addToList(file),
             duplicate: () => duplicateArticle(file),
@@ -2601,17 +2589,17 @@ ${buildArticleBodyHtml()}
         renderLibrary();
     }
 
-    async function toggleFeatured(file) {
-        const on = !((library.list.find(e => e.file === file) || {}).featured);
-        setAdminStatus('Mise à jour de la une…');
+    /** Boutons ★ 2 3 : place de l'article sur l'accueil ; un second clic sur la place actuelle la retire */
+    async function setArticleRank(file, n) {
+        const rank = homeRank(library.list.find(e => e.file === file) || {}) === n ? 0 : n;
+        setAdminStatus('Mise à jour de l’accueil…');
         await updateArticlesList(list => {
             const entry = list.find(a => a.file === file);
-            if (!entry || (on && entry.hidden)) return false; // un article masqué ne va pas à la une
-            list.forEach(a => delete a.featured);
-            if (on) entry.featured = true;
-            return on ? `${file} à la une` : `${file} retiré de la une`;
+            if (!entry || (rank && entry.hidden) || homeRank(entry) === rank) return false; // un article masqué ne va pas sur l'accueil
+            applyHomeRank(list, entry, rank, false);
+            return rank ? `${file} : ${RANK_LABELS[rank]}` : `${file} : plus de place choisie sur l’accueil`;
         });
-        await reloadLibrary(on ? `✅ « ${articleTitle(file)} » est à la une.` : `✅ « ${articleTitle(file)} » n’est plus à la une.`);
+        await reloadLibrary(rank ? `✅ « ${articleTitle(file)} » : ${RANK_LABELS[rank]}.` : `✅ « ${articleTitle(file)} » n’a plus de place choisie sur l’accueil.`);
     }
 
     /** Masque l'article du site (il garde sa place dans la liste), ou le réaffiche */
@@ -2621,7 +2609,7 @@ ${buildArticleBodyHtml()}
         await updateArticlesList(list => {
             const entry = list.find(a => a.file === file);
             if (!entry || !!entry.hidden === hide) return false;
-            if (hide) { entry.hidden = true; delete entry.featured; } else delete entry.hidden;
+            if (hide) { entry.hidden = true; applyHomeRank(list, entry, 0, false); } else delete entry.hidden;
             return hide ? `Article masqué : ${file}` : `Article réaffiché : ${file}`;
         });
         await reloadLibrary(hide ? `✅ « ${articleTitle(file)} » est masqué : il n’apparaît plus sur le site.` : `✅ « ${articleTitle(file)} » est de nouveau visible sur le site.`);
@@ -3304,6 +3292,41 @@ ${buildArticleBodyHtml()}
         };
     }
 
+    // --- PLACES SUR L'ACCUEIL : ★ 1er, 2, 3 ---
+    // L'étoile (« featured: true ») met un élément 1er sur l'accueil (et « À la une » des pages Écrits et
+    // Vidéos) ; « top: 2 » et « top: 3 » le mettent 2e et 3e. Chaque place n'est tenue que par un élément
+    // par rubrique ; l'accueil complète les places libres avec l'ordre de la liste (homeSelection dans index.html).
+    const RANK_LABELS = { 1: 'À la une', 2: '2e sur l’accueil', 3: '3e sur l’accueil' };
+
+    function homeRank(e) { return e.featured ? 1 : (e.top === 2 || e.top === 3 ? e.top : 0); }
+
+    /** Donne la place « rank » (0 : aucune) à target ; l'élément qui la tenait la perd.
+        keepFeaturedKey : écrit « featured: false » plutôt que de retirer le champ (fichier des vidéos). */
+    function applyHomeRank(list, target, rank, keepFeaturedKey) {
+        const clear = (e) => {
+            if (keepFeaturedKey) e.featured = false; else delete e.featured;
+            delete e.top;
+        };
+        if (rank) list.forEach(e => { if (e !== target && homeRank(e) === rank) clear(e); });
+        clear(target);
+        if (rank === 1) target.featured = true;
+        else if (rank) target.top = rank;
+    }
+
+    /** Boutons d'une ligne : ★ (or), 2 (argent), 3 (bronze) ; désactivés pour un élément masqué */
+    function rankButtonsHtml(e) {
+        const r = homeRank(e);
+        const title = (n) => e.hidden ? 'Masqué : ne peut pas être sur l’accueil'
+            : r === n ? 'Retirer cette place sur l’accueil' : n === 1 ? 'À la une : 1er sur l’accueil' : `${n}e sur l’accueil`;
+        return `<span class="rank-group">${[1, 2, 3].map(n =>
+            `<button type="button" class="rank-btn r${n}${r === n ? ' on' : ''}" data-act="rank" data-rank="${n}"${e.hidden ? ' disabled' : ''} title="${title(n)}">${n === 1 ? '★' : n}</button>`).join('')}</span>`;
+    }
+
+    function rankBadgeHtml(e) {
+        const r = homeRank(e);
+        return r ? `<span class="badge badge-r${r}">${r === 1 ? '★ ' : ''}${RANK_LABELS[r]}</span>` : '';
+    }
+
     // --- CATÉGORIES ---
     // Une même catégorie peut s'écrire de plusieurs façons (« Production Studio » / « Production, Studio ») :
     // on les compare sans accents, majuscules ni ponctuation, pour réutiliser celle qui existe déjà.
@@ -3443,7 +3466,7 @@ ${buildArticleBodyHtml()}
 
     function validatePhotoEntry(id, entry, action) {
         if (!entry.file && !entry.src) return 'Choisis une photo : envoie un fichier, écris son chemin ou une adresse externe.';
-        if (action !== 'draft' && id === 'galerie' && !entry.title) return 'Le titre est obligatoire pour publier.';
+        if (action !== 'draft' && !entry.title) return 'Le titre est obligatoire pour publier.';
         return '';
     }
 
@@ -3453,7 +3476,8 @@ ${buildArticleBodyHtml()}
             tab: 'videos',
             path: 'assets/videos/videos.json',
             draftsPath: 'assets/videos/drafts.json',
-            featured: true,
+            ranks: true,
+            keepFeaturedKey: true, // chaque vidéo du fichier a « featured: true/false »
             group: { field: 'category', all: 'Toutes les catégories' },
             key: (e) => e.url || '',
             thumb: (e) => e.image || youtubeThumb(e.url),
@@ -3481,7 +3505,7 @@ ${buildArticleBodyHtml()}
             tab: 'podcasts',
             path: 'assets/podcasts/podcasts.json',
             draftsPath: 'assets/podcasts/drafts.json',
-            featured: false,
+            ranks: true,
             group: { field: 'series', all: 'Toutes les séries' },
             key: (e) => e.url || '',
             thumb: (e) => e.image || youtubeThumb(e.url),
@@ -3510,10 +3534,10 @@ ${buildArticleBodyHtml()}
             tab: 'photos',
             path: 'assets/photos/photos.json',
             draftsPath: 'assets/photos/drafts.json',
-            featured: false,
+            ranks: true,
             grid: true,
             bulkUpload: true,
-            note: 'Page Photos, dans cet ordre ; les filtres sont créés à partir des catégories utilisées.',
+            note: 'Page Photos, dans cet ordre ; les filtres sont créés à partir des catégories utilisées. ★, 2 et 3 choisissent les photos de l’accueil (★ en grand).',
             group: { field: 'category', all: 'Toutes les catégories', labels: PHOTO_CATEGORIES },
             fields: [
                 { name: 'file', label: 'Photo du site', type: 'image', hint: 'Envoie une photo (rangée dans assets/images/) ou écris son chemin.' },
@@ -3533,33 +3557,6 @@ ${buildArticleBodyHtml()}
             validate: validatePhotoEntry,
             duplicate: ['Cette photo est déjà dans la galerie.', 'Cette photo est déjà dans un brouillon.'],
             deleteHint: 'Le fichier image reste dans assets/images/. Pour seulement cacher la photo, utilise plutôt « Masquer du site ».'
-        },
-        accueil: {
-            label: 'Photos de l’accueil', noun: 'Photo de l’accueil', one: 'une photo', the: 'la photo', newLabel: '+ Ajouter une photo', hiddenLabel: 'Masquée',
-            tab: 'photos-accueil',
-            path: 'assets/photos/accueil.json',
-            draftsPath: null, // trois photos : pas de brouillons
-            featured: false,
-            grid: true,
-            note: 'Section « Photographies » de l’accueil, dans cet ordre : la première est affichée en grand. Prévue pour 3 photos.',
-            group: null,
-            fields: [
-                { name: 'src', label: 'Image hébergée ailleurs', type: 'string', placeholder: 'https://res.cloudinary.com/…', hint: 'Plus légère à charger. Laisse vide pour utiliser une photo du site.' },
-                { name: 'file', label: 'Photo du site', type: 'image', suggest: 'galerie', hint: 'Tape pour choisir une photo de la galerie, ou envoie-en une.' },
-                { name: 'caption', label: 'Légende', type: 'string', hint: 'Affichée au survol.' },
-                { name: 'alt', label: 'Description', type: 'string' },
-                { name: 'faded', label: 'Photo atténuée', type: 'checkbox' }
-            ],
-            words: { add: 'Photo ajoutée à l’accueil', edit: 'Photo de l’accueil modifiée', del: 'Photo retirée de l’accueil', hide: 'Photo de l’accueil masquée', show: 'Photo de l’accueil réaffichée', order: 'Ordre des photos de l’accueil modifié' },
-            title: (e) => e.caption || e.alt || photoFileName(e) || 'Photo',
-            meta: (e) => [e.src ? 'Image externe' : 'Photo du site', e.faded ? 'atténuée' : ''],
-            key: (e) => e.src || e.file || '',
-            thumb: photoPath,
-            view: { label: 'Voir la photo ↗', url: photoPath },
-            same: (a, b) => !!photoPath(a) && photoPath(a) === photoPath(b),
-            validate: validatePhotoEntry,
-            duplicate: ['Cette photo est déjà sur l’accueil.', ''],
-            deleteHint: 'Seule l’entrée de l’accueil est retirée : la photo elle-même n’est pas supprimée.'
         }
     };
     const collectionState = Object.fromEntries(Object.keys(COLLECTIONS).map(id => [id, { list: [], drafts: [], loaded: false, loading: null, pendingOrder: null, sortable: null }]));
@@ -3694,13 +3691,11 @@ ${buildArticleBodyHtml()}
         const meta = c.meta(e).filter(Boolean).join(' · ');
         const thumb = c.thumb(e);
         const badges = [
-            e.featured ? '<span class="badge badge-une">À la une</span>' : '',
+            c.ranks ? rankBadgeHtml(e) : '',
             e.hidden ? `<span class="badge badge-hidden">${c.hiddenLabel}</span>` : '',
             yt === null ? '<span class="badge badge-error">Introuvable sur YouTube</span>' : ''
         ].join('');
-        const star = c.featured
-            ? `<button type="button" class="btn-mini btn-star${e.featured ? ' on' : ''}" data-act="feature" ${e.hidden ? `disabled title="${c.hiddenLabel} : ne peut pas être à la une"` : `title="${e.featured ? 'Retirer de la une' : 'Mettre à la une'}"`}>${e.featured ? '★' : '☆'}</button>`
-            : '';
+        const star = c.ranks ? rankButtonsHtml(e) : '';
         const menu = [['view', c.view.label], ['hide', e.hidden ? 'Afficher sur le site' : 'Masquer du site'], ['delete', 'Supprimer…', 'danger']];
         return `<div class="lib-row${e.hidden ? ' is-hidden' : ''}" data-key="${escapeHtml(c.key(e))}">
             <span class="lib-handle" title="Glisser pour changer l’ordre">⠿</span>
@@ -3763,7 +3758,7 @@ ${buildArticleBodyHtml()}
             'cancel-order': () => { st.pendingOrder = null; renderCollection(id); },
             edit: () => openEntryEditor(id, 'edit', entry),
             view: () => window.open(c.view.url(entry), '_blank', 'noopener'),
-            feature: () => toggleCollectionFeatured(id, entry),
+            rank: () => setCollectionRank(id, entry, Number(btn.dataset.rank)),
             hide: () => toggleCollectionHidden(id, entry),
             delete: () => deleteCollectionEntry(id, entry),
             'open-draft': () => openEntryEditor(id, 'draft', draft),
@@ -3794,20 +3789,20 @@ ${buildArticleBodyHtml()}
         collectionDone(id, '✅ Ordre enregistré. Le site est mis à jour en 1 à 2 minutes.');
     }
 
-    async function toggleCollectionFeatured(id, entry) {
+    /** Boutons ★ 2 3 : place sur l'accueil ; un second clic sur la place actuelle la retire */
+    async function setCollectionRank(id, entry, n) {
         const c = COLLECTIONS[id], st = collectionState[id];
-        const on = !entry.featured;
+        const rank = homeRank(entry) === n ? 0 : n;
         const title = entryTitle(id, entry);
-        setAdminStatus('Mise à jour de la une…');
+        setAdminStatus('Mise à jour de l’accueil…');
         const { list } = await updateJsonList(c.path, list => {
             const target = list.find(e => c.key(e) === c.key(entry));
-            if (!target || (on && target.hidden)) return false;
-            list.forEach(e => { e.featured = false; });
-            target.featured = on;
-            return `${title} ${on ? 'à la une' : 'retirée de la une'}`;
+            if (!target || (rank && target.hidden) || homeRank(target) === rank) return false;
+            applyHomeRank(list, target, rank, c.keepFeaturedKey);
+            return rank ? `${title} : ${RANK_LABELS[rank]}` : `${title} : plus de place choisie sur l’accueil`;
         });
         st.list = list;
-        collectionDone(id, on ? `✅ « ${title} » est à la une.` : `✅ « ${title} » n’est plus à la une.`);
+        collectionDone(id, rank ? `✅ « ${title} » : ${RANK_LABELS[rank]}.` : `✅ « ${title} » n’a plus de place choisie sur l’accueil.`);
     }
 
     async function toggleCollectionHidden(id, entry) {
@@ -3818,7 +3813,7 @@ ${buildArticleBodyHtml()}
         const { list } = await updateJsonList(c.path, list => {
             const target = list.find(e => c.key(e) === c.key(entry));
             if (!target || !!target.hidden === hide) return false;
-            if (hide) { target.hidden = true; if (c.featured) target.featured = false; } else delete target.hidden;
+            if (hide) { target.hidden = true; if (c.ranks) applyHomeRank(list, target, 0, c.keepFeaturedKey); } else delete target.hidden;
             return `${hide ? c.words.hide : c.words.show} : ${title}`;
         });
         st.list = list;
@@ -3923,15 +3918,9 @@ ${buildArticleBodyHtml()}
                 <input name="${f.name}__new" class="hidden" style="margin-top:5px" placeholder="${escapeHtml(f.newLabel.replace('…', ''))}" autocomplete="off">${hint}`;
         }
         if (f.type === 'image') {
-            // suggest : propose les photos d'une autre rubrique (ex. la galerie pour l'accueil)
-            const suggestions = f.suggest ? collectionState[f.suggest].list.map(e => e.file).filter(Boolean) : [];
-            return `${label}<div class="field-inline"><input id="f-${f.name}" name="${f.name}" placeholder="assets/images/photo.jpg ou https://…" value="${escapeHtml(v)}"${suggestions.length ? ` list="f-${f.name}-list"` : ''} autocomplete="off">
+            return `${label}<div class="field-inline"><input id="f-${f.name}" name="${f.name}" placeholder="assets/images/photo.jpg ou https://…" value="${escapeHtml(v)}" autocomplete="off">
                 <button type="button" class="btn btn-light" data-upload="${f.name}">Envoyer…</button></div>
-                ${suggestions.length ? `<datalist id="f-${f.name}-list">${[...new Set(suggestions)].map(s => `<option value="${escapeHtml(s)}"></option>`).join('')}</datalist>` : ''}
                 <input type="file" accept="image/*" class="hidden" data-upload-input="${f.name}">${hint}`;
-        }
-        if (f.type === 'checkbox') {
-            return `<label class="gh-check" style="margin-top:14px"><input type="checkbox" name="${f.name}"${v ? ' checked' : ''}> ${escapeHtml(f.label)}</label>${hint}`;
         }
         return `${label}<input id="f-${f.name}" name="${f.name}" placeholder="${escapeHtml(f.placeholder || '')}" value="${escapeHtml(v)}">${hint}`;
     }
@@ -4025,7 +4014,6 @@ ${buildArticleBodyHtml()}
             if (f.type === 'category') v = selectedCategory(form, f, categoryChoices(id, f));
             else if (f.type === 'tags') v = text(f.name).split(',').map(t => t.trim()).filter(Boolean);
             else if (f.type === 'episode') v = text(f.name) === '' ? '' : Number(text(f.name));
-            else if (f.type === 'checkbox') v = form.elements[f.name] && form.elements[f.name].checked ? true : ''; // écrit seulement si coché
             else if (f.type === 'placeDate') v = [text(f.name + '__place'), text(f.name + '__date')].filter(Boolean).join(' · ');
             else v = text(f.name);
             if (Array.isArray(v) ? v.length : v !== '') entry[f.name] = v;
@@ -4045,7 +4033,7 @@ ${buildArticleBodyHtml()}
         const group = c.group && e[c.group.field] ? groupLabel(id, e[c.group.field]) : '';
         const text = e.description || e.alt || '';
         document.getElementById('drawer-preview').innerHTML = `<div class="preview-card">
-            <div class="preview-thumb">${thumb ? `<img src="${escapeHtml(thumb)}" alt=""${e.faded ? ' style="opacity:0.5"' : ''}>` : ''}</div>
+            <div class="preview-thumb">${thumb ? `<img src="${escapeHtml(thumb)}" alt="">` : ''}</div>
             <div>
                 ${group ? `<span class="preview-cat">${escapeHtml(group)}</span>` : ''}
                 <div class="preview-title">${escapeHtml(entryTitle(id, e))}</div>
@@ -4228,7 +4216,6 @@ ${buildArticleBodyHtml()}
         const articleAttrs = (file) => `data-dash="article" data-id="${escapeHtml(file)}"`;
         const entryAttrs = (id, e) => `data-dash="coll" data-coll="${id}" data-id="${escapeHtml(COLLECTIONS[id].key(e))}"`;
         const ids = Object.keys(COLLECTIONS);
-        const mainIds = ids.filter(id => id !== 'accueil'); // les photos de l'accueil ne comptent pas comme contenus
         const loading = ids.some(id => !collectionState[id].loaded);
         const visibleArticles = library.list.filter(e => !e.hidden && library.files.some(f => f.name === e.file));
 
@@ -4239,18 +4226,18 @@ ${buildArticleBodyHtml()}
             ...ids.flatMap(id => collectionState[id].drafts.map(d => ({ attrs: `data-dash="coll-draft" data-coll="${id}" data-id="${escapeHtml(d.id)}"`, title: entryTitle(id, d), meta: `${COLLECTIONS[id].noun} · ${formatDate(d.savedAt)}`, date: d.savedAt })))
         ].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
-        // À la une : l'article et la vidéo
-        const featuredArticle = library.list.find(e => e.featured);
-        const featuredVideo = collectionState.videos.list.find(e => e.featured);
+        // Choix pour l'accueil : les places ★, 2 et 3 de chaque rubrique (visibles seulement dans le panneau)
+        const ranked = (list) => list.filter(homeRank).sort((a, b) => homeRank(a) - homeRank(b));
+        const rankMeta = (noun, e) => `${noun} · ${homeRank(e) === 1 ? '★ ' : ''}${RANK_LABELS[homeRank(e)]}`;
         const featured = [
-            featuredArticle ? item(articleAttrs(featuredArticle.file), articleTitle(featuredArticle.file), 'Article') : '',
-            featuredVideo ? item(entryAttrs('videos', featuredVideo), entryTitle('videos', featuredVideo), 'Vidéo') : ''
-        ].filter(Boolean);
+            ...ranked(library.list).map(e => item(articleAttrs(e.file), articleTitle(e.file), rankMeta('Article', e))),
+            ...ids.flatMap(id => ranked(collectionState[id].list).map(e => item(entryAttrs(id, e), entryTitle(id, e), rankMeta(COLLECTIONS[id].noun, e))))
+        ];
 
         // Derniers ajouts : le haut de chaque liste (l'ordre du site)
         const latest = [
             ...visibleArticles.slice(0, 3).map(e => item(articleAttrs(e.file), articleTitle(e.file), ['Article', (library.infos[e.file] || {}).date].filter(Boolean).join(' · '))),
-            ...mainIds.flatMap(id => collectionState[id].list.filter(e => !e.hidden).slice(0, 3).map(e => item(entryAttrs(id, e), entryTitle(id, e), [COLLECTIONS[id].noun, e.date || e.meta].filter(Boolean).join(' · '))))
+            ...ids.flatMap(id => collectionState[id].list.filter(e => !e.hidden).slice(0, 3).map(e => item(entryAttrs(id, e), entryTitle(id, e), [COLLECTIONS[id].noun, e.date || e.meta].filter(Boolean).join(' · '))))
         ];
 
         // Masqués : présents dans les listes, invisibles sur le site
@@ -4262,7 +4249,7 @@ ${buildArticleBodyHtml()}
         // [nombre, libellé] ; « … » tant que la rubrique n'est pas lue
         const stats = [
             [visibleArticles.length, 'articles'],
-            ...mainIds.map(id => [collectionState[id].loaded ? collectionState[id].list.filter(e => !e.hidden).length : '…', id === 'galerie' ? 'photos' : COLLECTIONS[id].label.toLowerCase()]),
+            ...ids.map(id => [collectionState[id].loaded ? collectionState[id].list.filter(e => !e.hidden).length : '…', id === 'galerie' ? 'photos' : COLLECTIONS[id].label.toLowerCase()]),
             [drafts.length, 'brouillons']
         ];
         panel.innerHTML = `
@@ -4275,7 +4262,7 @@ ${buildArticleBodyHtml()}
             <div class="dash-grid">
                 ${card('Sur le site', null, `<div class="dash-stats">${stats.map(([n, label]) => `<span><strong>${n}</strong>${escapeHtml(label)}</span>`).join('')}</div>`)}
                 ${card('Brouillons en cours', drafts.length, listOf(drafts.map(d => item(d.attrs, d.title, d.meta)), 'Aucun brouillon en cours.'))}
-                ${card('À la une', null, listOf(featured, 'Rien n’est à la une.'))}
+                ${card('Choix pour l’accueil', featured.length, listOf(featured, 'Aucune place choisie : l’accueil suit l’ordre des listes.'))}
                 ${card('Derniers ajouts', null, listOf(latest, loading ? 'Chargement…' : 'Rien pour l’instant.'))}
                 ${card('Masqués du site', hidden.length, listOf(hidden, 'Rien n’est masqué.'))}
             </div>`;

@@ -4,7 +4,8 @@
 // La liste des vidéos est dans assets/videos/videos.json (modifiable avec le panneau articlecreator.html).
 // Le titre et la miniature sont récupérés automatiquement sur YouTube.
 // La catégorie, la date et la description sont écrites dans la liste (YouTube ne les fournit pas).
-// L'ordre de la liste est l'ordre d'affichage ; « featured: true » la met « À la une ».
+// L'ordre de la liste est l'ordre d'affichage ; « featured: true » la met « À la une » (et 1re sur
+// l'accueil), « top: 2 » ou « top: 3 » la met 2e ou 3e sur l'accueil.
 // Champs facultatifs : title (remplace le titre YouTube), image (remplace la miniature), tags,
 // hidden (true : vidéo masquée du site). Les brouillons (drafts.json) ne sont jamais lus ici.
 const VIDEOS_DATA = 'assets/videos/videos.json';
@@ -50,6 +51,7 @@ async function loadVideo(entry) {
   return {
     url: entry.url,
     featured: !!entry.featured,
+    top: entry.top || 0,
     title: title || 'Vidéo',
     category: entry.category || '',
     date: entry.date || '',

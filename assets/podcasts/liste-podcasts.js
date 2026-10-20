@@ -5,7 +5,8 @@
 // La miniature est récupérée automatiquement sur YouTube.
 // Le titre est « Série — Épisode N » quand series et episode sont remplis ;
 // sinon c'est le titre de la vidéo YouTube.
-// L'ordre de la liste est l'ordre d'affichage ; l'accueil montre les 3 premiers.
+// L'ordre de la liste est l'ordre d'affichage. L'accueil montre d'abord les épisodes choisis
+// (« featured: true » 1er, « top: 2 » et « top: 3 »), puis les premiers de la liste.
 // Champs facultatifs : title (remplace le titre), image (remplace la miniature),
 // hidden (true : épisode masqué du site). Les brouillons (drafts.json) ne sont jamais lus ici.
 const PODCASTS_DATA = 'assets/podcasts/podcasts.json';
@@ -52,6 +53,8 @@ async function loadPodcast(entry) {
   title = title || entry.series || 'Épisode';
   return {
     url: entry.url,
+    featured: !!entry.featured,
+    top: entry.top || 0,
     title,
     series: entry.series || '',
     episode: hasEpisode ? String(entry.episode) : '',

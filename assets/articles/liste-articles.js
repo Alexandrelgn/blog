@@ -4,7 +4,8 @@
 // La liste des articles est dans assets/articles/articles.json (gérée par le panneau articlecreator.html).
 // Chaque entrée donne le nom du fichier de l'article ; titre, catégorie, chapeau, date, durée
 // de lecture et image sont lus directement dans l'article.
-// L'ordre de la liste est l'ordre d'affichage ; « featured: true » le met « À la une ».
+// L'ordre de la liste est l'ordre d'affichage ; « featured: true » le met « À la une » (et 1er sur
+// l'accueil), « top: 2 » ou « top: 3 » le met 2e ou 3e sur l'accueil.
 // Champs facultatifs pour remplacer ce qui est lu dans l'article : excerpt, image, category.
 // « hidden: true » masque l'article du site (il reste dans la liste du panneau).
 const ARTICLES_DATA = 'assets/articles/articles.json';
@@ -45,6 +46,7 @@ async function loadArticle(entry) {
     // Lien sans « .html » : GitHub Pages sert « article » à partir du fichier « article.html »
     href: url.href.replace(/\.html$/, ''),
     featured: !!entry.featured,
+    top: entry.top || 0,
     title: text('.art-title') || doc.title,
     category: entry.category || text('.art-cat'),
     excerpt: entry.excerpt || text('.art-intro'),

@@ -24,7 +24,11 @@ content:
       - name: featured
         label: À la une
         type: boolean
-        description: Un seul article à la une à la fois.
+        description: Un seul article à la une à la fois (1er sur l'accueil).
+      - name: top
+        label: Place sur l'accueil (2 ou 3)
+        type: number
+        description: Laisser vide si l'article n'a pas de place choisie.
       - name: excerpt
         label: Résumé (facultatif)
         type: text
@@ -57,6 +61,7 @@ content:
       - name: featured
         label: À la une
         type: boolean
+        description: 1re sur l'accueil.
       - name: category
         label: Catégorie
         type: string
@@ -84,6 +89,9 @@ content:
         label: Masquée du site
         type: boolean
         description: La vidéo reste dans la liste mais n'apparaît plus sur le site.
+      - name: top
+        label: Place sur l'accueil (2 ou 3)
+        type: number
 
   - name: photos
     label: Photos (galerie)
@@ -130,33 +138,12 @@ content:
         label: Masquée du site
         type: boolean
         description: La photo reste dans la liste mais n'apparaît plus sur le site.
-
-  - name: photos-accueil
-    label: Photos de l'accueil
-    type: file
-    path: assets/photos/accueil.json
-    format: json
-    list: true
-    fields:
-      - name: src
-        label: Adresse de l'image
-        type: string
-        description: Adresse complète (ex. Cloudinary). Laisser vide pour utiliser la photo ci-dessous.
-      - name: file
-        label: Photo du site
-        type: image
-      - name: caption
-        label: Légende
-        type: string
-      - name: alt
-        label: Description
-        type: string
-      - name: faded
-        label: Photo atténuée
+      - name: featured
+        label: 1re sur l'accueil
         type: boolean
-      - name: hidden
-        label: Masquée du site
-        type: boolean
+      - name: top
+        label: Place sur l'accueil (2 ou 3)
+        type: number
 
   - name: podcasts
     label: Podcasts
@@ -199,3 +186,9 @@ content:
         label: Masqué du site
         type: boolean
         description: L'épisode reste dans la liste mais n'apparaît plus sur le site.
+      - name: featured
+        label: 1er sur l'accueil
+        type: boolean
+      - name: top
+        label: Place sur l'accueil (2 ou 3)
+        type: number

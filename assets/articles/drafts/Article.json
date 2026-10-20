@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "file": null,
+  "fileSha": null,
+  "savedAt": "2026-10-20T20:27:07.714Z",
+  "article": {
+    "version": 1,
+    "meta": {
+      "short": "Article",
+      "cat": "Société",
+      "tags": "Enquête, Politique",
+      "title": "Broiommon 1",
+      "intro": "Introduction...",
+      "loc": "Paris",
+      "date": "2026",
+      "readTime": "8 min de lecture",
+      "heroUrl": "",
+      "heroAlt": "",
+      "heroCap": ""
+    },
+    "authors": [
+      {
+        "name": "Alexandre Ligneul"
+      }
+    ],
+    "articleBlocks": [
+      {
+        "id": "block-1792528020516",
+        "type": "p",
+        "content": "",
+        "extra": "",
+        "third": "",
+        "html": "test 1"
+      }
+    ],
+    "extraHead": "",
+    "extraBody": ""
+  }
+}

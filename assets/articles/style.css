@@ -108,6 +108,10 @@ footer { background: #0d0d0d; padding: 1.2rem 2.5rem; display: flex; justify-con
 /* --- RESPONSIVE --- */
 @media (max-width: 680px) {
   nav, footer { padding: 1rem 1.25rem; }
+  /* Le menu passe sous le nom, sur toute la largeur */
+  nav { flex-wrap: wrap; row-gap: 0.55rem; }
+  .nav-links { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem 0.6rem; }
+  .nav-links a { font-size: 0.72rem; letter-spacing: 0.06em; }
   .wrap { padding: 0 1.25rem; }
   .prod-pdf-wrap { flex-wrap: wrap; }
   .prod-pdf-btn { width: 100%; justify-content: center; }

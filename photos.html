@@ -380,7 +380,12 @@
       .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       footer { padding: 1rem 1.25rem; }
     }
-
+    /* Téléphone : le menu passe sous le nom, sur toute la largeur (même règle dans style.css et les autres pages) */
+    @media (max-width: 680px) {
+      nav { flex-wrap: wrap; row-gap: 0.55rem; }
+      .nav-links { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem 0.6rem; }
+      .nav-links a { font-size: 0.72rem; letter-spacing: 0.06em; }
+    }
   </style>
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
 </head>

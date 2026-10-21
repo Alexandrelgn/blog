@@ -332,7 +332,36 @@
         .preview-meta { font-size: 0.68rem; color: var(--muted); }
         .preview-desc { font-size: 0.75rem; color: #555; margin: 5px 0 0; line-height: 1.45; white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
+        /* Onglet Profil (bouton et photo de l'accueil) */
+        .pf-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 14px; align-items: start; }
+        .pf-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .pf-actions .btn { width: auto; margin: 0; padding: 8px 12px; font-size: 0.8rem; }
+        .pf-file { display: inline-block; text-transform: none; letter-spacing: 0; font-weight: 500; cursor: pointer; }
+        .pf-file input { display: none; }
+        .pf-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .pf-btn-preview, .pf-btn-secondary { display: inline-block; padding: 0.7rem 1.6rem; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; }
+        .pf-btn-preview { background: var(--accent); color: #fff; font-weight: 500; }
+        .pf-btn-preview.off { background: none; color: var(--muted); border: 1px dashed var(--border); text-transform: none; letter-spacing: 0; }
+        .pf-btn-secondary { border: 1px solid var(--border); color: var(--ink); }
+        .pf-photo-layout { display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-start; }
+        .pf-previews { flex: 0 1 auto; min-width: 0; max-width: 100%; }
+        .pf-frame { width: 280px; max-width: 100%; aspect-ratio: 4 / 5; overflow: hidden; background: var(--soft); border: 1px solid var(--border); cursor: grab; touch-action: none; user-select: none; box-sizing: border-box; }
+        .pf-frame.round { border-radius: 50%; }
+        /* Largeur utile d'un téléphone (375 px moins les marges de l'accueil) */
+        .pf-phone { width: 335px; max-width: 100%; padding: 10px; border: 1px dashed var(--border); border-radius: 6px; box-sizing: border-box; }
+        .pf-phone .field-hint { margin: 0; }
+        .pf-frame.dragging { cursor: grabbing; }
+        .pf-frame img { width: 100%; height: 100%; display: block; object-fit: cover; pointer-events: none; filter: grayscale(8%); }
+        .pf-controls { flex: 1 1 200px; min-width: 0; }
+        .pf-controls input[type="range"] { padding: 0; }
+        .pf-val { text-transform: none; font-weight: 400; color: var(--ink); }
+        #tab-profil code { overflow-wrap: anywhere; }
+        .pf-savebar { position: sticky; bottom: 0; display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 10px 12px; margin-top: 14px; }
+        .pf-savebar .editor-state { flex: 1; }
+        .pf-savebar .btn { width: auto; margin: 0; padding: 8px 14px; font-size: 0.82rem; }
+
         @media (max-width: 800px) {
+            .pf-grid { grid-template-columns: minmax(0, 1fr); }
             body { grid-template-columns: 1fr; height: auto; overflow: auto; }
             .editor-panel { overflow: visible; border-right: none; }
             .preview-panel { padding: 16px; }
@@ -424,6 +453,7 @@
             <button type="button" role="tab" data-tab="videos">Vidéos</button>
             <button type="button" role="tab" data-tab="podcasts">Podcasts</button>
             <button type="button" role="tab" data-tab="photos">Photos</button>
+            <button type="button" role="tab" data-tab="profil">Profil</button>
         </nav>
         <p class="gh-status" id="admin-status"></p>
 
@@ -456,6 +486,81 @@
         <section id="tab-videos" class="tab-panel hidden" role="tabpanel" data-collection="videos"></section>
         <section id="tab-podcasts" class="tab-panel hidden" role="tabpanel" data-collection="podcasts"></section>
         <section id="tab-galerie" class="tab-panel hidden" role="tabpanel" data-collection="galerie"></section>
+
+        <!-- Profil : bouton principal et photo de l'accueil (assets/site/profil.json) -->
+        <section id="tab-profil" class="tab-panel hidden" role="tabpanel">
+            <form id="pf-form" onsubmit="event.preventDefault(); saveProfile()" oninput="updateProfilePreview()" onchange="updateProfilePreview()">
+            <div class="pf-grid">
+                <section class="dash-card">
+                    <h2>Bouton principal de l'accueil</h2>
+                    <label class="gh-check"><input type="checkbox" id="pf-btn-visible"> Afficher le bouton</label>
+                    <label for="pf-btn-label">Texte du bouton</label>
+                    <input type="text" id="pf-btn-label" maxlength="40" placeholder="Rapport de stage, Mon CV…">
+                    <label for="pf-btn-pick">Mène vers</label>
+                    <select id="pf-btn-pick" onchange="pickProfileLink(this)"></select>
+                    <label for="pf-btn-url">Adresse du lien</label>
+                    <input type="text" id="pf-btn-url" placeholder="assets/pdf/CV_Alexandre.pdf ou https://…">
+                    <p class="field-hint" id="pf-btn-hint">Une page ou un fichier du site (chemin sans « / » au début), ou une adresse complète.</p>
+                    <label class="gh-check"><input type="checkbox" id="pf-btn-newtab"> Ouvrir dans un nouvel onglet</label>
+                    <div class="pf-actions">
+                        <label class="btn btn-light pf-file">Envoyer un PDF (CV, rapport…)<input type="file" accept="application/pdf,.pdf" onchange="uploadProfilePdf(this)"></label>
+                    </div>
+                    <p class="drawer-preview-label" style="margin-top:16px">Aperçu</p>
+                    <div class="pf-btn-row">
+                        <a id="pf-btn-preview" class="pf-btn-preview" target="_blank" rel="noopener"></a>
+                        <span class="pf-btn-secondary">Me contacter</span>
+                    </div>
+                </section>
+
+                <section class="dash-card">
+                    <h2>Photo de présentation</h2>
+                    <div class="pf-photo-layout">
+                        <div class="pf-previews">
+                            <p class="drawer-preview-label">Grand écran</p>
+                            <div class="pf-frame" id="pf-frame" title="Glisse pour déplacer la photo dans le cadre">
+                                <img id="pf-photo" alt="" draggable="false">
+                            </div>
+                            <p class="drawer-preview-label" style="margin-top:14px">Téléphone</p>
+                            <div class="pf-phone">
+                                <div class="pf-frame" id="pf-frame-m" title="Glisse pour déplacer la photo dans le cadre">
+                                    <img id="pf-photo-m" alt="" draggable="false">
+                                </div>
+                                <p class="field-hint" id="pf-phone-off">Photo masquée sur téléphone.</p>
+                            </div>
+                            <p class="field-hint">Tailles réelles sur l'accueil (le cadre rétrécit un peu sur les fenêtres moyennes). Glisse pour recadrer : le cadrage vaut pour les deux formats.</p>
+                        </div>
+                        <div class="pf-controls">
+                            <input type="hidden" id="pf-photo-src">
+                            <label for="pf-ratio">Format sur grand écran</label>
+                            <select id="pf-ratio"></select>
+                            <label for="pf-ratio-m">Format sur téléphone</label>
+                            <select id="pf-ratio-m"></select>
+                            <label for="pf-zoom">Zoom <span class="pf-val" id="pf-zoom-val"></span></label>
+                            <input type="range" id="pf-zoom" min="1" max="3" step="0.01">
+                            <label for="pf-x">Position horizontale <span class="pf-val" id="pf-x-val"></span></label>
+                            <input type="range" id="pf-x" min="0" max="100" step="1">
+                            <label for="pf-y">Position verticale <span class="pf-val" id="pf-y-val"></span></label>
+                            <input type="range" id="pf-y" min="0" max="100" step="1">
+                            <button type="button" class="btn-mini" style="margin-top:8px" onclick="resetProfileCrop()">Recentrer</button>
+                            <label for="pf-alt">Texte alternatif</label>
+                            <input type="text" id="pf-alt" placeholder="Alexandre Ligneul">
+                        </div>
+                    </div>
+                    <div class="pf-actions">
+                        <label class="btn btn-light pf-file">Téléverser une nouvelle photo<input type="file" accept="image/jpeg,image/png,image/webp" onchange="chooseProfilePhoto(this)"></label>
+                        <button type="button" class="btn btn-light" onclick="downloadProfilePhoto()">Télécharger la photo</button>
+                    </div>
+                    <p class="field-hint" id="pf-photo-hint"></p>
+                </section>
+            </div>
+            <div class="pf-savebar">
+                <span id="pf-state" class="editor-state"></span>
+                <button type="button" class="btn btn-light" onclick="resetProfile()">Annuler les modifications</button>
+                <button type="submit" class="btn btn-primary" id="pf-save">Enregistrer</button>
+            </div>
+            <p class="gh-status" id="pf-status"></p>
+            </form>
+        </section>
         </div>
     </main>
 </div>
@@ -1876,6 +1981,7 @@ ${buildArticleBodyHtml()}
         library = { list: [], files: [], infos: {}, drafts: [] };
         pendingOrder = null;
         Object.values(collectionState).forEach(st => Object.assign(st, { list: [], drafts: [], loaded: false, pendingOrder: null }));
+        profile = null;
         updateConnectionUi();
         setStatusIn('login-status', 'D\u00e9connect\u00e9 : le jeton a \u00e9t\u00e9 supprim\u00e9 de ce navigateur.', 'ok');
         showView('admin');
@@ -1917,7 +2023,8 @@ ${buildArticleBodyHtml()}
         ecrits: { panel: 'library' },
         videos: { panel: 'tab-videos', collection: 'videos' },
         podcasts: { panel: 'tab-podcasts', collection: 'podcasts' },
-        photos: { panel: 'tab-galerie', collection: 'galerie' }
+        photos: { panel: 'tab-galerie', collection: 'galerie' },
+        profil: { panel: 'tab-profil' }
     };
 
     function currentTab() {
@@ -1935,6 +2042,7 @@ ${buildArticleBodyHtml()}
         const coll = view.collection;
         if (tab === 'ecrits') { if (libraryStale) loadLibrary(); else renderLibrary(); }
         else if (coll) { if (!collectionState[coll].loaded) loadCollection(coll); else renderCollection(coll); }
+        else if (tab === 'profil') loadProfile();
         else { if (libraryStale) loadLibrary(); renderDashboard(); }
     }
 
@@ -1948,6 +2056,7 @@ ${buildArticleBodyHtml()}
     async function loadAll() {
         await Promise.all([loadLibrary(), ...Object.keys(COLLECTIONS).map(id => loadCollection(id))]);
         renderDashboard();
+        if (profile) renderProfileLinks(); // la liste des articles du menu « Mène vers »
     }
 
     function setStatusIn(id, html, kind) {
@@ -2197,22 +2306,27 @@ ${buildArticleBodyHtml()}
 
     /** Envoie une image dans assets/images/ ; renvoie son nom de fichier, ou null (message affich\u00e9 par setMsg).
         Le chemin \u00e0 \u00e9crire d\u00e9pend de la rubrique : \u00ab ../images/nom \u00bb dans un article, \u00ab assets/images/nom \u00bb ailleurs. */
-    async function uploadImage(img, setMsg) {
+    function uploadImage(img, setMsg) {
+        return uploadRepoFile(img, GH_IMAGES_DIR, { the: 'l\u2019image', a: 'Une image' }, setMsg);
+    }
+
+    /** Envoie un fichier dans le dossier dir du d\u00e9p\u00f4t, sans \u00e9craser un fichier du m\u00eame nom ; renvoie son nom, ou null */
+    async function uploadRepoFile(file, dir, noun, setMsg) {
         const s = ghSettings();
         if (!s.token) { setMsg('Connecte-toi d\u2019abord avec ton jeton GitHub.', 'error'); return null; }
         // Nom sans accents ni espaces, extension en minuscules
-        const dot = img.name.lastIndexOf('.');
-        const stem = (dot > 0 ? img.name.slice(0, dot) : img.name).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^\w\-]+/g, '-').replace(/^-|-$/g, '') || 'image';
-        const name = stem + (dot > 0 ? img.name.slice(dot).toLowerCase() : '');
-        const path = GH_IMAGES_DIR + name;
+        const dot = file.name.lastIndexOf('.');
+        const stem = (dot > 0 ? file.name.slice(0, dot) : file.name).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^\w\-]+/g, '-').replace(/^-|-$/g, '') || 'fichier';
+        const name = stem + (dot > 0 ? file.name.slice(dot).toLowerCase() : '');
+        const path = dir + name;
         try {
-            setMsg(`Envoi de l\u2019image ${escapeHtml(name)}\u2026`);
+            setMsg(`Envoi de ${noun.the} ${escapeHtml(name)}\u2026`);
             if (await ghRequest(s, 'GET', path, null, true)) {
-                setMsg(`Une image \u00ab ${escapeHtml(name)} \u00bb existe d\u00e9j\u00e0 sur le site : renomme ton fichier avant de l\u2019envoyer.`, 'error');
+                setMsg(`${noun.a} \u00ab ${escapeHtml(name)} \u00bb existe d\u00e9j\u00e0 sur le site : renomme ton fichier avant de l\u2019envoyer.`, 'error');
                 return null;
             }
-            await ghPutFile(s, path, await readFileAsBase64(img), `Ajout de l\u2019image ${name}`);
+            await ghPutFile(s, path, await readFileAsBase64(file), `Ajout de ${noun.the} ${name}`);
             return name;
         } catch (err) {
             setMsg('\u274c ' + escapeHtml(err.message), 'error');
@@ -4284,10 +4398,367 @@ ${buildArticleBodyHtml()}
         else if (dash === 'coll-draft') { const draft = st.drafts.find(x => x.id === id); if (draft) openEntryEditor(coll, 'draft', draft); }
     });
 
+    // --- PROFIL : BOUTON PRINCIPAL ET PHOTO DE L'ACCUEIL ---
+    // Réglages dans assets/site/profil.json, lus par index.html au chargement (applyProfile).
+    // Une nouvelle photo n'est envoyée qu'à l'enregistrement, juste avant le fichier de réglages.
+    const GH_PROFILE = 'assets/site/profil.json';
+    const GH_PDF_DIRS = ['assets/pdf/', 'assets/docs/'];
+    const PROFILE_DEFAULTS = {
+        button: { visible: true, label: 'Rapport de stage', url: 'assets/articles/RS-mai-juin-2026', newTab: false },
+        photo: { src: 'https://res.cloudinary.com/dpggjkaj4/image/upload/v1773091073/FullSizeRender_VSCO_hq8zwb.jpg', alt: 'Alexandre Ligneul', ratio: '4/5', mobileRatio: 'hidden', x: 50, y: 0, zoom: 1 }
+    };
+    // Formats du cadre : proportions, largeur sur grand écran (w) et sur téléphone (m).
+    // À garder identiques à PHOTO_FORMATS d'index.html (sans les libellés).
+    const PHOTO_FORMATS = {
+        '4/5': { label: 'Portrait 4:5', ar: '4 / 5', w: '280px', m: '220px' },
+        '3/4': { label: 'Portrait 3:4', ar: '3 / 4', w: '280px', m: '220px' },
+        '2/3': { label: 'Portrait 2:3', ar: '2 / 3', w: '260px', m: '200px' },
+        '1/1': { label: 'Carré', ar: '1 / 1', w: '300px', m: '220px' },
+        'round': { label: 'Rond', ar: '1 / 1', w: '280px', m: '160px', round: true },
+        '3/2': { label: 'Paysage 3:2', ar: '3 / 2', w: '380px', m: '100%' },
+        '16/9': { label: 'Paysage 16:9', ar: '16 / 9', w: '400px', m: '100%' }
+    };
+    function photoFormat(ratio) {
+        if (PHOTO_FORMATS[ratio]) return PHOTO_FORMATS[ratio];
+        return /^\d+(\.\d+)?\/\d+(\.\d+)?$/.test(ratio || '') ? { label: ratio, ar: ratio.replace('/', ' / '), w: '280px', m: '220px' } : null;
+    }
+    const PROFILE_PAGES = [['#contact', 'Accueil : Contact'], ['articles', 'Écrits'], ['videos', 'Vidéos'], ['photos', 'Photos'], ['podcasts', 'Podcasts'], ['liens', 'Liens']];
+    const PHOTO_MAX_SIDE = 1600; // une photo plus grande est réduite avant l'envoi
+    const BUTTON_HINT = 'Une page ou un fichier du site (chemin sans « / » au début), ou une adresse complète.';
+    // { sha, baseline (formulaire tel qu'enregistré), pdfs, pendingFile (nouvelle photo pas encore envoyée), pendingUrl }
+    let profile = null;
+
+    const pfField = (id) => document.getElementById(id);
+    function setProfileStatus(html, kind) { setStatusIn('pf-status', html, kind); }
+
+    async function loadProfile(force) {
+        if (profile && !force) { renderProfileLinks(); return; }
+        const s = ghSettings();
+        setProfileStatus('Chargement du profil…');
+        try {
+            const [file, ...dirs] = await Promise.all([
+                ghRequest(s, 'GET', GH_PROFILE, null, true),
+                ...GH_PDF_DIRS.map(dir => ghRequest(s, 'GET', dir.slice(0, -1), null, true))
+            ]);
+            const data = file ? JSON.parse(base64ToUtf8(file.content)) : {};
+            profile = {
+                sha: file ? file.sha : null,
+                pdfs: dirs.flatMap(list => Array.isArray(list) ? list.filter(f => f.type === 'file' && /\.pdf$/i.test(f.name)).map(f => f.path) : []),
+                pendingFile: null, pendingUrl: null
+            };
+            fillProfileForm({ button: { ...PROFILE_DEFAULTS.button, ...(data.button || {}) }, photo: { ...PROFILE_DEFAULTS.photo, ...(data.photo || {}) } });
+            setProfileStatus(file ? '' : `<code>${GH_PROFILE}</code> n’existe pas encore : il sera créé au premier enregistrement.`);
+        } catch (err) {
+            setProfileStatus('❌ ' + escapeHtml(err.message), 'error');
+        }
+    }
+
+    function fillProfileForm(p) {
+        // Menus des formats ; une proportion écrite à la main dans le fichier y est ajoutée
+        const formatOptions = (value) => {
+            const list = Object.entries(PHOTO_FORMATS).map(([v, f]) => [v, f.label]);
+            if (!PHOTO_FORMATS[value] && photoFormat(value)) list.push([value, value]);
+            return list.map(([v, label]) => `<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`).join('');
+        };
+        const ratio = pfField('pf-ratio');
+        ratio.innerHTML = formatOptions(p.photo.ratio);
+        pfField('pf-ratio-m').innerHTML = '<option value="hidden">Masquée</option>' + formatOptions(p.photo.mobileRatio);
+        pfField('pf-ratio-m').value = photoFormat(p.photo.mobileRatio) ? p.photo.mobileRatio : 'hidden';
+        pfField('pf-btn-visible').checked = p.button.visible !== false;
+        pfField('pf-btn-label').value = p.button.label || '';
+        pfField('pf-btn-url').value = p.button.url || '';
+        pfField('pf-btn-newtab').checked = !!p.button.newTab;
+        pfField('pf-photo-src').value = p.photo.src || '';
+        pfField('pf-alt').value = p.photo.alt || '';
+        ratio.value = p.photo.ratio;
+        pfField('pf-zoom').value = p.photo.zoom;
+        pfField('pf-x').value = p.photo.x;
+        pfField('pf-y').value = p.photo.y;
+        renderProfileLinks();
+        profile.baseline = JSON.stringify(readProfileForm());
+        updateProfilePreview();
+    }
+
+    function readProfileForm() {
+        const num = (id) => Number(pfField(id).value);
+        return {
+            button: { visible: pfField('pf-btn-visible').checked, label: pfField('pf-btn-label').value.trim(), url: pfField('pf-btn-url').value.trim(), newTab: pfField('pf-btn-newtab').checked },
+            photo: { src: pfField('pf-photo-src').value, alt: pfField('pf-alt').value.trim(), ratio: pfField('pf-ratio').value, mobileRatio: pfField('pf-ratio-m').value, x: num('pf-x'), y: num('pf-y'), zoom: num('pf-zoom') }
+        };
+    }
+
+    function profileDirty() {
+        return !!profile && (!!profile.pendingFile || JSON.stringify(readProfileForm()) !== profile.baseline);
+    }
+
+    /** Ce qui empêche d'enregistrer le bouton, ou '' */
+    function profileProblem(p) {
+        const { visible, label, url } = p.button;
+        if (!visible) return '';
+        if (!label) return 'Indique le texte du bouton.';
+        if (!url) return 'Indique l’adresse du lien.';
+        if (url.startsWith('/')) return 'Enlève le « / » du début : le site est dans un sous-dossier, ce lien serait cassé.';
+        if (/^[a-z][\w+.-]*:/i.test(url) && !/^(https?|mailto|tel):/i.test(url)) return 'Adresse non reconnue : commence par https://, mailto: ou un chemin du site.';
+        return '';
+    }
+
+    /** Chemin d'un fichier du dépôt (et non une adresse complète) */
+    function isRepoPath(src) { return !!src && !/^([a-z][\w+.-]*:|\/\/)/i.test(src); }
+
+    /** Fichier tel qu'il est sur GitHub, même s'il n'est pas encore sur le site (ou pas dans la copie locale) */
+    function repoRawUrl(path) {
+        const s = ghSettings();
+        return `https://raw.githubusercontent.com/${encodeURIComponent(s.owner)}/${encodeURIComponent(s.repo)}/${encodeURIComponent(s.branch)}/${path.split('/').map(encodeURIComponent).join('/')}`;
+    }
+
+    /** Menu « Mène vers » : PDF du site, écrits, pages ; l'adresse du champ y est choisie si elle y figure */
+    function renderProfileLinks() {
+        const pick = pfField('pf-btn-pick');
+        const opt = (v, label) => `<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`;
+        const group = (label, items) => items.length ? `<optgroup label="${escapeHtml(label)}">${items.map(([v, l]) => opt(v, l)).join('')}</optgroup>` : '';
+        const articles = library.list.filter(e => !e.hidden).map(e => [GH_ARTICLES_DIR + e.file.replace(/\.html$/, ''), articleTitle(e.file)]);
+        const pdfs = (profile ? profile.pdfs : []).map(path => [path, path.split('/').pop()]);
+        pick.innerHTML = opt('', 'Autre adresse (à écrire ci-dessous)') + group('Documents PDF', pdfs) + group('Écrits', articles) + group('Pages du site', PROFILE_PAGES);
+        syncProfileLinkPick();
+    }
+
+    function syncProfileLinkPick() {
+        const pick = pfField('pf-btn-pick'), url = pfField('pf-btn-url').value.trim();
+        pick.value = [...pick.options].some(o => o.value === url) ? url : '';
+    }
+
+    function pickProfileLink(select) {
+        if (!select.value) return;
+        pfField('pf-btn-url').value = select.value;
+        // Un PDF s'ouvre dans un nouvel onglet, pour ne pas quitter le site
+        if (/\.pdf$/i.test(select.value)) pfField('pf-btn-newtab').checked = true;
+        updateProfilePreview();
+    }
+
+    function updateProfilePreview() {
+        if (!profile) return;
+        const p = readProfileForm();
+        syncProfileLinkPick();
+
+        const btn = pfField('pf-btn-preview');
+        btn.textContent = p.button.visible ? (p.button.label || 'Sans texte') : 'Bouton masqué sur l’accueil';
+        btn.classList.toggle('off', !p.button.visible);
+        btn.href = p.button.url || '#';
+        const problem = profileProblem(p);
+        pfField('pf-btn-hint').textContent = problem || BUTTON_HINT;
+        pfField('pf-btn-hint').className = 'field-hint' + (problem ? ' error' : '');
+
+        // Même calcul que applyProfile (index.html) : le point (x %, y %) reste en place, le zoom se fait autour
+        const src = profile.pendingUrl || p.photo.src;
+        const mobile = photoFormat(p.photo.mobileRatio);
+        [['pf-frame', 'pf-photo', photoFormat(p.photo.ratio) || PHOTO_FORMATS['4/5'], 'w'], ['pf-frame-m', 'pf-photo-m', mobile, 'm']].forEach(([frameId, imgId, f, size]) => {
+            const frame = pfField(frameId), img = pfField(imgId);
+            frame.classList.toggle('hidden', !f);
+            if (!f) return;
+            frame.style.aspectRatio = f.ar;
+            frame.style.width = f[size];
+            frame.classList.toggle('round', !!f.round);
+            if (img.dataset.src !== src) { img.dataset.src = src; img.dataset.fallback = ''; img.src = src; }
+            img.style.objectPosition = img.style.transformOrigin = `${p.photo.x}% ${p.photo.y}%`;
+            img.style.transform = `scale(${p.photo.zoom})`;
+        });
+        pfField('pf-phone-off').classList.toggle('hidden', !!mobile);
+        pfField('pf-zoom-val').textContent = '× ' + p.photo.zoom.toFixed(2);
+        pfField('pf-x-val').textContent = p.photo.x + ' %';
+        pfField('pf-y-val').textContent = p.photo.y + ' %';
+        const pending = profile.pendingFile;
+        pfField('pf-photo-hint').innerHTML = pending
+            ? `Nouvelle photo : <code>${escapeHtml(pending.name)}</code> (${Math.round(pending.size / 1024)} Ko), envoyée à l’enregistrement.`
+            : (p.photo.src ? `Photo actuelle : <code>${escapeHtml(p.photo.src)}</code>` : 'Aucune photo.');
+
+        const dirty = profileDirty();
+        pfField('pf-state').textContent = dirty ? 'Modifications non enregistrées' : 'Tout est enregistré';
+        pfField('pf-state').classList.toggle('unsaved', dirty);
+    }
+
+    // Image du dépôt absente du site (pas encore publiée, ou copie locale) : on la prend sur GitHub
+    ['pf-photo', 'pf-photo-m'].forEach(id => pfField(id).addEventListener('error', (e) => {
+        const img = e.target, src = img.dataset.src;
+        if (isRepoPath(src) && !img.dataset.fallback) { img.dataset.fallback = '1'; img.src = repoRawUrl(src); }
+    }));
+
+    function resetProfileCrop() {
+        pfField('pf-x').value = 50;
+        pfField('pf-y').value = 50;
+        pfField('pf-zoom').value = 1;
+        updateProfilePreview();
+    }
+
+    // Recadrage à la souris : glisser déplace la photo, la molette zoome
+    ['pf-frame', 'pf-frame-m'].forEach(id => {
+        const frame = pfField(id);
+        let drag = null;
+        frame.addEventListener('pointerdown', (e) => {
+            const img = frame.querySelector('img');
+            if (!profile || !img.naturalWidth) return;
+            frame.setPointerCapture(e.pointerId);
+            frame.classList.add('dragging');
+            const p = readProfileForm().photo;
+            const fw = frame.clientWidth, fh = frame.clientHeight;
+            const cover = Math.max(fw / img.naturalWidth, fh / img.naturalHeight);
+            // Déplacement de l'image pour 1 % de position : (cadre − image zoomée) / 100, négatif si l'image dépasse
+            drag = { x0: e.clientX, y0: e.clientY, x: p.x, y: p.y,
+                kx: (fw - img.naturalWidth * cover * p.zoom) / 100, ky: (fh - img.naturalHeight * cover * p.zoom) / 100 };
+        });
+        frame.addEventListener('pointermove', (e) => {
+            if (!drag) return;
+            const clamp = (v) => Math.round(Math.min(100, Math.max(0, v)));
+            if (Math.abs(drag.kx) > 0.01) pfField('pf-x').value = clamp(drag.x + (e.clientX - drag.x0) / drag.kx);
+            if (Math.abs(drag.ky) > 0.01) pfField('pf-y').value = clamp(drag.y + (e.clientY - drag.y0) / drag.ky);
+            updateProfilePreview();
+        });
+        const end = () => { drag = null; frame.classList.remove('dragging'); };
+        frame.addEventListener('pointerup', end);
+        frame.addEventListener('pointercancel', end);
+        frame.addEventListener('wheel', (e) => {
+            if (!profile) return;
+            e.preventDefault();
+            const zoom = pfField('pf-zoom');
+            zoom.value = Math.min(3, Math.max(1, Number(zoom.value) - e.deltaY * 0.001));
+            updateProfilePreview();
+        }, { passive: false });
+    });
+
+    /** Photo prête à envoyer : réduite si elle est grande, nommée profil-AAAAMMJJ-HHMMSS (jamais déjà prise) */
+    async function prepareProfilePhoto(file) {
+        const bmp = await createImageBitmap(file);
+        const scale = Math.min(1, PHOTO_MAX_SIDE / Math.max(bmp.width, bmp.height));
+        const d = new Date(), pad = (n) => String(n).padStart(2, '0');
+        const stem = `profil-${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+        if (scale === 1 && file.size <= 1.5e6) {
+            bmp.close();
+            return new File([file], stem + ({ 'image/png': '.png', 'image/webp': '.webp' }[file.type] || '.jpg'), { type: file.type });
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(bmp.width * scale);
+        canvas.height = Math.round(bmp.height * scale);
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff'; // fond des zones transparentes (le JPEG n'en a pas)
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+        bmp.close();
+        const blob = await new Promise((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error('conversion impossible')), 'image/jpeg', 0.9));
+        return new File([blob], stem + '.jpg', { type: 'image/jpeg' });
+    }
+
+    async function chooseProfilePhoto(input) {
+        const file = input.files && input.files[0];
+        input.value = '';
+        if (!file || !profile) return;
+        try {
+            const ready = await prepareProfilePhoto(file);
+            if (profile.pendingUrl) URL.revokeObjectURL(profile.pendingUrl);
+            profile.pendingFile = ready;
+            profile.pendingUrl = URL.createObjectURL(ready);
+            resetProfileCrop();
+            setProfileStatus('Nouvelle photo prête : recadre-la, puis enregistre.', 'ok');
+        } catch (err) {
+            setProfileStatus('❌ Cette image n’a pas pu être lue (formats acceptés : JPG, PNG, WebP).', 'error');
+        }
+    }
+
+    function saveBlob(blob, name) {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    }
+
+    /** Télécharge la photo affichée (la nouvelle si elle n'est pas encore envoyée) */
+    async function downloadProfilePhoto() {
+        if (!profile) return;
+        if (profile.pendingFile) return saveBlob(profile.pendingFile, profile.pendingFile.name);
+        const src = pfField('pf-photo-src').value;
+        if (!src) return setProfileStatus('Aucune photo à télécharger.', 'error');
+        const name = decodeURIComponent(src.split(/[?#]/)[0].split('/').pop()) || 'photo.jpg';
+        const urls = isRepoPath(src) ? [src, repoRawUrl(src)] : [src];
+        setProfileStatus('Téléchargement de la photo…');
+        for (const url of urls) {
+            try {
+                const res = await fetch(url, { cache: 'no-store' });
+                if (res.ok) { saveBlob(await res.blob(), name); setProfileStatus(''); return; }
+            } catch (e) {}
+        }
+        // Serveur qui refuse la lecture depuis le panneau : on ouvre la photo pour l'enregistrer à la main
+        window.open(urls[urls.length - 1], '_blank', 'noopener');
+        setProfileStatus('La photo s’ouvre dans un nouvel onglet : clic droit → « Enregistrer l’image sous… ».');
+    }
+
+    async function uploadProfilePdf(input) {
+        const file = input.files && input.files[0];
+        input.value = '';
+        if (!file || !profile) return;
+        const name = await uploadRepoFile(file, GH_PDF_DIRS[0], { the: 'le PDF', a: 'Un PDF' }, setProfileStatus);
+        if (!name) return;
+        const path = GH_PDF_DIRS[0] + name;
+        profile.pdfs.push(path);
+        renderProfileLinks();
+        pfField('pf-btn-url').value = path;
+        pfField('pf-btn-newtab').checked = true;
+        updateProfilePreview();
+        setProfileStatus(`✅ PDF envoyé : <code>${escapeHtml(path)}</code>. Enregistre pour que le bouton y mène.`, 'ok');
+    }
+
+    async function saveProfile() {
+        if (!profile) return;
+        const data = readProfileForm();
+        const problem = profileProblem(data);
+        if (problem) return setProfileStatus('❌ ' + escapeHtml(problem), 'error');
+        if (!profileDirty()) return setProfileStatus('Rien à enregistrer.');
+        const s = ghSettings();
+        const btn = pfField('pf-save');
+        btn.disabled = true;
+        try {
+            if (profile.pendingFile) {
+                const name = await uploadImage(profile.pendingFile, setProfileStatus);
+                if (!name) return;
+                // La photo est sur GitHub : on garde son aperçu local (le site met 1 à 2 minutes à la publier)
+                data.photo.src = GH_IMAGES_DIR + name;
+                pfField('pf-photo-src').value = data.photo.src;
+                profile.pendingFile = null;
+            }
+            setProfileStatus('Enregistrement du profil…');
+            const latest = await ghRequest(s, 'GET', GH_PROFILE, null, true);
+            if ((latest ? latest.sha : null) !== profile.sha) {
+                const go = await askDialog({
+                    title: 'Le profil a changé sur GitHub',
+                    html: '<p>Les réglages ont été modifiés ailleurs depuis l’ouverture de cet onglet. Les remplacer par les tiens ?</p>',
+                    buttons: [{ label: 'Annuler', value: false }, { label: 'Remplacer', value: true, kind: 'danger' }]
+                });
+                if (!go) return setProfileStatus('Enregistrement annulé. « Annuler les modifications » recharge la version en ligne.');
+            }
+            // Les champs du fichier que le panneau ne connaît pas sont gardés
+            const current = latest ? JSON.parse(base64ToUtf8(latest.content)) : {};
+            const out = { ...current, button: { ...(current.button || {}), ...data.button }, photo: { ...(current.photo || {}), ...data.photo } };
+            const res = await ghPutFile(s, GH_PROFILE, utf8ToBase64(JSON.stringify(out, null, 2) + '\n'), 'Mise à jour du profil de l’accueil (bouton et photo)', latest && latest.sha);
+            profile.sha = res.content.sha;
+            profile.baseline = JSON.stringify(readProfileForm());
+            updateProfilePreview();
+            const url = ghPagesUrl(s, '');
+            setProfileStatus(`✅ Enregistré. L’accueil sera à jour dans 1 à 2 minutes : <a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`, 'ok');
+        } catch (err) {
+            setProfileStatus('❌ ' + escapeHtml(err.message), 'error');
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    async function resetProfile() {
+        if (!profile) return;
+        if (profile.pendingUrl) URL.revokeObjectURL(profile.pendingUrl);
+        await loadProfile(true);
+    }
+
     // --- DÉMARRAGE ---
     // Avertit avant de quitter la page avec des modifications non publiées (le brouillon reste enregistré)
     window.addEventListener('beforeunload', (e) => {
-        if (currentKey && isDirty()) { e.preventDefault(); e.returnValue = ''; }
+        if ((currentKey && isDirty()) || profileDirty()) { e.preventDefault(); e.returnValue = ''; }
     });
 
     window.onload = () => {

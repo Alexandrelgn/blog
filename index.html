@@ -562,10 +562,11 @@
             </p>
           </div>
           <div class="contact-items">
-            <a href="mailto:alexandre.ligneul@efj.fr" class="contact-item">
+            <!-- data-contact-email : adresse réglée dans le panneau (assets/site/profil.js) -->
+            <a href="mailto:alexandre.ligneul@efj.fr" class="contact-item" data-contact-email>
               <div class="contact-item-left">
                 <span class="contact-item-type">E-mail</span>
-                <span class="contact-item-value">alexandre.ligneul@efj.fr</span>
+                <span class="contact-item-value" data-contact-email>alexandre.ligneul@efj.fr</span>
               </div>
               <span class="contact-arrow">↗</span>
             </a>
@@ -596,6 +597,7 @@
     <span>Portfolio · <a href="mentions-legales" style="color:inherit;">Mentions légales</a></span>
   </footer>
 
+  <script src="assets/site/profil.js"></script>
   <script>
     // ── PROFIL : bouton principal et photo, réglés dans le panneau (assets/site/profil.json) ──
     // Si le fichier manque ou est illisible, on garde ce qui est écrit dans la page.
@@ -619,11 +621,7 @@
     }
 
     async function applyProfile() {
-      let p = {};
-      try {
-        const res = await fetch('assets/site/profil.json', { cache: 'no-cache' });
-        if (res.ok) p = await res.json();
-      } catch (e) {}
+      const p = await profilReady; // assets/site/profil.js
       const num = (v, def, min, max) => Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : def;
 
       const btn = document.getElementById('hero-main-btn');

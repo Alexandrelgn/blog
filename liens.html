@@ -90,10 +90,11 @@
       <li><a class="link" href="https://www.linkedin.com/in/alexandre-ligneul/" target="_blank" rel="noopener"><span>LinkedIn<small>alexandre-ligneul</small></span><span class="arrow">↗</span></a></li>
       <li>
         <div class="link email-row">
-          <span>E-mail<small>alexandre.ligneul@efj.fr</small></span>
+          <!-- data-contact-email : adresse réglée dans le panneau (assets/site/profil.js) -->
+          <span>E-mail<small data-contact-email>alexandre.ligneul@efj.fr</small></span>
           <span class="email-actions">
-            <a class="email-btn" href="mailto:alexandre.ligneul@efj.fr">Écrire</a>
-            <button type="button" class="email-btn" id="copy-email" data-email="alexandre.ligneul@efj.fr" aria-live="polite">Copier</button>
+            <a class="email-btn" href="mailto:alexandre.ligneul@efj.fr" data-contact-email>Écrire</a>
+            <button type="button" class="email-btn" id="copy-email" data-email="alexandre.ligneul@efj.fr" data-contact-email aria-live="polite">Copier</button>
           </span>
         </div>
       </li>
@@ -102,6 +103,7 @@
 
   <footer><span>© 2026 Alexandre Ligneul</span><span>Portfolio · <a href="mentions-legales">Mentions légales</a></span></footer>
 
+  <script src="assets/site/profil.js"></script>
   <script>
     // ── E-MAIL : le bouton « Copier » copie l'adresse dans le presse-papiers ──
     const copyBtn = document.getElementById('copy-email');

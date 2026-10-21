@@ -334,6 +334,7 @@
 
         /* Onglet Profil (bouton et photo de l'accueil) */
         .pf-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 14px; align-items: start; }
+        .pf-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; } /* bouton et contact, à gauche de la photo */
         .pf-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
         .pf-actions .btn { width: auto; margin: 0; padding: 8px 12px; font-size: 0.8rem; }
         .pf-file { display: inline-block; text-transform: none; letter-spacing: 0; font-weight: 500; cursor: pointer; }
@@ -491,6 +492,7 @@
         <section id="tab-profil" class="tab-panel hidden" role="tabpanel">
             <form id="pf-form" onsubmit="event.preventDefault(); saveProfile()" oninput="updateProfilePreview()" onchange="updateProfilePreview()">
             <div class="pf-grid">
+                <div class="pf-col">
                 <section class="dash-card">
                     <h2>Bouton principal de l'accueil</h2>
                     <label class="gh-check"><input type="checkbox" id="pf-btn-visible"> Afficher le bouton</label>
@@ -511,6 +513,14 @@
                         <span class="pf-btn-secondary">Me contacter</span>
                     </div>
                 </section>
+
+                <section class="dash-card">
+                    <h2>Contact</h2>
+                    <label for="pf-email">E-mail de contact</label>
+                    <input type="email" id="pf-email" placeholder="alexandre.ligneul@efj.fr" autocomplete="off">
+                    <p class="field-hint" id="pf-email-hint"></p>
+                </section>
+                </div>
 
                 <section class="dash-card">
                     <h2>Photo de présentation</h2>
@@ -4404,6 +4414,7 @@ ${buildArticleBodyHtml()}
     const GH_PROFILE = 'assets/site/profil.json';
     const GH_PDF_DIRS = ['assets/pdf/', 'assets/docs/'];
     const PROFILE_DEFAULTS = {
+        email: 'alexandre.ligneul@efj.fr',
         button: { visible: true, label: 'Rapport de stage', url: 'assets/articles/RS-mai-juin-2026', newTab: false },
         photo: { src: 'https://res.cloudinary.com/dpggjkaj4/image/upload/v1773091073/FullSizeRender_VSCO_hq8zwb.jpg', alt: 'Alexandre Ligneul', ratio: '4/5', mobileRatio: 'hidden', x: 50, y: 0, zoom: 1 }
     };
@@ -4446,7 +4457,7 @@ ${buildArticleBodyHtml()}
                 pdfs: dirs.flatMap(list => Array.isArray(list) ? list.filter(f => f.type === 'file' && /\.pdf$/i.test(f.name)).map(f => f.path) : []),
                 pendingFile: null, pendingUrl: null
             };
-            fillProfileForm({ button: { ...PROFILE_DEFAULTS.button, ...(data.button || {}) }, photo: { ...PROFILE_DEFAULTS.photo, ...(data.photo || {}) } });
+            fillProfileForm({ email: data.email || PROFILE_DEFAULTS.email, button: { ...PROFILE_DEFAULTS.button, ...(data.button || {}) }, photo: { ...PROFILE_DEFAULTS.photo, ...(data.photo || {}) } });
             setProfileStatus(file ? '' : `<code>${GH_PROFILE}</code> n’existe pas encore : il sera créé au premier enregistrement.`);
         } catch (err) {
             setProfileStatus('❌ ' + escapeHtml(err.message), 'error');
@@ -4464,6 +4475,7 @@ ${buildArticleBodyHtml()}
         ratio.innerHTML = formatOptions(p.photo.ratio);
         pfField('pf-ratio-m').innerHTML = '<option value="hidden">Masquée</option>' + formatOptions(p.photo.mobileRatio);
         pfField('pf-ratio-m').value = photoFormat(p.photo.mobileRatio) ? p.photo.mobileRatio : 'hidden';
+        pfField('pf-email').value = p.email || '';
         pfField('pf-btn-visible').checked = p.button.visible !== false;
         pfField('pf-btn-label').value = p.button.label || '';
         pfField('pf-btn-url').value = p.button.url || '';
@@ -4482,6 +4494,7 @@ ${buildArticleBodyHtml()}
     function readProfileForm() {
         const num = (id) => Number(pfField(id).value);
         return {
+            email: pfField('pf-email').value.trim(),
             button: { visible: pfField('pf-btn-visible').checked, label: pfField('pf-btn-label').value.trim(), url: pfField('pf-btn-url').value.trim(), newTab: pfField('pf-btn-newtab').checked },
             photo: { src: pfField('pf-photo-src').value, alt: pfField('pf-alt').value.trim(), ratio: pfField('pf-ratio').value, mobileRatio: pfField('pf-ratio-m').value, x: num('pf-x'), y: num('pf-y'), zoom: num('pf-zoom') }
         };
@@ -4489,6 +4502,12 @@ ${buildArticleBodyHtml()}
 
     function profileDirty() {
         return !!profile && (!!profile.pendingFile || JSON.stringify(readProfileForm()) !== profile.baseline);
+    }
+
+    /** Même vérification que assets/site/profil.js : une adresse refusée là-bas laisserait l'ancienne sur le site */
+    function profileEmailProblem(email) {
+        if (!email) return 'Indique l’adresse e-mail de contact.';
+        return /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(email) ? '' : 'Adresse e-mail non valide.';
     }
 
     /** Ce qui empêche d'enregistrer le bouton, ou '' */
@@ -4547,6 +4566,9 @@ ${buildArticleBodyHtml()}
         const problem = profileProblem(p);
         pfField('pf-btn-hint').textContent = problem || BUTTON_HINT;
         pfField('pf-btn-hint').className = 'field-hint' + (problem ? ' error' : '');
+        const emailProblem = profileEmailProblem(p.email);
+        pfField('pf-email-hint').textContent = emailProblem || 'Affichée dans la section Contact de l’accueil, la page Liens et les mentions légales.';
+        pfField('pf-email-hint').className = 'field-hint' + (emailProblem ? ' error' : '');
 
         // Même calcul que applyProfile (index.html) : le point (x %, y %) reste en place, le zoom se fait autour
         const src = profile.pendingUrl || p.photo.src;
@@ -4708,7 +4730,7 @@ ${buildArticleBodyHtml()}
     async function saveProfile() {
         if (!profile) return;
         const data = readProfileForm();
-        const problem = profileProblem(data);
+        const problem = profileEmailProblem(data.email) || profileProblem(data);
         if (problem) return setProfileStatus('❌ ' + escapeHtml(problem), 'error');
         if (!profileDirty()) return setProfileStatus('Rien à enregistrer.');
         const s = ghSettings();
@@ -4735,7 +4757,7 @@ ${buildArticleBodyHtml()}
             }
             // Les champs du fichier que le panneau ne connaît pas sont gardés
             const current = latest ? JSON.parse(base64ToUtf8(latest.content)) : {};
-            const out = { ...current, button: { ...(current.button || {}), ...data.button }, photo: { ...(current.photo || {}), ...data.photo } };
+            const out = { ...current, email: data.email, button: { ...(current.button || {}), ...data.button }, photo: { ...(current.photo || {}), ...data.photo } };
             const res = await ghPutFile(s, GH_PROFILE, utf8ToBase64(JSON.stringify(out, null, 2) + '\n'), 'Mise à jour du profil de l’accueil (bouton et photo)', latest && latest.sha);
             profile.sha = res.content.sha;
             profile.baseline = JSON.stringify(readProfileForm());

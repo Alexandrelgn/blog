@@ -1,16 +1,15 @@
 {
   "button": {
     "visible": true,
-    "label": "Rapport de stage",
-    "url": "assets/articles/RS-mai-juin-2026",
+    "label": "Mon CV",
+    "url": "assets/pdf/CV_Alexandre.pdf",
     "newTab": false
   },
   "photo": {
     "src": "https://res.cloudinary.com/dpggjkaj4/image/upload/v1773091073/FullSizeRender_VSCO_hq8zwb.jpg",
     "alt": "Alexandre Ligneul",
-    "ratio": "4/5",
-    "mobileRatio": "hidden",
-    "x": 50,
+    "ratio": "3/4",
+    "x": 47,
     "y": 0,
     "zoom": 1
   }

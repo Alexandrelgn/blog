@@ -1,7 +1,7 @@
 {
   "button": {
     "visible": true,
-    "label": "Rapport de stage",
+    "label": "Mon CV",
     "url": "assets/pdf/CV_Alexandre.pdf",
     "newTab": false
   },

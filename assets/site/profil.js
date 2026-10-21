@@ -17,3 +17,15 @@ profilReady.then(p => {
     if (!el.children.length && el.textContent.includes('@')) el.textContent = email;
   });
 });
+
+// ── INSTAGRAM ──
+// Champ instagram = nom du compte, sans @. Les éléments marqués data-contact-instagram prennent le lien
+// vers ce compte, et leur texte s'il commence par @. Sans nom valide, la page garde le sien.
+profilReady.then(p => {
+  const user = String(p.instagram || '').trim();
+  if (!/^[A-Za-z0-9._]{1,30}$/.test(user)) return;
+  document.querySelectorAll('[data-contact-instagram]').forEach(el => {
+    if (el.matches('a[href]')) el.href = `https://www.instagram.com/${user}/`;
+    if (!el.children.length && el.textContent.trim().startsWith('@')) el.textContent = '@' + user;
+  });
+});

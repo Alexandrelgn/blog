@@ -1,0 +1,16 @@
+{
+  "button": {
+    "visible": true,
+    "label": "Rapport de stage",
+    "url": "assets/pdf/CV_Alexandre",
+    "newTab": false
+  },
+  "photo": {
+    "src": "https://res.cloudinary.com/dpggjkaj4/image/upload/v1773091073/FullSizeRender_VSCO_hq8zwb.jpg",
+    "alt": "Alexandre Ligneul",
+    "ratio": "3/4",
+    "x": 47,
+    "y": 0,
+    "zoom": 1
+  }
+}

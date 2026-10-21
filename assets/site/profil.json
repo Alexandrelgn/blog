@@ -11,6 +11,8 @@
     "ratio": "3/4",
     "x": 47,
     "y": 0,
-    "zoom": 1
-  }
+    "zoom": 1,
+    "mobileRatio": "hidden"
+  },
+  "email": "alexandre.ligneul@efj.fr"
 }

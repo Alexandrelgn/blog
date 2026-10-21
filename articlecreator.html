@@ -431,8 +431,8 @@
                 <p class="gh-hint">Connecte-toi avec ton jeton d'accès GitHub pour voir, modifier et organiser les articles du site.</p>
                 <label for="gh-token">Jeton d'accès GitHub</label>
                 <input type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off">
-                <p class="gh-hint">Jeton « fine-grained » limité à ce dépôt, avec l'autorisation <em>Contents : Read and write</em>. Il reste enregistré dans ce navigateur uniquement.</p>
-                <details id="gh-settings" style="margin-top:10px;font-size:0.8rem;">
+                <p class="gh-hint">Jeton « fine-grained » limité à ce dépôt, avec l'autorisation <em>Contents : Read and write</em>.</p>
+                <label class="gh-check"><input type="checkbox" id="gh-remember"> Se souvenir de moi sur cet appareil</label>                <details id="gh-settings" style="margin-top:10px;font-size:0.8rem;">
                     <summary style="cursor:pointer;color:var(--muted);">Dépôt</summary>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                         <div><label>Compte</label><input type="text" id="gh-owner" placeholder="Alexandrelgn"></div>
@@ -869,7 +869,7 @@
     function readDrafts() { try { return JSON.parse(readStore('cms_drafts') || '{}') || {}; } catch (e) { return {}; } }
     function writeDrafts(drafts) { writeStore('cms_drafts', JSON.stringify(drafts)); }
     function readSession(key) { try { return sessionStorage.getItem(key); } catch (e) { return null; } }
-    function writeSession(key, value) { try { sessionStorage.setItem(key, value); } catch (e) {} }
+    function writeSession(key, value) { try { value == null ? sessionStorage.removeItem(key) : sessionStorage.setItem(key, value); } catch (e) {} }
 
     function articleSnapshot() { return JSON.stringify(buildArticleSource()); }
     function isDirty() { return baseSnapshot === null || articleSnapshot() !== baseSnapshot; }
@@ -1841,7 +1841,7 @@ ${buildArticleBodyHtml()}
 
     <footer class="art-footer">
       <div class="tags">${buildTagsHtml()}</div>
-      <a href="../../#articles" class="back">← Retour aux écrits</a>
+      <a href="../../articles" class="back">← Retour aux écrits</a>
     </footer>
   </article>
 
@@ -1952,7 +1952,16 @@ ${buildArticleBodyHtml()}
         document.getElementById('gh-owner').value = saved.owner || GH_DEFAULTS.owner;
         document.getElementById('gh-repo').value = saved.repo || GH_DEFAULTS.repo;
         document.getElementById('gh-branch').value = saved.branch || GH_DEFAULTS.branch;
-        document.getElementById('gh-token').value = readStore('gh_token') || '';
+        document.getElementById('gh-token').value = readToken();
+        document.getElementById('gh-remember').checked = !!readStore('gh_token');
+    }
+
+    // --- JETON ---
+    // « Se souvenir de moi » : gardé dans le navigateur (localStorage) ; sinon seulement le temps de l'onglet (sessionStorage).
+    function readToken() { return readStore('gh_token') || readSession('gh_token') || ''; }
+    function saveToken(token, remember) {
+        writeStore('gh_token', remember ? token : null);
+        writeSession('gh_token', remember ? null : token);
     }
 
     // --- CONNEXION ---
@@ -1971,7 +1980,7 @@ ${buildArticleBodyHtml()}
         try {
             await ghCheckAccess(s);
             writeStore('gh_settings', JSON.stringify({ owner: s.owner, repo: s.repo, branch: s.branch }));
-            writeStore('gh_token', s.token);
+            saveToken(s.token, document.getElementById('gh-remember').checked);
             ghConnected = true;
             setStatusIn('login-status', '');
             updateConnectionUi();
@@ -1988,7 +1997,7 @@ ${buildArticleBodyHtml()}
     }
 
     function logout() {
-        writeStore('gh_token', null);
+        saveToken(null, false);
         document.getElementById('gh-token').value = '';
         ghConnected = false;
         library = { list: [], files: [], infos: {}, drafts: [] };
@@ -4817,7 +4826,7 @@ ${buildArticleBodyHtml()}
         else loadIntoEditor({ key: 'nouveau-' + Date.now(), data: BLANK_DATA, show: false });
         showView(draft && readSession('cms_view') === 'editor' ? 'editor' : 'admin');
         updateConnectionUi();
-        if (readStore('gh_token')) connectGitHub(true);
+        if (readToken()) connectGitHub(true);
     };
 </script>
 </body>

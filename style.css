@@ -57,7 +57,9 @@ nav {
 .nav-links a.active { color: var(--accent); font-weight: 500; }
 
 /* ── LAYOUT ── */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+/* width : dans le body en colonne (flex), la marge auto ne doit pas réduire le bloc à la largeur de son contenu
+   (sinon la galerie se rétrécit tant que les photos en chargement différé ne sont pas arrivées) */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; width: 100%; }
 .container--narrow { max-width: 900px; margin: 0 auto; padding: 0 2.5rem; }
 .container--article { max-width: 720px; margin: 0 auto; padding: 0 2.5rem; }
 
@@ -207,6 +209,13 @@ nav {
 .photo-card.featured { grid-column: span 2; grid-row: span 2; min-height: 240px; }
 /* La grande photo remplit la hauteur des deux petites, quel que soit son format (recadrée) */
 .photo-card.featured img { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
+
+/* ── PROTECTION DES PHOTOS (accueil, galerie et visionneuse de photos.html) ──
+   Un calque transparent couvre chaque photo : le clic droit « Enregistrer l'image » et le glisser-déposer
+   ne visent plus l'image. N'empêche ni une capture d'écran ni les outils de développement du navigateur. */
+.photo-card::after, .masonry-item::after, .lightbox-frame::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+.photo-card-caption, .masonry-caption { z-index: 2; }
+.photo-card img, .masonry-item img, .lightbox-img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
 
 /* ── VIDEOS (index) ── */
 .videos-list { display: flex; flex-direction: column; gap: 1.5rem; }

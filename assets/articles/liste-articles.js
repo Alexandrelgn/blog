@@ -57,18 +57,26 @@ async function loadArticle(entry) {
   };
 }
 
-/** Charge tous les articles de la liste, dans l'ordre ; ceux qui échouent sont ignorés */
-async function loadAllArticles() {
-  let articles;
+/** Entrées visibles de articles.json (sans les articles masqués), dans l'ordre ; [] si la liste est illisible */
+async function loadArticleEntries() {
   try {
-    articles = (await loadJson(ARTICLES_DATA)).filter(entry => !entry.hidden);
+    return (await loadJson(ARTICLES_DATA)).filter(entry => !entry.hidden);
   } catch (e) {
     console.warn('Liste des articles non chargée —', e);
     return [];
   }
-  const results = await Promise.allSettled(articles.map(loadArticle));
+}
+
+/** Lit les articles des entrées données, dans l'ordre ; ceux qui échouent sont ignorés */
+async function loadArticles(entries) {
+  const results = await Promise.allSettled(entries.map(loadArticle));
   results.filter(r => r.status === 'rejected').forEach(r => console.warn('Article non chargé —', r.reason));
   return results.filter(r => r.status === 'fulfilled').map(r => r.value);
+}
+
+/** Charge tous les articles de la liste, dans l'ordre */
+async function loadAllArticles() {
+  return loadArticles(await loadArticleEntries());
 }
 
 /** Message affiché quand aucun article n'a pu être lu */

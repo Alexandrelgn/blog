@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "file": null,
+  "fileSha": null,
+  "savedAt": "2026-10-22T08:13:35.736Z",
+  "article": {
+    "version": 1,
+    "meta": {
+      "short": "Articlejcis",
+      "cat": "Société",
+      "tags": "Enquête, Politique",
+      "title": "Titre de l'article.POEHINA.",
+      "intro": "Introduction...",
+      "loc": "Paris",
+      "date": "2026",
+      "readTime": "8 min de lecture",
+      "heroUrl": "",
+      "heroAlt": "",
+      "heroCap": ""
+    },
+    "authors": [
+      {
+        "name": "Alexandre Ligneul"
+      }
+    ],
+    "articleBlocks": [],
+    "extraHead": "",
+    "extraBody": ""
+  }
+}

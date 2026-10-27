@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "file": null,
+  "fileSha": null,
+  "savedAt": "2026-10-27T08:33:00.781Z",
+  "article": {
+    "version": 1,
+    "meta": {
+      "short": "Article",
+      "cat": "Société",
+      "tags": "Enquête, Politique",
+      "title": "Titre de l'article...",
+      "intro": "Introduction...",
+      "loc": "Paris",
+      "date": "2026",
+      "readTime": "8 min de lecture",
+      "heroUrl": "",
+      "heroAlt": "",
+      "heroCap": ""
+    },
+    "authors": [
+      {
+        "name": "Alexandre Ligneul"
+      }
+    ],
+    "articleBlocks": [
+      {
+        "id": "block-1793089954370",
+        "type": "quote",
+        "content": "EFJehs",
+        "extra": "clement dias",
+        "third": ""
+      },
+      {
+        "id": "block-1793089970699",
+        "type": "box",
+        "content": "",
+        "extra": "",
+        "third": "",
+        "boxTitle": "sfjisf",
+        "boxHtml": "zomm",
+        "boxBg": "#e8f0f9"
+      }
+    ],
+    "extraHead": "",
+    "extraBody": ""
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "file": null,
+  "fileSha": null,
+  "savedAt": "2026-11-06T19:13:13.633Z",
+  "article": {
+    "version": 1,
+    "meta": {
+      "short": "Articled",
+      "cat": "Sociétéd",
+      "tags": "Enquête, Politiqued",
+      "title": "Titre de l'article...d",
+      "intro": "Introduction...d",
+      "loc": "Parisd",
+      "date": "28 novembre 2026",
+      "readTime": "8 min de lecture",
+      "heroUrl": "https://www.echosciences-grenoble.fr/uploads/article/image/attachment/1005418938/xl_lens-1209823_1920.jpg",
+      "heroAlt": "alt-text",
+      "heroCap": "credit photo"
+    },
+    "authors": [
+      {
+        "name": "Alexandre Ligneul"
+      }
+    ],
+    "articleBlocks": [
+      {
+        "id": "block-1793991598165",
+        "type": "p",
+        "content": "",
+        "extra": "",
+        "third": "",
+        "html": "paragraphe en normal mais aussi : <b>en gras</b>, <i>en italique</i>, <u>souligner</u> et <a href=\"https://google.com\">un lien</a>"
+      },
+      {
+        "id": "block-1793991745523",
+        "type": "h2",
+        "content": "H2 exemple",
+        "extra": "",
+        "third": ""
+      },
+      {
+        "id": "block-1793991764035",
+        "type": "h3",
+        "content": "Intertitre exemple",
+        "extra": "",
+        "third": ""
+      },
+      {
+        "id": "block-1793991779410",
+        "type": "quote",
+        "content": "Citation exemple",
+        "extra": "auteur",
+        "third": ""
+      },
+      {
+        "id": "block-1793991810699",
+        "type": "img",
+        "content": "https://www.echosciences-grenoble.fr/uploads/article/image/attachment/1005418938/xl_lens-1209823_1920.jpg",
+        "extra": "Credit photo",
+        "third": "texte alternatif"
+      },
+      {
+        "id": "block-1793991842624",
+        "type": "slider",
+        "content": "https://www.echosciences-grenoble.fr/uploads/article/image/attachment/1005418938/xl_lens-1209823_1920.jpg",
+        "extra": "https://www.ac-paris.fr/sites/ac_paris/files/styles/banner_1340x730/public/2022-04/rgpd-captation-image-22797.png?itok=Qi8yV7b7",
+        "third": "un duo d'image",
+        "alt1": "image 1",
+        "alt2": "image 2"
+      },
+      {
+        "id": "block-1793991890171",
+        "type": "link",
+        "content": "Lien de rappel",
+        "extra": "google.com",
+        "third": "",
+        "linkLabel": "À lire aussi",
+        "newTab": true
+      },
+      {
+        "id": "block-1793991916285",
+        "type": "box",
+        "content": "",
+        "extra": "",
+        "third": "",
+        "boxTitle": "encadre sujet",
+        "boxHtml": "texte paragraphe en normal mais aussi :<b> en gras</b>, <i>en italique</i>,<u> souligner </u>et <a href=\"https://google.com\">un lien</a>",
+        "boxBg": "#e8f0f9"
+      },
+      {
+        "id": "block-1793991981266",
+        "type": "video",
+        "content": "https://www.youtube.com/watch?v=w3mGMm_hUjk",
+        "extra": "legende/credit",
+        "third": "Titre",
+        "platform": "auto",
+        "autoplay": false,
+        "controls": true,
+        "muted": false,
+        "loop": false,
+        "privacy": true,
+        "allowFullscreen": true,
+        "start": ""
+      },
+      {
+        "id": "block-1793992039197",
+        "type": "pdf",
+        "content": "https://alexandrelgn.github.io/blog/assets/pdf/202604-EFJ-DISCLOSE-PRINT.pdf",
+        "extra": "Nom affiche",
+        "third": "Taille du fichier en Mo",
+        "pdfMode": "card",
+        "pdfTitle": "Alt title",
+        "pdfButton": "Ouvrir ↗",
+        "pdfCaption": ""
+      },
+      {
+        "id": "block-1793992148445",
+        "type": "p",
+        "content": "",
+        "extra": "",
+        "third": "",
+        "html": "Paragraphe exemple"
+      }
+    ],
+    "extraHead": "",
+    "extraBody": ""
+  }
+}

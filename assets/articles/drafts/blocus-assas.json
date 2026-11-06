@@ -2,7 +2,7 @@
   "version": 1,
   "file": null,
   "fileSha": null,
-  "savedAt": "2026-11-06T10:00:00.000Z",
+  "savedAt": "2026-11-06T19:10:00.000Z",
   "article": {
     "version": 1,
     "meta": {
@@ -24,183 +24,228 @@
         "id": "block-1746700000000",
         "type": "img",
         "content": "",
-        "extra": "Illustration de l'article",
-        "third": ""
+        "extra": "",
+        "third": "Illustration de l'article",
+        "collapsed": true
       },
       {
         "id": "block-1746700000001",
         "type": "p",
-        "content": "Ils ne sont que trois. Eloi, étudiant à Paris 8, s'est levé à 4 h 40 pour avaler un petit-déjeuner et faire les quarante-cinq minutes de trajet. À Port-Royal, il n'a trouvé que trois ou quatre personnes. Il a décidé de venir quand même avec son colocataire, « pour voir ». Devant la fac, un inconnu avait déjà commencé seul à aligner quatre poubelles. « On avait peur au début, on ne savait pas si c'était un gudard ou pas. Le premier contact, c'est toujours difficile », raconte Eloi. Les « gudards », ce sont les militants d'extrême droite proches du GUD. Assas a la réputation d'être une fac de droite, et ceux qui veulent la bloquer savent qu'ils risquent de tomber sur une extrême droite organisée et violente, présente dans les couloirs comme aux abords de l'établissement.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Ils ne sont que trois. Eloi, étudiant à Paris 8, s'est levé à 4 h 40 pour avaler un petit-déjeuner et faire les quarante-cinq minutes de trajet. À Port-Royal, il n'a trouvé que trois ou quatre personnes. Il a décidé de venir quand même avec son colocataire, « pour voir ». Devant la fac, un inconnu avait déjà commencé seul à aligner quatre poubelles. « On avait peur au début, on ne savait pas si c'était un gudard ou pas. Le premier contact, c'est toujours difficile », raconte Eloi. Les « gudards », ce sont les militants d'extrême droite proches du GUD. Assas a la réputation d'être une fac de droite, et ceux qui veulent la bloquer savent qu'ils risquent de tomber sur une extrême droite organisée et violente, présente dans les couloirs comme aux abords de l'établissement.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000002",
         "type": "p",
-        "content": "Les trois étudiants masqués se font aborder par une voiture de police qui s'arrête à leur hauteur. Les agents les contrôlent un par un, puis après un échange sur leurs revendications demandent la dispersion du petit groupe. Depuis un bureau à l'intérieur de l'établissement, deux hommes les observent.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Les trois étudiants masqués se font aborder par une voiture de police qui s'arrête à leur hauteur. Les agents les contrôlent un par un, puis après un échange sur leurs revendications demandent la dispersion du petit groupe. Depuis un bureau à l'intérieur de l'établissement, deux hommes les observent.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000003",
         "type": "p",
-        "content": "« Stéphane Braconnier, le président d'Assas, a le bras long », glisse un étudiant. Selon les militants, le président disposerait d'une ligne directe avec la police pour compliquer au maximum les blocus. D'autres rumeurs circulent dans la fac : une étudiante confie qu'il deviendrait ministre de l'Éducation si le RN remportait la présidentielle de 2027. Ces soupçons nourrissent la colère des étudiants antifascistes et de gauche.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "« Stéphane Braconnier, le président d'Assas, a le bras long », glisse un étudiant. Selon les militants, le président disposerait d'une ligne directe avec la police pour compliquer au maximum les blocus. D'autres rumeurs circulent dans la fac : une étudiante confie qu'il deviendrait ministre de l'Éducation si le RN remportait la présidentielle de 2027. Ces soupçons nourrissent la colère des étudiants antifascistes et de gauche.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000004",
         "type": "p",
-        "content": "En attendant les renforts, le petit groupe continue d'aller chercher des poubelles. Certains riverains, plantés devant leur porte à 5 heures du matin, refusent de laisser partir les leurs. Eloi ne leur en veut pas : « Si on demandait aux gens "est-ce qu'on peut prendre vos poubelles ?", très peu diraient oui. Donc on les prend sans demander, et on les rend après. » Il insiste : les poubelles brûlées occupent une large place dans les médias, mais ici, elles servent à bloquer temporairement, pas à faire des feux. Presque toutes sont rendues à leurs propriétaires.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "En attendant les renforts, le petit groupe continue d'aller chercher des poubelles. Certains riverains, plantés devant leur porte à 5 heures du matin, refusent de laisser partir les leurs. Eloi ne leur en veut pas : « Si on demandait aux gens "est-ce qu'on peut prendre vos poubelles ?", très peu diraient oui. Donc on les prend sans demander, et on les rend après. » Il insiste : les poubelles brûlées occupent une large place dans les médias, mais ici, elles servent à bloquer temporairement, pas à faire des feux. Presque toutes sont rendues à leurs propriétaires.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000005",
         "type": "p",
-        "content": "Il assume de franchir la ligne de la loi et parle de « désobéissance civile non violente ». Pour lui, ce qui compte n'est pas la légalité mais la légitimité. Il rappelle que le mariage entre personnes de même sexe était illégal il y a encore quelques années.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Il assume de franchir la ligne de la loi et parle de « désobéissance civile non violente ». Pour lui, ce qui compte n'est pas la légalité mais la légitimité. Il rappelle que le mariage entre personnes de même sexe était illégal il y a encore quelques années.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000006",
         "type": "h2",
         "content": "Les premiers renforts",
         "extra": "",
-        "third": ""
+        "third": "",
+        "collapsed": true
       },
       {
         "id": "block-1746700000007",
         "type": "p",
-        "content": "Quarante-cinq minutes passent. Une dizaine de personnes seulement ont rejoint le groupe, mais les profils sont variés. Deux colosses en tenue paramilitaire, le visage caché derrière des masques qui parodient le jeu <em>Call of Duty</em>, assurent la sécurité. Ils sont équipés d'une barre de fer et d'une trousse de soins. Ils redoutent une attaque surprise : deux jours plus tôt, un affrontement a éclaté au même endroit. Jets de bouteilles en verre, coups violents, intervention des forces de l'ordre. Deux militants ont été grièvement blessés et hospitalisés.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Quarante-cinq minutes passent. Une dizaine de personnes seulement ont rejoint le groupe, mais les profils sont variés. Deux colosses en tenue paramilitaire, le visage caché derrière des masques qui parodient le jeu <i>Call of Duty</i>, assurent la sécurité. Ils sont équipés d'une barre de fer et d'une trousse de soins. Ils redoutent une attaque surprise : deux jours plus tôt, un affrontement a éclaté au même endroit. Jets de bouteilles en verre, coups violents, intervention des forces de l'ordre. Deux militants ont été grièvement blessés et hospitalisés.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000008",
         "type": "p",
-        "content": "Très vite, de petits groupes se forment. Chacun part récupérer les poubelles d'une rue voisine, des vélos en libre-service et tout le mobilier urbain disponible. Les vélos sont attachés entre eux avec des colliers de serrage, posés deux par deux, « c'est plus chiant à enlever ». Sur un mur, quelqu'un a tagué « Assas antifa ».",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Très vite, de petits groupes se forment. Chacun part récupérer les poubelles d'une rue voisine, des vélos en libre-service et tout le mobilier urbain disponible. Les vélos sont attachés entre eux avec des colliers de serrage, posés deux par deux, « c'est plus chiant à enlever ». Sur un mur, quelqu'un a tagué « Assas antifa ».",
+        "collapsed": true
       },
       {
         "id": "block-1746700000009",
         "type": "h2",
         "content": "Pourquoi bloquer, et pourquoi Assas",
         "extra": "",
-        "third": ""
+        "third": "",
+        "collapsed": true
       },
       {
         "id": "block-1746700000010",
         "type": "p",
-        "content": "Eloi détaille les raisons du blocus. Il y a d'abord le soutien aux lycéens, à leurs revendications et surtout face à la répression qu'ils subissent. « Si le gouvernement leur avait donné ce qu'ils demandent, nous, on n'aurait pas bloqué. » Viennent ensuite les revendications propres aux étudiants : adapter les locaux au dérèglement climatique, financer davantage la recherche et l'enseignement supérieur, mieux payer les enseignants. Selon lui, l'accès au master est devenu une « catastrophe », avec des taux d'admission de 4 à 5 % dans certaines formations parisiennes. « Une société sans connaissances, c'est la mort à terme de l'économie, de tout ce qu'on veut. »",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Eloi détaille les raisons du blocus. Il y a d'abord le soutien aux lycéens, à leurs revendications et surtout face à la répression qu'ils subissent. « Si le gouvernement leur avait donné ce qu'ils demandent, nous, on n'aurait pas bloqué. » Viennent ensuite les revendications propres aux étudiants : adapter les locaux au dérèglement climatique, financer davantage la recherche et l'enseignement supérieur, mieux payer les enseignants. Selon lui, l'accès au master est devenu une « catastrophe », avec des taux d'admission de 4 à 5 % dans certaines formations parisiennes. « Une société sans connaissances, c'est la mort à terme de l'économie, de tout ce qu'on veut. »",
+        "collapsed": true
       },
       {
         "id": "block-1746700000011",
         "type": "img",
         "content": "",
-        "extra": "Assas mort aux fafs — tag sur un mur",
-        "third": ""
+        "extra": "",
+        "third": "Assas mort aux fafs — tag sur un mur",
+        "collapsed": true
       },
       {
         "id": "block-1746700000012",
         "type": "p",
-        "content": "Bloquer Assas a aussi une portée symbolique. L'université est historiquement ancrée à droite, voire à l'extrême droite. Lors d'un précédent blocus, un journaliste de <em>Blast</em> leur a raconté avoir couvert une tentative de blocage en 1968, et la virulence des étudiants d'Assas envers les manifestants de gauche. « Bloquer Assas, ça ne veut pas dire qu'Assas est de gauche, précise Eloi. On veut dire qu'une fac n'est pas censée être de gauche ou de droite. Elle est censée répondre à la science. » Il cite le « paradoxe de la tolérance » du philosophe Karl Popper pour justifier le rejet de l'extrême droite : on ne peut être intolérant qu'avec l'intolérance elle-même.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Bloquer Assas a aussi une portée symbolique. L'université est historiquement ancrée à droite, voire à l'extrême droite. Lors d'un précédent blocus, un journaliste de <i>Blast</i> leur a raconté avoir couvert une tentative de blocage en 1968, et la virulence des étudiants d'Assas envers les manifestants de gauche. « Bloquer Assas, ça ne veut pas dire qu'Assas est de gauche, précise Eloi. On veut dire qu'une fac n'est pas censée être de gauche ou de droite. Elle est censée répondre à la science. » Il cite le « paradoxe de la tolérance » du philosophe Karl Popper pour justifier le rejet de l'extrême droite : on ne peut être intolérant qu'avec l'intolérance elle-même.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000013",
         "type": "h2",
         "content": "6 h 30, le cortège arrive",
         "extra": "",
-        "third": ""
+        "third": "",
+        "collapsed": true
       },
       {
         "id": "block-1746700000014",
         "type": "p",
-        "content": "Vers 6 h 30, une soixantaine d'étudiants arrivent en cortège. Ils sortent d'une réunion préparatoire tenue non loin, dans le quartier. « Ça y est, ça fait du bien, ça rassure », souffle Eloi. Sur le pas de leur porte, des riverains les regardent passer. Certains surveillent leurs poubelles, d'autres encouragent les étudiants, quelques-uns grognent à voix basse. Un passant lance un « merci » au groupe. Eloi y voit la preuve « en direct » du soutien populaire au mouvement.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Vers 6 h 30, une soixantaine d'étudiants arrivent en cortège. Ils sortent d'une réunion préparatoire tenue non loin, dans le quartier. « Ça y est, ça fait du bien, ça rassure », souffle Eloi. Sur le pas de leur porte, des riverains les regardent passer. Certains surveillent leurs poubelles, d'autres encouragent les étudiants, quelques-uns grognent à voix basse. Un passant lance un « merci » au groupe. Eloi y voit la preuve « en direct » du soutien populaire au mouvement.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000015",
         "type": "p",
-        "content": "Personne ne se connaît vraiment. Il n'y a pas de grande organisation, plutôt des « actions autonomes ». Pour des raisons de sécurité, chacun reste plus ou moins anonyme. Eloi désigne un militant : c'est leur deuxième blocus ensemble à Assas, ils échangent sur Signal, mais il ne connaît pas son prénom.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Personne ne se connaît vraiment. Il n'y a pas de grande organisation, plutôt des « actions autonomes ». Pour des raisons de sécurité, chacun reste plus ou moins anonyme. Eloi désigne un militant : c'est leur deuxième blocus ensemble à Assas, ils échangent sur Signal, mais il ne connaît pas son prénom.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000016",
         "type": "p",
-        "content": "Avec le premier groupe, une partie des nouveaux venus part bloquer l'arrière de l'université pour empêcher qu'on contourne le blocus. Dans cette petite rue, ils ne sont d'abord qu'une poignée, alors que devant, la foule approche bientôt la centaine. Rue Notre-Dame-des-Champs, un gardien de nuit les interrompt. Il descend de sa voiture en faisant de grands gestes : « Ne touchez pas à mes plots ! Laissez-moi bosser et ne me cassez pas les couilles ! » Eloi fait redescendre la tension : « On va vous rendre vos plots, pas de stress. » Après discussion, il coordonne les étudiants pour remettre en place la trentaine de plots déplacés. L'ambiance se réchauffe. En repartant, le gardien lance : « Bon courage les jeunes ! » Le mouvement est plus populaire que ce que laissent paraître les journaux télévisés, et c'est l'une des surprises de cette matinée.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Avec le premier groupe, une partie des nouveaux venus part bloquer l'arrière de l'université pour empêcher qu'on contourne le blocus. Dans cette petite rue, ils ne sont d'abord qu'une poignée, alors que devant, la foule approche bientôt la centaine. Rue Notre-Dame-des-Champs, un gardien de nuit les interrompt. Il descend de sa voiture en faisant de grands gestes : « Ne touchez pas à mes plots ! Laissez-moi bosser et ne me cassez pas les couilles ! » Eloi fait redescendre la tension : « On va vous rendre vos plots, pas de stress. » Après discussion, il coordonne les étudiants pour remettre en place la trentaine de plots déplacés. L'ambiance se réchauffe. En repartant, le gardien lance : « Bon courage les jeunes ! » Le mouvement est plus populaire que ce que laissent paraître les journaux télévisés, et c'est l'une des surprises de cette matinée.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000017",
         "type": "img",
         "content": "",
-        "extra": "Lever du jour sur le blocus devant Assas",
-        "third": ""
+        "extra": "",
+        "third": "Lever du jour sur le blocus devant Assas",
+        "collapsed": true
       },
       {
         "id": "block-1746700000018",
         "type": "h2",
         "content": "Au lever du jour, un blocus tranquille",
         "extra": "",
-        "third": ""
+        "third": "",
+        "collapsed": true
       },
       {
         "id": "block-1746700000019",
         "type": "p",
-        "content": "Le jour se lève sur Assas. Le blocus est installé. La peur d'être délogé par la police ou attaqué par l'extrême droite s'est dissipée. Les jeunes s'assoient sur les poubelles ou en cercle par terre. On discute, certains ont apporté des sandwichs et des tartines pour le petit-déjeuner.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Le jour se lève sur Assas. Le blocus est installé. La peur d'être délogé par la police ou attaqué par l'extrême droite s'est dissipée. Les jeunes s'assoient sur les poubelles ou en cercle par terre. On discute, certains ont apporté des sandwichs et des tartines pour le petit-déjeuner.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000020",
         "type": "p",
-        "content": "Tout s'organise. Dans un coin, ils dessinent des pancartes. Dans un autre, ils préparent à manger. Ailleurs, on réfléchit à la suite du mouvement : organiser des réunions, rédiger un cahier de doléances. Chacun peut prendre le mégaphone à son tour pour proposer une idée, signaler un point de vigilance ou partager une inquiétude. Ils parlent de la protection de l'anonymat, de la participation d'étudiants d'autres facs aux actions.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Tout s'organise. Dans un coin, ils dessinent des pancartes. Dans un autre, ils préparent à manger. Ailleurs, on réfléchit à la suite du mouvement : organiser des réunions, rédiger un cahier de doléances. Chacun peut prendre le mégaphone à son tour pour proposer une idée, signaler un point de vigilance ou partager une inquiétude. Ils parlent de la protection de l'anonymat, de la participation d'étudiants d'autres facs aux actions.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000021",
         "type": "p",
-        "content": "Pour Eloi, ces moments comptent aussi pour le moral. Il évoque une « vraie détresse psychologique » chez les jeunes, de droite comme de gauche. « Ça fait du bien de voir qu'on n'est pas seuls. Ça ne va pas, mais on est nombreux à vouloir que ça aille mieux. »",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Pour Eloi, ces moments comptent aussi pour le moral. Il évoque une « vraie détresse psychologique » chez les jeunes, de droite comme de gauche. « Ça fait du bien de voir qu'on n'est pas seuls. Ça ne va pas, mais on est nombreux à vouloir que ça aille mieux. »",
+        "collapsed": true
       },
       {
         "id": "block-1746700000022",
         "type": "p",
-        "content": "Les revendications s'expriment dans le calme. Deux rues plus loin, une douzaine de camions de CRS stationnent mais n'interviendront pas.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Les revendications s'expriment dans le calme. Deux rues plus loin, une douzaine de camions de CRS stationnent mais n'interviendront pas.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000023",
         "type": "p",
-        "content": "Juste à côté, le lycée Montaigne est lui aussi bloqué, cette fois par des élèves plus jeunes. Quelques étudiants viennent les soutenir.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Juste à côté, le lycée Montaigne est lui aussi bloqué, cette fois par des élèves plus jeunes. Quelques étudiants viennent les soutenir.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000024",
         "type": "p",
-        "content": "La direction a annoncé la fermeture de l'université pour la journée, mais certains étudiants l'ont appris trop tard. Ils se retrouvent un peu plus bas dans la rue, restent une dizaine de minutes, puis repartent. Andréa est l'une d'eux. « Je comprends la mobilisation mais je n'y participe pas. Je ne me sens pas légitime, et l'ancrage politique des organisations de gauche qui mènent le mouvement ne me donne pas envie de m'y associer. » D'autres étudiants s'inquiètent surtout que les blocages se multiplient à l'approche des partiels du premier semestre.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "La direction a annoncé la fermeture de l'université pour la journée, mais certains étudiants l'ont appris trop tard. Ils se retrouvent un peu plus bas dans la rue, restent une dizaine de minutes, puis repartent. Andréa est l'une d'eux. « Je comprends la mobilisation mais je n'y participe pas. Je ne me sens pas légitime, et l'ancrage politique des organisations de gauche qui mènent le mouvement ne me donne pas envie de m'y associer. » D'autres étudiants s'inquiètent surtout que les blocages se multiplient à l'approche des partiels du premier semestre.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000025",
         "type": "p",
-        "content": "Il est 11 h quand Eloi décide de partir. Les militants se relaient. L'université restant fermée, inutile de tenir le blocus toute la journée. « Je rentre me préparer et me reposer pour demain ! » lance-t-il en pensant au 17 octobre. Pour beaucoup, la mobilisation est loin d'être terminée.",
+        "content": "",
         "extra": "",
-        "third": ""
+        "third": "",
+        "html": "Il est 11 h quand Eloi décide de partir. Les militants se relaient. L'université restant fermée, inutile de tenir le blocus toute la journée. « Je rentre me préparer et me reposer pour demain ! » lance-t-il en pensant au 17 octobre. Pour beaucoup, la mobilisation est loin d'être terminée.",
+        "collapsed": true
       },
       {
         "id": "block-1746700000026",
@@ -210,17 +255,28 @@
         "third": "",
         "boxTitle": "Comment s'organise le mouvement",
         "boxHtml": "<p>Les associations étudiantes favorables à la mobilisation se réunissent en assemblées générales inter-facs. C'est là que se décident les journées d'action : un blocus ici, un autre là. Les étudiants d'Assas qui veulent bloquer ne sont pas assez nombreux pour le faire seuls. Ils demandent donc de l'aide aux autres universités, et des étudiants de Nanterre, de Paris 1 ou de Paris 8 viennent en renfort. Certains font le trajet depuis la Seine-et-Marne. Eloi ne participe pas à toutes les AG inter-facs, qui s'ajoutent à celles de sa fac et de son département, mais il applique les décisions votées et vient « quand il y a besoin de bras ».</p><p>Cette solidarité dépasse Paris. La veille du blocus, il était devant la préfecture de Bobigny, puis devant le commissariat de Saint-Denis pour soutenir un lycéen de Paul-Éluard qui, selon lui, aurait été signalé à la police par son proviseur. « On est tous dans la même merde. Il faut qu'on se batte collectivement si on veut avoir une chance d'obtenir ce qu'on réclame. »</p><p>Tout le monde est le bienvenu, et l'on se côtoie sans forcément se connaître, pour préserver l'anonymat de chacun. Les blocus se planifient sur des messageries chiffrées. Le blocus du 16 octobre était notamment porté par le collectif Assas la Rouge, dont le groupe Signal compte plus de 400 membres anonymes.</p><p>Deux jours après le blocus, ce groupe a été infiltré par des militants d'extrême droite. À tour de rôle, ils y ont posté anonymement des messages racistes, antisémites et homophobes.</p>",
-        "boxBg": "#e8f0f9"
+        "boxBg": "#e8f0f9",
+        "collapsed": true
       },
       {
         "id": "block-1746700000027",
         "type": "img",
         "content": "",
-        "extra": "Capture d'écran — message Signal infiltré par des militants d'extrême droite",
-        "third": ""
+        "extra": "",
+        "third": "Capture d'écran — message Signal infiltré par des militants d'extrême droite",
+        "collapsed": true
+      },
+      {
+        "id": "block-1746700000028",
+        "type": "p",
+        "content": "",
+        "extra": "",
+        "third": "",
+        "html": "<i>Pour préserver l'anonymat des sources citées, les prénoms ont été modifiés.</i>",
+        "collapsed": true
       }
     ],
     "extraHead": "",
-    "extraBody": "Pour préserver l'anonymat des sources citées, les prénoms ont été modifiés."
+    "extraBody": ""
   }
 }

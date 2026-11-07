@@ -2,21 +2,21 @@
   "version": 1,
   "file": null,
   "fileSha": null,
-  "savedAt": "2026-11-06T19:51:21.745Z",
+  "savedAt": "2026-11-07T21:19:02.236Z",
   "article": {
     "version": 1,
     "meta": {
       "short": "Assas une nuit de blocus avant le 17 octobre",
       "cat": "Société",
-      "tags": "blocus, université, mobilisation, extrême droite, Paris",
+      "tags": "reportage, blocus, étudiants",
       "title": "À Assas, une nuit de blocus avant le 17 octobre",
-      "intro": "",
+      "intro": "Le 16 octobre au matin, un blocus se forme devant la faculté parisienne d’Assas. Face au manque de réaction du gouvernement, la colère monte chez ces étudiants qui s'organisent pour se faire entendre.",
       "loc": "Paris",
       "date": "16 octobre 2026",
-      "readTime": "6 min",
-      "heroUrl": "",
-      "heroAlt": "",
-      "heroCap": ""
+      "readTime": "12 min",
+      "heroUrl": "../images/IMG_3111.jpg",
+      "heroAlt": "Blocus d'Assas le 16 octobre",
+      "heroCap": "©Alexandre Ligneul"
     },
     "authors": [
       {
@@ -113,8 +113,8 @@
       {
         "id": "block-1746700000011",
         "type": "img",
-        "content": "",
-        "extra": "",
+        "content": "../images/IMG_3102.jpg",
+        "extra": "©Alexandre Ligneul",
         "third": "Assas mort aux fafs — tag sur un mur"
       },
       {
@@ -159,8 +159,8 @@
       {
         "id": "block-1746700000017",
         "type": "img",
-        "content": "",
-        "extra": "",
+        "content": "../images/IMG_3159.jpg",
+        "extra": "©Alexandre Ligneul",
         "third": "Lever du jour sur le blocus devant Assas"
       },
       {
@@ -239,9 +239,10 @@
       {
         "id": "block-1746700000027",
         "type": "img",
-        "content": "",
-        "extra": "",
-        "third": "Capture d'écran — message Signal infiltré par des militants d'extrême droite"
+        "content": "../images/IMG_4683.png",
+        "extra": "Conversation sur la messagerie crypté Signal infiltré par des militants d'extrême droite ©Alexandre Ligneul",
+        "third": "Capture d'écran — message Signal infiltré par des militants d'extrême droite",
+        "scale": 25
       },
       {
         "id": "block-1746700000028",

@@ -1,7 +1,7 @@
 [
   {
     "url": "https://www.youtube.com/watch?v=P0BgeGRzvl0",
-    "featured": false,
+    "featured": true,
     "category": "émission",
     "date": "30 octobre 2026",
     "description": "La jeunesse face au pouvoir : que proposent vraiment les candidats ? | POLI' TALK #1\n\nBienvenue dans le tout premier numéro de POLI'TALK, la nouvelle émission politique présentée par Hugo, en partenariat avec ComOne, le média de l'EFJ !\n\nÀ quelques mois de l'élection présidentielle de 2027, une question s'impose : quelle place la jeunesse occupe-t-elle dans le débat politique français ?\n\nMobilisations lycéennes, manifestations, avenir de l'école, maintien de l'ordre, pouvoir d'achat et programmes présidentiels… Nos journalistes décryptent une actualité politique particulièrement mouvementée et donnent la parole à celles et ceux qui veulent faire entendre leur voix.",
@@ -50,7 +50,7 @@
   },
   {
     "url": "https://youtu.be/ILlTgGJOzXc",
-    "featured": true,
+    "featured": false,
     "category": "Production, Studio, Expérience Pro",
     "date": "15 juin 2026",
     "description": "Récap des émissions ICART 3\nProduit par ComOne et ICART"
